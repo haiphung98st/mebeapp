@@ -44,4 +44,17 @@ class NotificationService {
       ),
     );
   }
+
+  Future<void> showUpcomingVaccineNotification(String vaccineName) async {
+    if (!_initialized) await init();
+    await _plugin.show(
+      1003,
+      '🐰 Bé sắp đến lịch tiêm',
+      'Sắp đến lịch tiêm $vaccineName cho bé',
+      const NotificationDetails(
+        android: AndroidNotificationDetails('vaccine_alert', 'Tiêm chủng'),
+        iOS: DarwinNotificationDetails(),
+      ),
+    );
+  }
 }
