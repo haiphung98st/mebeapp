@@ -11,12 +11,14 @@ import '../../features/diaper/presentation/diaper_screen.dart';
 import '../../features/feeding/presentation/feeding_screen.dart';
 import '../../features/growth/presentation/growth_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
+import '../../features/profile/presentation/edit_baby_screen.dart';
 import '../../features/profile/presentation/notification_settings_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/pumping/presentation/milk_stash_detail_screen.dart';
 import '../../features/pumping/presentation/pumping_screen.dart';
 import '../../features/sleep/presentation/sleep_screen.dart';
 import '../../features/subscription/presentation/subscription_screen.dart';
+import '../../shared/models/baby_profile.dart';
 import '../../shared/models/milk_stash_entry.dart';
 import '../../shared/providers/auth_provider.dart';
 import '../../shared/providers/baby_provider.dart';
@@ -73,6 +75,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/home/subscription',
         builder: (context, state) => const SubscriptionScreen(),
+      ),
+      GoRoute(
+        path: '/home/profile/edit-baby',
+        builder: (context, state) => EditBabyScreen(baby: state.extra as BabyProfile),
       ),
       ShellRoute(
         builder: (context, state, child) => ScaffoldWithBottomNav(child: child),

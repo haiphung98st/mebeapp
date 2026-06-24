@@ -58,6 +58,7 @@ dependencies:
   share_plus: ^10.0.2
   url_launcher: ^6.3.0
   connectivity_plus: ^6.0.5
+  pdf: ^3.11.1
 
 dev_dependencies:
   flutter_test:
