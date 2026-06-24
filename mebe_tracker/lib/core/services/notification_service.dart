@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' show Color;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:go_router/go_router.dart';
 import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -14,6 +15,16 @@ class NotificationService {
 
   final FlutterLocalNotificationsPlugin _plugin = FlutterLocalNotificationsPlugin();
   bool _initialized = false;
+  GoRouter? _router;
+
+  /// Lets the app router register itself so notification taps can navigate.
+  void attachRouter(GoRouter router) => _router = router;
+
+  void _onNotificationTap(NotificationResponse response) {
+    if (response.payload == 'weekly_report') {
+      _router?.go('/home/stats');
+    }
+  }
 
   Future<void> init() async {
     if (_initialized) return;
@@ -23,6 +34,7 @@ class NotificationService {
     const iosSettings = DarwinInitializationSettings();
     await _plugin.initialize(
       const InitializationSettings(android: androidSettings, iOS: iosSettings),
+      onDidReceiveNotificationResponse: _onNotificationTap,
     );
     _initialized = true;
   }
@@ -122,6 +134,29 @@ class NotificationService {
         android: AndroidNotificationDetails('diaper_alert', 'Thay tã'),
         iOS: DarwinNotificationDetails(),
       ),
+    );
+  }
+
+  Future<void> scheduleWeeklyReport(String babyName) async {
+    if (!_initialized) await init();
+    final now = tz.TZDateTime.now(tz.local);
+    var scheduled = tz.TZDateTime(tz.local, now.year, now.month, now.day, 9);
+    while (scheduled.weekday != DateTime.sunday || !scheduled.isAfter(now)) {
+      scheduled = scheduled.add(const Duration(days: 1));
+    }
+    await _plugin.zonedSchedule(
+      3001,
+      '🐰 Báo cáo tuần của Bé $babyName đã sẵn sàng!',
+      'Xem thống kê 7 ngày qua nhé',
+      scheduled,
+      const NotificationDetails(
+        android: AndroidNotificationDetails('weekly_report', 'Báo cáo tuần', color: _blossom),
+        iOS: DarwinNotificationDetails(),
+      ),
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+      payload: 'weekly_report',
     );
   }
 

@@ -9,6 +9,7 @@ import '../../../core/widgets/bunny_header.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/home_provider.dart';
+import '../../../shared/providers/stats_provider.dart';
 import 'widgets/baby_pill.dart';
 import 'widgets/daily_summary_card.dart';
 import 'widgets/home_skeleton.dart';
@@ -35,6 +36,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserProvider);
     final baby = ref.watch(activeBabyProvider);
+    ref.watch(weeklyReportSchedulerProvider);
 
     final feedingsAsync = ref.watch(allFeedingsProvider);
     final sleepsAsync = ref.watch(allSleepsProvider);
@@ -127,6 +129,12 @@ class HomeScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: AppSpacing.lg),
                     RecentEventsList(events: recentEvents),
+                    const SizedBox(height: AppSpacing.lg),
+                    OutlinedButton.icon(
+                      onPressed: () => context.push('/home/stats'),
+                      icon: const Icon(Icons.bar_chart, color: AppColors.blossom),
+                      label: const Text('Xem thống kê & AI insights'),
+                    ),
                   ]),
                 ),
               ),
