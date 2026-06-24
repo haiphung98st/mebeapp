@@ -9,6 +9,9 @@ import '../../features/auth/presentation/register_screen.dart';
 import '../../features/auth/presentation/splash_screen.dart';
 import '../../features/feeding/presentation/feeding_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
+import '../../features/pumping/presentation/milk_stash_detail_screen.dart';
+import '../../features/pumping/presentation/pumping_screen.dart';
+import '../../shared/models/milk_stash_entry.dart';
 import '../../shared/providers/auth_provider.dart';
 import '../../shared/providers/baby_provider.dart';
 import '../widgets/scaffold_with_bottom_nav.dart';
@@ -52,6 +55,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
       GoRoute(path: '/register', builder: (context, state) => const RegisterScreen()),
       GoRoute(path: '/create-baby', builder: (context, state) => const CreateBabyScreen()),
+      GoRoute(
+        path: '/home/pumping/stash',
+        builder: (context, state) =>
+            MilkStashDetailScreen(location: state.extra as StashLocation),
+      ),
       ShellRoute(
         builder: (context, state, child) => ScaffoldWithBottomNav(child: child),
         routes: [
@@ -62,7 +70,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(
             path: '/home/pumping',
-            builder: (context, state) => const _PlaceholderScreen(title: 'Hút sữa'),
+            builder: (context, state) => const PumpingScreen(),
           ),
           GoRoute(
             path: '/home/sleep',
