@@ -8,6 +8,7 @@ import '../../../core/services/notification_service.dart';
 import '../../../core/widgets/bunny_header.dart';
 import '../../../shared/providers/notification_settings_provider.dart';
 import '../../../shared/providers/vaccine_provider.dart';
+import '../../subscription/presentation/premium_gate.dart';
 import 'widgets/add_growth_dialog.dart';
 import 'widgets/growth_chart_card.dart';
 import 'widgets/growth_stats_row.dart';
@@ -109,7 +110,10 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
       case 1:
         return const MilestonesSection();
       default:
-        return const VaccineSection();
+        return const Padding(
+          padding: EdgeInsets.all(AppSpacing.lg),
+          child: PremiumGate(feature: 'vaccine_schedule', child: VaccineSection()),
+        );
     }
   }
 }

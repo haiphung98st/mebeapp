@@ -18,6 +18,15 @@ class ProfileScreen extends StatelessWidget {
         children: [
           Card(
             child: ListTile(
+              leading: const Icon(Icons.workspace_premium_outlined, color: AppColors.blossom),
+              title: Text('Nâng cấp Premium', style: AppTextStyles.bodyLg),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => context.push('/home/subscription'),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Card(
+            child: ListTile(
               leading: const Icon(Icons.notifications_outlined, color: AppColors.blossom),
               title: Text('Cài đặt thông báo', style: AppTextStyles.bodyLg),
               trailing: const Icon(Icons.chevron_right),

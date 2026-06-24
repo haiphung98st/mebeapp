@@ -204,4 +204,15 @@ class FirestoreService {
           .orderBy('scheduledDate')
           .snapshots()
           .map((s) => s.docs.map(VaccineEntry.fromFirestore).toList());
+
+  // ---- Subscription ----
+
+  DocumentReference<Map<String, dynamic>> _subscription(String userId) =>
+      _firestore.collection('users').doc(userId).collection('meta').doc('subscription');
+
+  Future<void> updateSubscription(String userId, Map<String, dynamic> data) =>
+      _subscription(userId).set(data, SetOptions(merge: true));
+
+  Stream<Map<String, dynamic>?> watchSubscription(String userId) =>
+      _subscription(userId).snapshots().map((doc) => doc.data());
 }
