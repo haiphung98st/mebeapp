@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/utils/error_handling.dart';
 import '../../../../shared/models/diaper_entry.dart';
 import '../../../../shared/providers/auth_provider.dart';
 import '../../../../shared/providers/baby_provider.dart';
@@ -73,9 +74,10 @@ class _QuickLogButton extends ConsumerWidget {
       type: type,
       createdAt: DateTime.now(),
     );
-    ref.read(diaperRepositoryProvider).addDiaper(entry);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Đã ghi thay tã ✓')),
+    runWriteAction(
+      context,
+      () => ref.read(diaperRepositoryProvider).addDiaper(entry),
+      successMessage: 'Đã ghi thay tã ✓',
     );
   }
 }

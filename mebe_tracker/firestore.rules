@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth != null
+        && request.auth.uid == userId;
+    }
+
+    // Family sharing: invited members get read access to a baby's data.
+    match /users/{userId}/babies/{babyId}/{collection}/{docId} {
+      allow read: if request.auth != null && (
+        request.auth.uid == userId ||
+        exists(/databases/$(database)/documents/users/$(userId)/
+               familyMembers/$(request.auth.uid))
+      );
+    }
+  }
+}

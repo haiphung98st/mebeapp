@@ -116,6 +116,7 @@ class _MemberRow extends ConsumerWidget {
           ),
           IconButton(
             icon: const Icon(Icons.close, size: 18, color: AppColors.muted),
+            tooltip: 'Xóa thành viên',
             onPressed: () {
               final user = ref.read(currentUserProvider);
               if (user == null) return;

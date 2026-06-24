@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/utils/error_handling.dart';
 import '../../../../shared/models/growth_entry.dart';
 import '../../../../shared/providers/auth_provider.dart';
 import '../../../../shared/providers/baby_provider.dart';
@@ -108,7 +109,10 @@ class _AddGrowthDialogState extends ConsumerState<AddGrowthDialog> {
       headCircumferenceCm: head,
       createdAt: DateTime.now(),
     );
-    ref.read(growthRepositoryProvider).addGrowth(entry);
-    Navigator.of(context).pop();
+    runWriteAction(
+      context,
+      () => ref.read(growthRepositoryProvider).addGrowth(entry),
+      onSuccess: () => Navigator.of(context).pop(),
+    );
   }
 }

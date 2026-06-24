@@ -6,6 +6,7 @@ import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/date_utils.dart';
 import '../../../../core/utils/duration_utils.dart';
+import '../../../../core/utils/error_handling.dart';
 import '../../../../shared/models/feeding_entry.dart';
 import '../../../../shared/providers/auth_provider.dart';
 import '../../../../shared/providers/baby_provider.dart';
@@ -228,9 +229,10 @@ class _QuickTimeButtons extends ConsumerWidget {
       durationMinutes: minutes,
       createdAt: now,
     );
-    ref.read(feedingRepositoryProvider).addFeeding(entry);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Đã lưu cữ bú 🐰')),
+    runWriteAction(
+      context,
+      () => ref.read(feedingRepositoryProvider).addFeeding(entry),
+      successMessage: 'Đã lưu cữ bú 🐰',
     );
   }
 }
@@ -332,7 +334,7 @@ class _SaveFeedingDialogState extends ConsumerState<_SaveFeedingDialog> {
       notes: _notesController.text.isEmpty ? null : _notesController.text,
       createdAt: now,
     );
-    ref.read(feedingRepositoryProvider).addFeeding(entry);
+    runWriteAction(context, () => ref.read(feedingRepositoryProvider).addFeeding(entry));
     ref.read(feedingTimerProvider.notifier).reset();
     Navigator.of(context).pop();
   }

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/utils/error_handling.dart';
 import '../../../../shared/models/feeding_entry.dart';
 import '../../../../shared/providers/auth_provider.dart';
 import '../../../../shared/providers/baby_provider.dart';
@@ -161,9 +162,10 @@ class _AmountCardState extends ConsumerState<_AmountCard> {
       notes: _milkType,
       createdAt: now,
     );
-    ref.read(feedingRepositoryProvider).addFeeding(entry);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Đã lưu cữ bú bình 🍼')),
+    runWriteAction(
+      context,
+      () => ref.read(feedingRepositoryProvider).addFeeding(entry),
+      successMessage: 'Đã lưu cữ bú bình 🍼',
     );
   }
 }

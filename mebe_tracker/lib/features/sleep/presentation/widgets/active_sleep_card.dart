@@ -6,6 +6,7 @@ import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/date_utils.dart';
 import '../../../../core/utils/duration_utils.dart';
+import '../../../../core/utils/error_handling.dart';
 import '../../../../core/widgets/bunny_avatar.dart';
 import '../../../../shared/models/sleep_entry.dart';
 import '../../../../shared/providers/auth_provider.dart';
@@ -222,7 +223,10 @@ class _LogPastSleepDialogState extends ConsumerState<_LogPastSleepDialog> {
       durationMinutes: end.difference(start).inMinutes,
       createdAt: now,
     );
-    await ref.read(sleepRepositoryProvider).addSleep(entry);
-    if (context.mounted) Navigator.of(context).pop();
+    await runWriteAction(
+      context,
+      () => ref.read(sleepRepositoryProvider).addSleep(entry),
+      onSuccess: () => Navigator.of(context).pop(),
+    );
   }
 }

@@ -6,6 +6,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/utils/date_utils.dart';
 import '../../../core/widgets/bunny_header.dart';
+import '../../../core/widgets/error_card.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/home_provider.dart';
@@ -45,6 +46,8 @@ class HomeScreen extends ConsumerWidget {
     final isLoading = baby != null &&
         (feedingsAsync.isLoading || sleepsAsync.isLoading || diapersAsync.isLoading || pumpsAsync.isLoading) &&
         !feedingsAsync.hasValue;
+    final hasError = baby != null &&
+        (feedingsAsync.hasError || sleepsAsync.hasError || diapersAsync.hasError || pumpsAsync.hasError);
 
     final todayFeedings = ref.watch(todayFeedingsProvider);
     final todaySleeps = ref.watch(todaySleepsProvider);
@@ -90,6 +93,13 @@ class HomeScreen extends ConsumerWidget {
             ),
             if (isLoading)
               const SliverToBoxAdapter(child: HomeSkeleton())
+            else if (hasError)
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSpacing.lg),
+                  child: ErrorCard(onRetry: () => _onRefresh(ref)),
+                ),
+              )
             else
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(

@@ -5,6 +5,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/duration_utils.dart';
+import '../../../../core/utils/error_handling.dart';
 import '../../../../shared/models/milk_stash_entry.dart';
 import '../../../../shared/models/pump_entry.dart';
 import '../../../../shared/providers/auth_provider.dart';
@@ -298,26 +299,32 @@ class _FinishSessionDialogState extends ConsumerState<_FinishSessionDialog> {
       storage: _storage,
       createdAt: now,
     );
-    await ref.read(pumpRepositoryProvider).addPump(pumpEntry);
+    await runWriteAction(
+      context,
+      () async {
+        await ref.read(pumpRepositoryProvider).addPump(pumpEntry);
 
-    if (_storage != PumpStorage.fresh) {
-      final location = _storage == PumpStorage.fridge ? StashLocation.fridge : StashLocation.freezer;
-      final stashEntry = MilkStashEntry(
-        id: firestoreService.newId(),
-        babyId: baby.id,
-        userId: user.uid,
-        pumpedAt: now,
-        expiresAt: defaultExpiryFor(location, now),
-        amountMl: widget.totalMl,
-        location: location,
-        isUsed: false,
-        createdAt: now,
-      );
-      await ref.read(pumpRepositoryProvider).addMilkStash(stashEntry);
-    }
-
-    ref.read(pumpTimerProvider.notifier).reset();
-    if (context.mounted) Navigator.of(context).pop();
+        if (_storage != PumpStorage.fresh) {
+          final location = _storage == PumpStorage.fridge ? StashLocation.fridge : StashLocation.freezer;
+          final stashEntry = MilkStashEntry(
+            id: firestoreService.newId(),
+            babyId: baby.id,
+            userId: user.uid,
+            pumpedAt: now,
+            expiresAt: defaultExpiryFor(location, now),
+            amountMl: widget.totalMl,
+            location: location,
+            isUsed: false,
+            createdAt: now,
+          );
+          await ref.read(pumpRepositoryProvider).addMilkStash(stashEntry);
+        }
+      },
+      onSuccess: () {
+        ref.read(pumpTimerProvider.notifier).reset();
+        Navigator.of(context).pop();
+      },
+    );
   }
 }
 

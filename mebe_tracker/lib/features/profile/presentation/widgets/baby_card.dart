@@ -43,6 +43,7 @@ class BabyCard extends ConsumerWidget {
               ),
               IconButton(
                 icon: const Icon(Icons.edit_outlined, color: AppColors.blossom),
+                tooltip: 'Sửa thông tin bé',
                 onPressed: () => context.push('/home/profile/edit-baby', extra: baby),
               ),
             ],

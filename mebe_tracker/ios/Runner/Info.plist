@@ -26,6 +26,15 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>MeBé Tracker cần quyền truy cập camera để chụp ảnh bé</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>MeBé Tracker cần quyền truy cập thư viện ảnh để chọn ảnh bé</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
