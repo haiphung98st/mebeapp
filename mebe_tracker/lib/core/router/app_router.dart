@@ -11,6 +11,7 @@ import '../../features/feeding/presentation/feeding_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/pumping/presentation/milk_stash_detail_screen.dart';
 import '../../features/pumping/presentation/pumping_screen.dart';
+import '../../features/sleep/presentation/sleep_screen.dart';
 import '../../shared/models/milk_stash_entry.dart';
 import '../../shared/providers/auth_provider.dart';
 import '../../shared/providers/baby_provider.dart';
@@ -74,7 +75,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(
             path: '/home/sleep',
-            builder: (context, state) => const _PlaceholderScreen(title: 'Giấc ngủ'),
+            builder: (context, state) => const SleepScreen(),
           ),
           GoRoute(
             path: '/home/growth',
