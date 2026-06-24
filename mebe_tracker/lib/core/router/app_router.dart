@@ -7,6 +7,7 @@ import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/onboarding_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
 import '../../features/auth/presentation/splash_screen.dart';
+import '../../features/diaper/presentation/diaper_screen.dart';
 import '../../features/feeding/presentation/feeding_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/pumping/presentation/milk_stash_detail_screen.dart';
@@ -83,7 +84,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(
             path: '/home/diaper',
-            builder: (context, state) => const _PlaceholderScreen(title: 'Thay tã'),
+            builder: (context, state) => const DiaperScreen(),
           ),
           GoRoute(
             path: '/home/profile',

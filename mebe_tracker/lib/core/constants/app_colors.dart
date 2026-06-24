@@ -64,6 +64,11 @@ class AppColors {
     end: Alignment.bottomRight,
     colors: [Color(0xFF50C8A0), Color(0xFF34A880)],
   );
+  static const gradientDiaper = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF7DE8C8), Color(0xFF4FBE9C)],
+  );
 
   // ── EAR COLORS PER SCREEN (matches bunny-header mockup) ──
   static const homeEarLeftGradient = LinearGradient(
@@ -84,4 +89,6 @@ class AppColors {
   static const sleepEarRight = Color(0xFF8D6ABF);
   static const growthEarLeft = Color(0xFF7DE8C8);
   static const growthEarRight = Color(0xFF9DF0D5);
+  static const diaperEarLeft = Color(0xFF4FBE9C);
+  static const diaperEarRight = Color(0xFF7DE8C8);
 }

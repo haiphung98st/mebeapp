@@ -31,4 +31,17 @@ class NotificationService {
       ),
     );
   }
+
+  Future<void> showLowDiaperCountNotification() async {
+    if (!_initialized) await init();
+    await _plugin.show(
+      1002,
+      '🐰 Bé có vẻ ít thay tã hôm nay',
+      'Hôm nay bé chưa thay tã đủ 3 lần. Kiểm tra bé nhé!',
+      const NotificationDetails(
+        android: AndroidNotificationDetails('diaper_alert', 'Thay tã'),
+        iOS: DarwinNotificationDetails(),
+      ),
+    );
+  }
 }
