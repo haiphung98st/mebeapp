@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/services/notification_service.dart';
 import '../../../core/widgets/bunny_header.dart';
 import '../../../shared/providers/home_provider.dart';
+import '../../../shared/providers/notification_settings_provider.dart';
 import '../../../shared/providers/sleep_provider.dart';
 import 'widgets/active_sleep_card.dart';
 import 'widgets/sleep_daily_summary_card.dart';
@@ -19,6 +21,21 @@ class SleepScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final active = ref.watch(activeSleepProvider);
     final allSleeps = ref.watch(allSleepsProvider).value ?? const [];
+
+    ref.listen(sleepPredictionProvider, (previous, next) {
+      final prediction = next.value;
+      if (prediction == null) return;
+      if (previous?.value?.windowStart == prediction.windowStart) return;
+      if (!ref.read(notificationSettingsProvider).sleepReminderEnabled) return;
+      final reminderTime = prediction.windowStart.subtract(const Duration(minutes: 15));
+      NotificationService.instance.cancelNotification(2002);
+      NotificationService.instance.scheduleNotification(
+        2002,
+        '🌙 Chuẩn bị cho bé ngủ nhé!',
+        'Cửa sổ ngủ tiếp theo: ${_formatHm(prediction.windowStart)} – ${_formatHm(prediction.windowEnd)}',
+        reminderTime,
+      );
+    });
 
     return Scaffold(
       backgroundColor: AppColors.powder,
@@ -59,3 +76,6 @@ class SleepScreen extends ConsumerWidget {
     );
   }
 }
+
+String _formatHm(DateTime time) =>
+    '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';

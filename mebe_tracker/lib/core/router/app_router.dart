@@ -11,6 +11,8 @@ import '../../features/diaper/presentation/diaper_screen.dart';
 import '../../features/feeding/presentation/feeding_screen.dart';
 import '../../features/growth/presentation/growth_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
+import '../../features/profile/presentation/notification_settings_screen.dart';
+import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/pumping/presentation/milk_stash_detail_screen.dart';
 import '../../features/pumping/presentation/pumping_screen.dart';
 import '../../features/sleep/presentation/sleep_screen.dart';
@@ -63,6 +65,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) =>
             MilkStashDetailScreen(location: state.extra as StashLocation),
       ),
+      GoRoute(
+        path: '/home/profile/notifications',
+        builder: (context, state) => const NotificationSettingsScreen(),
+      ),
       ShellRoute(
         builder: (context, state, child) => ScaffoldWithBottomNav(child: child),
         routes: [
@@ -89,23 +95,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(
             path: '/home/profile',
-            builder: (context, state) => const _PlaceholderScreen(title: 'Hồ sơ'),
+            builder: (context, state) => const ProfileScreen(),
           ),
         ],
       ),
     ],
   );
 });
-
-class _PlaceholderScreen extends StatelessWidget {
-  const _PlaceholderScreen({required this.title});
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text(title)));
-  }
-}
 
 /// Bridges Riverpod state changes into a [Listenable] so GoRouter
 /// re-evaluates its redirect whenever auth or baby data changes.

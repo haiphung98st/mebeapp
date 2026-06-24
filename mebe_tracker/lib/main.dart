@@ -10,5 +10,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await NotificationService.instance.init();
+  await NotificationService.instance.requestPermission();
   runApp(const ProviderScope(child: MeBeApp()));
 }

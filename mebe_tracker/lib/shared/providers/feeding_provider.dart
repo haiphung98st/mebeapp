@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/services/notification_service.dart';
 import '../models/feeding_entry.dart';
 import '../services/firestore_service.dart';
 import 'baby_provider.dart';
 import 'home_provider.dart';
+import 'notification_settings_provider.dart';
 
 class FeedingTimerState {
   const FeedingTimerState({
@@ -133,9 +135,23 @@ final todayFeedingSummaryProvider = Provider<FeedingSummary>((ref) {
   );
 });
 
-class FeedingRepository {
-  FeedingRepository(this._firestoreService);
+Duration _averageFeedingInterval(List<FeedingEntry> recentDesc) {
+  if (recentDesc.length < 2) return const Duration(hours: 3);
+  var totalMinutes = 0;
+  for (var i = 0; i < recentDesc.length - 1; i++) {
+    totalMinutes += recentDesc[i].startTime.difference(recentDesc[i + 1].startTime).inMinutes.abs();
+  }
+  final avgMinutes = totalMinutes / (recentDesc.length - 1);
+  return Duration(minutes: avgMinutes.round().clamp(30, 360));
+}
 
+String _formatHm(DateTime time) =>
+    '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+
+class FeedingRepository {
+  FeedingRepository(this._ref, this._firestoreService);
+
+  final Ref _ref;
   final FirestoreService _firestoreService;
 
   Future<void> addFeeding(FeedingEntry entry) async {
@@ -152,6 +168,18 @@ class FeedingRepository {
     } catch (_) {
       // Analytics failures must never block saving the feeding entry.
     }
+
+    if (_ref.read(notificationSettingsProvider).feedingReminderEnabled) {
+      final recent = (_ref.read(allFeedingsProvider).value ?? const <FeedingEntry>[]).take(5).toList();
+      final avgInterval = _averageFeedingInterval(recent);
+      await NotificationService.instance.cancelNotification(2001);
+      await NotificationService.instance.scheduleNotification(
+        2001,
+        '🐰 Đến giờ cho bé bú rồi!',
+        'Lần trước bú lúc ${_formatHm(entry.startTime)} · ${avgInterval.inMinutes} phút',
+        entry.startTime.add(avgInterval),
+      );
+    }
   }
 
   Future<void> deleteFeeding(String userId, String babyId, String entryId) =>
@@ -159,5 +187,5 @@ class FeedingRepository {
 }
 
 final feedingRepositoryProvider = Provider<FeedingRepository>((ref) {
-  return FeedingRepository(ref.watch(firestoreServiceProvider));
+  return FeedingRepository(ref, ref.watch(firestoreServiceProvider));
 });

@@ -5,6 +5,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../core/widgets/bunny_header.dart';
+import '../../../shared/providers/notification_settings_provider.dart';
 import '../../../shared/providers/pump_provider.dart';
 import 'widgets/milk_stash_card.dart';
 import 'widgets/pump_session_card.dart';
@@ -20,6 +21,7 @@ class PumpingScreen extends ConsumerWidget {
     ref.listen(expiringStashProvider, (previous, next) {
       if (next.isEmpty) return;
       if (previous != null && previous.isNotEmpty) return;
+      if (!ref.read(notificationSettingsProvider).milkExpiryReminderEnabled) return;
       final totalMl = next.fold<double>(0, (sum, e) => sum + e.amountMl);
       NotificationService.instance.showExpiringMilkNotification(totalMl);
     });

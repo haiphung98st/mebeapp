@@ -6,6 +6,7 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../core/widgets/bunny_header.dart';
+import '../../../shared/providers/notification_settings_provider.dart';
 import '../../../shared/providers/vaccine_provider.dart';
 import 'widgets/add_growth_dialog.dart';
 import 'widgets/growth_chart_card.dart';
@@ -28,7 +29,30 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
     ref.listen(upcomingVaccineAlertProvider, (previous, next) {
       if (next == null) return;
       if (previous?.def.key == next.def.key) return;
+      if (!ref.read(notificationSettingsProvider).vaccineReminderEnabled) return;
       NotificationService.instance.showUpcomingVaccineNotification(next.def.nameVi);
+    });
+
+    ref.listen(vaccineViewListProvider, (previous, next) {
+      if (!ref.read(notificationSettingsProvider).vaccineReminderEnabled) return;
+      for (final item in next) {
+        if (item.isCompleted) continue;
+        final baseId = 4000 + (item.def.key.hashCode.abs() % 1000) * 2;
+        final title = '💉 Bé sắp đến lịch tiêm!';
+        final body = '${item.def.nameVi} · Ngày ${_formatDmy(item.scheduledDate)}';
+        NotificationService.instance.scheduleNotification(
+          baseId,
+          title,
+          body,
+          item.scheduledDate.subtract(const Duration(days: 7)),
+        );
+        NotificationService.instance.scheduleNotification(
+          baseId + 1,
+          title,
+          body,
+          item.scheduledDate.subtract(const Duration(days: 1)),
+        );
+      }
     });
 
     return Scaffold(
@@ -89,6 +113,9 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
     }
   }
 }
+
+String _formatDmy(DateTime date) =>
+    '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
 
 class _GrowthSegmentedTabs extends StatelessWidget {
   const _GrowthSegmentedTabs({required this.selectedIndex, required this.onTap});
