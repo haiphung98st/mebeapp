@@ -72,6 +72,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             builder: (context, state) => const _PlaceholderScreen(title: 'Phát triển'),
           ),
           GoRoute(
+            path: '/home/diaper',
+            builder: (context, state) => const _PlaceholderScreen(title: 'Thay tã'),
+          ),
+          GoRoute(
             path: '/home/profile',
             builder: (context, state) => const _PlaceholderScreen(title: 'Hồ sơ'),
           ),
