@@ -60,6 +60,8 @@ dependencies:
   connectivity_plus: ^6.0.5
   pdf: ^3.11.1
   confetti: ^0.7.0
+  live_activities: ^2.2.0
+  flutter_app_group_directory: ^1.1.0
 
 dev_dependencies:
   flutter_test:

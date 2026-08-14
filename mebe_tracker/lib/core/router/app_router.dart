@@ -35,6 +35,20 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     initialLocation: '/splash',
     refreshListenable: GoRouterRefreshStream(ref),
     redirect: (context, state) {
+      // Handle mebe://timer/* deep links from Dynamic Island
+      final uri = state.uri;
+      if (uri.scheme == 'mebe' && uri.host == 'timer') {
+        final segment = uri.pathSegments.firstOrNull ?? '';
+        switch (segment) {
+          case 'feeding':
+            return '/home/feeding';
+          case 'pump':
+            return '/home/pumping';
+          case 'sleep':
+            return '/home/sleep';
+        }
+      }
+
       final path = state.matchedLocation;
       if (path == '/splash') return null;
 

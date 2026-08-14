@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app.dart';
 import 'core/services/notification_service.dart';
 import 'core/widgets/error_fallback.dart';
+import 'shared/services/live_activity_service.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -23,5 +24,6 @@ void main() async {
 
   await NotificationService.instance.init();
   await NotificationService.instance.requestPermission();
+  await LiveActivityService.instance.init();
   runApp(const ProviderScope(child: MeBeApp()));
 }
