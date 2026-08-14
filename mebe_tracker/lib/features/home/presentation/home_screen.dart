@@ -11,6 +11,7 @@ import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/home_provider.dart';
 import '../../../shared/providers/stats_provider.dart';
+import '../../../shared/providers/subscription_provider.dart';
 import 'widgets/baby_pill.dart';
 import 'widgets/daily_summary_card.dart';
 import 'widgets/home_skeleton.dart';
@@ -19,6 +20,8 @@ import 'widgets/recent_events_list.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
+
+  void _openAiChat(BuildContext context) => context.push('/ai-chat');
 
   Future<void> _onRefresh(WidgetRef ref) async {
     ref.invalidate(allFeedingsProvider);
@@ -39,6 +42,7 @@ class HomeScreen extends ConsumerWidget {
     final baby = ref.watch(activeBabyProvider);
     ref.watch(weeklyReportSchedulerProvider);
 
+    final isPremium = ref.watch(isPremiumProvider);
     final feedingsAsync = ref.watch(allFeedingsProvider);
     final sleepsAsync = ref.watch(allSleepsProvider);
     final diapersAsync = ref.watch(allDiapersProvider);
@@ -129,6 +133,11 @@ class HomeScreen extends ConsumerWidget {
                         ),
                         QuickAction(icon: '⚖️', label: 'Cân nặng', onTap: () => context.go('/home/growth')),
                         QuickAction(icon: '💉', label: 'Tiêm chủng', onTap: () => context.go('/home/vaccine')),
+                        QuickAction(
+                          icon: isPremium ? '🐰' : '🐰✨',
+                          label: 'Hỏi AI',
+                          onTap: () => _openAiChat(context),
+                        ),
                       ],
                     ),
                     const SizedBox(height: AppSpacing.lg),

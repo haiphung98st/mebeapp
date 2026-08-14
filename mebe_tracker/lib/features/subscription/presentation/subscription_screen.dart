@@ -19,6 +19,7 @@ const _premiumFeatures = [
   'Export PDF',
   'Kho sữa nâng cao',
   'Lịch tiêm chủng',
+  'Hỏi bé – Trợ lý AI 🐰',
   'Widget',
   'Hỗ trợ ưu tiên',
 ];

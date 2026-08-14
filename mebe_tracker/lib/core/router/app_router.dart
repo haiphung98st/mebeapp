@@ -20,6 +20,8 @@ import '../../features/sleep/presentation/sleep_screen.dart';
 import '../../features/stats/presentation/stats_screen.dart';
 import '../../features/vaccine/presentation/vaccine_screen.dart';
 import '../../features/subscription/presentation/subscription_screen.dart';
+import '../../features/ai_chat/presentation/ai_chat_screen.dart';
+import '../../features/ai_chat/presentation/chat_history_screen.dart';
 import '../../shared/models/baby_profile.dart';
 import '../../shared/models/milk_stash_entry.dart';
 import '../../shared/providers/auth_provider.dart';
@@ -92,6 +94,20 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/home/subscription',
         builder: (context, state) => const SubscriptionScreen(),
+      ),
+      GoRoute(
+        path: '/ai-chat',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          return AiChatScreen(
+            prefilledMessage: extra?['message'] as String?,
+            conversationId: extra?['conversationId'] as String?,
+          );
+        },
+      ),
+      GoRoute(
+        path: '/ai-chat/history',
+        builder: (context, state) => const ChatHistoryScreen(),
       ),
       GoRoute(
         path: '/home/stats',
