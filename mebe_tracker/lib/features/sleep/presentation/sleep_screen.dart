@@ -6,7 +6,7 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../core/widgets/bunny_header.dart';
 import '../../../shared/providers/home_provider.dart';
-import '../../../shared/providers/notification_settings_provider.dart';
+import '../../../shared/providers/notification_config_provider.dart';
 import '../../../shared/providers/sleep_provider.dart';
 import 'widgets/active_sleep_card.dart';
 import 'widgets/sleep_daily_summary_card.dart';
@@ -26,7 +26,7 @@ class SleepScreen extends ConsumerWidget {
       final prediction = next.value;
       if (prediction == null) return;
       if (previous?.value?.windowStart == prediction.windowStart) return;
-      if (!ref.read(notificationSettingsProvider).sleepReminderEnabled) return;
+      if (!ref.read(notificationConfigProvider).sleepEnabled) return;
       final reminderTime = prediction.windowStart.subtract(const Duration(minutes: 15));
       NotificationService.instance.cancelNotification(2002);
       NotificationService.instance.scheduleNotification(

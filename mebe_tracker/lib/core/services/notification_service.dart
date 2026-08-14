@@ -4,25 +4,37 @@ import 'package:go_router/go_router.dart';
 import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
+import '../../shared/models/notification_config.dart';
+
 const _blossom = Color(0xFFF472A0);
 
-/// Thin wrapper around flutter_local_notifications for one-off and scheduled
-/// local alerts (feeding/sleep/pump/milk/vaccine reminders). Initialized once
-/// from main().
+// ── Notification ID ranges ─────────────────────────────────
+// 1001           feeding next-cue (one-shot)
+// 2000–2019      pump fixed-time daily slots
+// 2100–2123      pump interval daily slots
+// 2200           pump progress check (21h)
+// 3001           weekly report
+// 4000–4099      vaccine upcoming (index-based)
+// 4100–4199      vaccine day-before (index-based)
+// 5001           milk stash expiring
+// 5002           milk stash low
+
 class NotificationService {
   NotificationService._();
   static final NotificationService instance = NotificationService._();
 
-  final FlutterLocalNotificationsPlugin _plugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _plugin =
+      FlutterLocalNotificationsPlugin();
   bool _initialized = false;
   GoRouter? _router;
 
-  /// Lets the app router register itself so notification taps can navigate.
   void attachRouter(GoRouter router) => _router = router;
 
   void _onNotificationTap(NotificationResponse response) {
     if (response.payload == 'weekly_report') {
       _router?.go('/home/stats');
+    } else if (response.payload == 'vaccine') {
+      _router?.go('/vaccine');
     }
   }
 
@@ -30,10 +42,12 @@ class NotificationService {
     if (_initialized) return;
     tz_data.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation('Asia/Ho_Chi_Minh'));
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosSettings = DarwinInitializationSettings();
     await _plugin.initialize(
-      const InitializationSettings(android: androidSettings, iOS: iosSettings),
+      const InitializationSettings(
+          android: androidSettings, iOS: iosSettings),
       onDidReceiveNotificationResponse: _onNotificationTap,
     );
     _initialized = true;
@@ -42,32 +56,301 @@ class NotificationService {
   Future<void> requestPermission() async {
     if (!_initialized) await init();
     await _plugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
     await _plugin
-        .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(alert: true, badge: true, sound: true);
   }
 
-  Future<void> showImmediateNotification(int id, String title, String body) async {
+  // ── CORE HELPER ─────────────────────────────────────────
+
+  NotificationDetails _details(
+    String channelId,
+    String channelName, {
+    bool vibrate = true,
+    String? sound,
+  }) {
+    return NotificationDetails(
+      android: AndroidNotificationDetails(
+        channelId,
+        channelName,
+        color: _blossom,
+        enableVibration: vibrate,
+      ),
+      iOS: const DarwinNotificationDetails(),
+    );
+  }
+
+  bool _isQuietHour(DateTime time, NotificationConfig config,
+      {bool isVaccine = false}) {
+    if (!config.quietHoursEnabled) return false;
+    if (isVaccine && config.quietHoursExceptVaccine) return false;
+    final h = time.hour;
+    final start = config.quietHourStart;
+    final end = config.quietHourEnd;
+    return start > end
+        ? h >= start || h < end
+        : h >= start && h < end;
+  }
+
+  // ── RESCHEDULE ALL ───────────────────────────────────────
+
+  Future<void> rescheduleAll(NotificationConfig config) async {
+    if (!_initialized) await init();
+    // Cancel pump and progress slots
+    for (var i = 2000; i <= 2019; i++) {
+      await _plugin.cancel(i);
+    }
+    for (var i = 2100; i <= 2123; i++) {
+      await _plugin.cancel(i);
+    }
+    await _plugin.cancel(2200);
+
+    if (config.pumpEnabled) {
+      await schedulePumpReminders(config);
+    }
+    if (config.weeklyReportEnabled) {
+      // Weekly report is rescheduled via weeklyReportSchedulerProvider
+      // (needs baby name), so we only cancel here if disabled.
+    } else {
+      await _plugin.cancel(3001);
+    }
+  }
+
+  // ── FEEDING ──────────────────────────────────────────────
+
+  Future<void> scheduleFeedingReminder(
+      NotificationConfig config, DateTime lastFeedingTime) async {
+    if (!_initialized) await init();
+    if (!config.feedingEnabled) {
+      await _plugin.cancel(1001);
+      return;
+    }
+
+    DateTime? nextTime;
+    if (config.feedingMode == FeedingReminderMode.auto) {
+      nextTime = lastFeedingTime
+          .add(Duration(minutes: config.feedingIntervalMinutes));
+    } else {
+      final now = DateTime.now();
+      final enabled = config.feedingFixedTimes
+          .where((t) => t.enabled)
+          .toList()
+        ..sort((a, b) =>
+            (a.hour * 60 + a.minute).compareTo(b.hour * 60 + b.minute));
+      for (final t in enabled) {
+        final candidate = DateTime(
+            now.year, now.month, now.day, t.hour, t.minute);
+        if (candidate.isAfter(now)) {
+          nextTime = candidate;
+          break;
+        }
+      }
+      if (nextTime == null && enabled.isNotEmpty) {
+        final t = enabled.first;
+        nextTime = DateTime(now.year, now.month, now.day + 1, t.hour, t.minute);
+      }
+    }
+
+    if (nextTime == null || nextTime.isBefore(DateTime.now())) return;
+    if (_isQuietHour(nextTime, config)) return;
+
+    await _plugin.cancel(1001);
+    await _plugin.zonedSchedule(
+      1001,
+      '🐰 Đến giờ cho bé bú rồi!',
+      'Khoảng cách cữ bú đã đủ rồi nhé',
+      tz.TZDateTime.from(nextTime, tz.local),
+      _details('mebe_reminder', 'Nhắc nhở',
+          vibrate: config.feedingVibrate),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  // ── PUMP ─────────────────────────────────────────────────
+
+  Future<void> schedulePumpReminders(NotificationConfig config) async {
+    if (!_initialized) await init();
+    if (!config.pumpEnabled ||
+        config.pumpMode == PumpReminderMode.disabled) {
+      return;
+    }
+
+    if (config.pumpMode == PumpReminderMode.fixed) {
+      var id = 2000;
+      for (final t in config.pumpFixedTimes.where((t) => t.enabled)) {
+        if (id > 2019) break;
+        await _plugin.zonedSchedule(
+          id++,
+          '🥛 Đến giờ hút sữa!',
+          t.label != null ? '${t.label} — hãy hút sữa nhé' : 'Đừng quên hút sữa nhé',
+          _nextDailyTime(t.hour, t.minute),
+          _details('pump_reminder', 'Hút sữa'),
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          matchDateTimeComponents: DateTimeComponents.time,
+        );
+      }
+    } else {
+      // Interval mode: schedule daily slots within active hours
+      final startH = config.pumpActiveHourStart;
+      final endH = config.pumpActiveHourEnd;
+      final gapH = config.pumpIntervalMinutes ~/ 60;
+      var id = 2100;
+      for (var h = startH; h <= endH && id <= 2123; h += gapH.clamp(1, 6)) {
+        await _plugin.zonedSchedule(
+          id++,
+          '🥛 Đến giờ hút sữa!',
+          'Hút sữa lúc ${h.toString().padLeft(2, '0')}:00 để đảm bảo nguồn sữa nhé',
+          _nextDailyTime(h, 0),
+          _details('pump_reminder', 'Hút sữa'),
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          matchDateTimeComponents: DateTimeComponents.time,
+        );
+      }
+    }
+
+    if (config.pumpShowProgress) {
+      await _plugin.zonedSchedule(
+        2200,
+        '🥛 Tiến độ hút sữa hôm nay',
+        'Kiểm tra xem bạn đã đạt mục tiêu ${config.pumpDailyGoalSessions} phiên chưa',
+        _nextDailyTime(21, 0),
+        _details('pump_reminder', 'Hút sữa'),
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time,
+      );
+    }
+  }
+
+  // ── VACCINE ──────────────────────────────────────────────
+
+  Future<void> scheduleVaccineReminders(
+      NotificationConfig config,
+      List<({String key, String name, DateTime scheduledDate})>
+          upcoming) async {
+    if (!_initialized) await init();
+    for (var i = 4000; i <= 4199; i++) {
+      await _plugin.cancel(i);
+    }
+    if (!config.vaccineEnabled) return;
+
+    var id = 4000;
+    for (final v in upcoming) {
+      if (id >= 4100) break;
+      final alertDate = v.scheduledDate
+          .subtract(Duration(days: config.vaccineDaysBeforeAlert));
+      if (alertDate.isAfter(DateTime.now())) {
+        await _plugin.zonedSchedule(
+          id++,
+          '💉 Sắp đến lịch tiêm của bé',
+          'Còn ${config.vaccineDaysBeforeAlert} ngày nữa tiêm ${v.name}',
+          tz.TZDateTime.from(
+              DateTime(alertDate.year, alertDate.month, alertDate.day, 9),
+              tz.local),
+          _details('vaccine_alert', 'Tiêm chủng'),
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          payload: 'vaccine',
+        );
+      }
+
+      if (config.vaccineSecondAlert) {
+        final dayBefore = v.scheduledDate.subtract(const Duration(days: 1));
+        if (dayBefore.isAfter(DateTime.now())) {
+          var secondId = id + 100;
+          if (secondId < 4200) {
+            await _plugin.zonedSchedule(
+              secondId,
+              '💉 Ngày mai tiêm ${v.name}',
+              'Nhớ đưa bé đi tiêm đúng lịch nhé',
+              tz.TZDateTime.from(
+                  DateTime(dayBefore.year, dayBefore.month, dayBefore.day, 9),
+                  tz.local),
+              _details('vaccine_alert', 'Tiêm chủng'),
+              androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+              uiLocalNotificationDateInterpretation:
+                  UILocalNotificationDateInterpretation.absoluteTime,
+              payload: 'vaccine',
+            );
+          }
+        }
+      }
+
+      if (config.vaccineOverdueAlert &&
+          v.scheduledDate.isBefore(DateTime.now())) {
+        await showImmediateNotification(
+          id,
+          '⚠️ Bé chưa tiêm ${v.name}',
+          'Đã quá hạn tiêm — hãy đặt lịch sớm nhé',
+          payload: 'vaccine',
+        );
+        id++;
+      }
+    }
+  }
+
+  // ── MILK STASH ───────────────────────────────────────────
+
+  Future<void> scheduleMilkStashAlerts(
+      NotificationConfig config, double totalFreshMl,
+      {List<({double amountMl, DateTime expiresAt})> expiring =
+          const []}) async {
+    if (!_initialized) await init();
+    await _plugin.cancel(5001);
+    await _plugin.cancel(5002);
+    if (!config.milkStashEnabled) return;
+
+    for (final item in expiring) {
+      final daysLeft =
+          item.expiresAt.difference(DateTime.now()).inDays;
+      if (daysLeft <= config.milkStashExpiryDays) {
+        await showImmediateNotification(
+          5001,
+          '🐰 Sữa sắp hết hạn',
+          '${item.amountMl.toStringAsFixed(0)}ml sữa sẽ hết hạn trong $daysLeft ngày',
+        );
+        break;
+      }
+    }
+
+    if (config.milkStashLowAlert &&
+        totalFreshMl < config.milkStashLowThresholdMl) {
+      await showImmediateNotification(
+        5002,
+        '🧊 Kho sữa sắp hết',
+        'Chỉ còn ${totalFreshMl.toStringAsFixed(0)}ml — cần hút thêm sữa',
+      );
+    }
+  }
+
+  // ── LEGACY / CONVENIENCE ─────────────────────────────────
+
+  Future<void> showImmediateNotification(int id, String title, String body,
+      {String? payload}) async {
     if (!_initialized) await init();
     await _plugin.show(
       id,
       title,
       body,
-      const NotificationDetails(
-        android: AndroidNotificationDetails('mebe_reminder', 'Nhắc nhở', color: _blossom),
-        iOS: DarwinNotificationDetails(),
-      ),
+      _details('mebe_reminder', 'Nhắc nhở'),
+      payload: payload,
     );
   }
 
   Future<void> scheduleNotification(
-    int id,
-    String title,
-    String body,
-    DateTime scheduledDate,
-  ) async {
+      int id, String title, String body, DateTime scheduledDate) async {
     if (!_initialized) await init();
     if (scheduledDate.isBefore(DateTime.now())) return;
     await _plugin.zonedSchedule(
@@ -75,14 +358,56 @@ class NotificationService {
       title,
       body,
       tz.TZDateTime.from(scheduledDate, tz.local),
-      const NotificationDetails(
-        android: AndroidNotificationDetails('mebe_reminder', 'Nhắc nhở', color: _blossom),
-        iOS: DarwinNotificationDetails(),
-      ),
+      _details('mebe_reminder', 'Nhắc nhở'),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
+
+  Future<void> scheduleWeeklyReport(String babyName,
+      {int dayOfWeek = DateTime.sunday, int hour = 9}) async {
+    if (!_initialized) await init();
+    final now = tz.TZDateTime.now(tz.local);
+    var scheduled = tz.TZDateTime(tz.local, now.year, now.month, now.day, hour);
+    while (scheduled.weekday != dayOfWeek || !scheduled.isAfter(now)) {
+      scheduled = scheduled.add(const Duration(days: 1));
+    }
+    await _plugin.zonedSchedule(
+      3001,
+      '🐰 Báo cáo tuần của Bé $babyName đã sẵn sàng!',
+      'Xem thống kê 7 ngày qua nhé',
+      scheduled,
+      _details('weekly_report', 'Báo cáo tuần'),
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+      payload: 'weekly_report',
+    );
+  }
+
+  Future<void> showExpiringMilkNotification(double amountMl) =>
+      showImmediateNotification(
+        1001,
+        '🐰 Sữa sắp hết hạn',
+        'Còn ${amountMl.toStringAsFixed(0)}ml sữa sẽ hết hạn trong 24h tới',
+      );
+
+  Future<void> showLowDiaperCountNotification() =>
+      showImmediateNotification(
+        1002,
+        '🐰 Bé có vẻ ít thay tã hôm nay',
+        'Hôm nay bé chưa thay tã đủ 3 lần. Kiểm tra bé nhé!',
+      );
+
+  Future<void> showUpcomingVaccineNotification(String vaccineName) =>
+      showImmediateNotification(
+        1003,
+        '🐰 Bé sắp đến lịch tiêm',
+        'Sắp đến lịch tiêm $vaccineName cho bé',
+        payload: 'vaccine',
+      );
 
   Future<void> schedulePumpReminder(int intervalHours) async {
     if (!_initialized) await init();
@@ -91,10 +416,7 @@ class NotificationService {
       '🥛 Đến giờ hút sữa rồi!',
       'Đã $intervalHours giờ kể từ lần hút sữa trước',
       Duration(hours: intervalHours),
-      const NotificationDetails(
-        android: AndroidNotificationDetails('pump_reminder', 'Hút sữa', color: _blossom),
-        iOS: DarwinNotificationDetails(),
-      ),
+      _details('pump_reminder', 'Hút sữa'),
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
     );
   }
@@ -111,65 +433,15 @@ class NotificationService {
     await _plugin.cancelAll();
   }
 
-  Future<void> showExpiringMilkNotification(double amountMl) async {
-    if (!_initialized) await init();
-    await _plugin.show(
-      1001,
-      '🐰 Sữa sắp hết hạn',
-      'Còn ${amountMl.toStringAsFixed(0)}ml sữa sẽ hết hạn trong 24h tới',
-      const NotificationDetails(
-        android: AndroidNotificationDetails('milk_stash', 'Kho sữa'),
-        iOS: DarwinNotificationDetails(),
-      ),
-    );
-  }
+  // ── HELPER ───────────────────────────────────────────────
 
-  Future<void> showLowDiaperCountNotification() async {
-    if (!_initialized) await init();
-    await _plugin.show(
-      1002,
-      '🐰 Bé có vẻ ít thay tã hôm nay',
-      'Hôm nay bé chưa thay tã đủ 3 lần. Kiểm tra bé nhé!',
-      const NotificationDetails(
-        android: AndroidNotificationDetails('diaper_alert', 'Thay tã'),
-        iOS: DarwinNotificationDetails(),
-      ),
-    );
-  }
-
-  Future<void> scheduleWeeklyReport(String babyName) async {
-    if (!_initialized) await init();
+  tz.TZDateTime _nextDailyTime(int hour, int minute) {
     final now = tz.TZDateTime.now(tz.local);
-    var scheduled = tz.TZDateTime(tz.local, now.year, now.month, now.day, 9);
-    while (scheduled.weekday != DateTime.sunday || !scheduled.isAfter(now)) {
+    var scheduled =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
+    if (scheduled.isBefore(now)) {
       scheduled = scheduled.add(const Duration(days: 1));
     }
-    await _plugin.zonedSchedule(
-      3001,
-      '🐰 Báo cáo tuần của Bé $babyName đã sẵn sàng!',
-      'Xem thống kê 7 ngày qua nhé',
-      scheduled,
-      const NotificationDetails(
-        android: AndroidNotificationDetails('weekly_report', 'Báo cáo tuần', color: _blossom),
-        iOS: DarwinNotificationDetails(),
-      ),
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
-      payload: 'weekly_report',
-    );
-  }
-
-  Future<void> showUpcomingVaccineNotification(String vaccineName) async {
-    if (!_initialized) await init();
-    await _plugin.show(
-      1003,
-      '🐰 Bé sắp đến lịch tiêm',
-      'Sắp đến lịch tiêm $vaccineName cho bé',
-      const NotificationDetails(
-        android: AndroidNotificationDetails('vaccine_alert', 'Tiêm chủng'),
-        iOS: DarwinNotificationDetails(),
-      ),
-    );
+    return scheduled;
   }
 }

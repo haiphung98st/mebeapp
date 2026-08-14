@@ -8,7 +8,7 @@ import '../models/feeding_entry.dart';
 import '../services/firestore_service.dart';
 import 'baby_provider.dart';
 import 'home_provider.dart';
-import 'notification_settings_provider.dart';
+import 'notification_config_provider.dart';
 
 class FeedingTimerState {
   const FeedingTimerState({
@@ -169,7 +169,7 @@ class FeedingRepository {
       // Analytics failures must never block saving the feeding entry.
     }
 
-    if (_ref.read(notificationSettingsProvider).feedingReminderEnabled) {
+    if (_ref.read(notificationConfigProvider).feedingEnabled) {
       final recent = (_ref.read(allFeedingsProvider).value ?? const <FeedingEntry>[]).take(5).toList();
       final avgInterval = _averageFeedingInterval(recent);
       await NotificationService.instance.cancelNotification(2001);

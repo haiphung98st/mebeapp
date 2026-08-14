@@ -8,7 +8,7 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/providers/app_settings_provider.dart';
 import '../../../shared/providers/auth_provider.dart';
-import '../../../shared/providers/notification_settings_provider.dart';
+import '../../../shared/providers/notification_config_provider.dart';
 import '../../../shared/providers/pdf_export_provider.dart';
 import '../../subscription/presentation/premium_gate.dart';
 import 'widgets/baby_card.dart';
@@ -117,8 +117,8 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(notificationSettingsProvider);
-    final notifier = ref.read(notificationSettingsProvider.notifier);
+    final cfg = ref.watch(notificationConfigProvider);
+    final notifier = ref.read(notificationConfigProvider.notifier);
     final unit = ref.watch(volumeUnitProvider);
 
     return Scaffold(
@@ -138,28 +138,28 @@ class ProfileScreen extends ConsumerWidget {
             children: [
               SwitchListTile(
                 title: const Text('Nhắc cữ bú'),
-                value: settings.feedingReminderEnabled,
-                onChanged: notifier.setFeedingReminderEnabled,
+                value: cfg.feedingEnabled,
+                onChanged: (v) => notifier.updateFeedingConfig(enabled: v),
               ),
               SwitchListTile(
                 title: const Text('Nhắc hút sữa'),
-                value: settings.pumpReminderEnabled,
-                onChanged: notifier.setPumpReminderEnabled,
+                value: cfg.pumpEnabled,
+                onChanged: (v) => notifier.updatePumpConfig(enabled: v),
               ),
               SwitchListTile(
                 title: const Text('Nhắc giấc ngủ'),
-                value: settings.sleepReminderEnabled,
-                onChanged: notifier.setSleepReminderEnabled,
+                value: cfg.sleepEnabled,
+                onChanged: (v) => notifier.updateSleepConfig(enabled: v),
               ),
               SwitchListTile(
                 title: const Text('Nhắc tiêm chủng'),
-                value: settings.vaccineReminderEnabled,
-                onChanged: notifier.setVaccineReminderEnabled,
+                value: cfg.vaccineEnabled,
+                onChanged: (v) => notifier.updateVaccineConfig(enabled: v),
               ),
               ListTile(
                 title: const Text('Cài đặt nâng cao'),
                 subtitle: Text(
-                  'Khoảng nghỉ ${settings.quietHourStart}h–${settings.quietHourEnd}h · Hút sữa mỗi ${settings.pumpIntervalHours}h',
+                  'Khoảng nghỉ ${cfg.quietHourStart}h–${cfg.quietHourEnd}h · Hút sữa mỗi ${cfg.pumpIntervalMinutes ~/ 60}h',
                 ),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => context.push('/home/profile/notifications'),
