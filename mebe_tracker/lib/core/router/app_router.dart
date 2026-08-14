@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/admin/presentation/admin_shell.dart';
+import '../../features/admin/presentation/screens/admin_audit_screen.dart';
+import '../../features/admin/presentation/screens/admin_config_screen.dart';
+import '../../features/admin/presentation/screens/admin_dashboard_screen.dart';
+import '../../features/admin/presentation/screens/admin_grant_screen.dart';
+import '../../features/admin/presentation/screens/admin_roles_screen.dart';
+import '../../features/admin/presentation/screens/admin_users_screen.dart';
 import '../../features/auth/presentation/create_baby_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/onboarding_screen.dart';
@@ -32,6 +39,7 @@ import '../widgets/scaffold_with_bottom_nav.dart';
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
   final babiesState = ref.watch(babiesProvider);
+  final adminRoleAsync = ref.watch(adminRoleProvider);
 
   final router = GoRouter(
     initialLocation: '/splash',
@@ -71,9 +79,19 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         return path == '/create-baby' ? null : '/create-baby';
       }
 
+      final adminRole = adminRoleAsync.value;
+      final isAdmin = adminRole != null && adminRole.level >= AdminRole.support.level;
+
+      // After login / create-baby, route based on role
       if (authRoutes.contains(path) || path == '/create-baby') {
+        return isAdmin ? '/admin/dashboard' : '/home';
+      }
+
+      // Block regular users from admin routes
+      if (!isAdmin && path.startsWith('/admin')) {
         return '/home';
       }
+
       return null;
     },
     routes: [
@@ -117,6 +135,37 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/home/profile/edit-baby',
         builder: (context, state) => EditBabyScreen(baby: state.extra as BabyProfile),
       ),
+      // ── Admin shell ──────────────────────────────────────────────────────────
+      ShellRoute(
+        builder: (context, state, child) => AdminShell(child: child),
+        routes: [
+          GoRoute(
+            path: '/admin/dashboard',
+            builder: (_, __) => const AdminDashboardScreen(),
+          ),
+          GoRoute(
+            path: '/admin/users',
+            builder: (_, __) => const AdminUsersScreen(),
+          ),
+          GoRoute(
+            path: '/admin/grant',
+            builder: (_, __) => const AdminGrantScreen(),
+          ),
+          GoRoute(
+            path: '/admin/audit',
+            builder: (_, __) => const AdminAuditScreen(),
+          ),
+          GoRoute(
+            path: '/admin/roles',
+            builder: (_, __) => const AdminRolesScreen(),
+          ),
+          GoRoute(
+            path: '/admin/config',
+            builder: (_, __) => const AdminConfigScreen(),
+          ),
+        ],
+      ),
+      // ── User shell ───────────────────────────────────────────────────────────
       ShellRoute(
         builder: (context, state, child) => ScaffoldWithBottomNav(child: child),
         routes: [
@@ -157,11 +206,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
   return router;
 });
 
-/// Bridges Riverpod state changes into a [Listenable] so GoRouter
-/// re-evaluates its redirect whenever auth or baby data changes.
 class GoRouterRefreshStream extends ChangeNotifier {
   GoRouterRefreshStream(Ref ref) {
     ref.listen(authStateProvider, (_, __) => notifyListeners());
     ref.listen(babiesProvider, (_, __) => notifyListeners());
+    ref.listen(adminRoleProvider, (_, __) => notifyListeners());
   }
 }

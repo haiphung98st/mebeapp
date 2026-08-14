@@ -2,6 +2,57 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+// ── Admin role ────────────────────────────────────────────────────────────────
+
+enum AdminRole {
+  user,
+  support,
+  admin,
+  superadmin;
+
+  int get level => index;
+
+  static AdminRole fromClaim(String? role) {
+    switch (role) {
+      case 'superadmin':
+        return AdminRole.superadmin;
+      case 'admin':
+        return AdminRole.admin;
+      case 'support':
+        return AdminRole.support;
+      default:
+        return AdminRole.user;
+    }
+  }
+
+  String get displayName {
+    switch (this) {
+      case AdminRole.superadmin:
+        return 'Superadmin';
+      case AdminRole.admin:
+        return 'Admin';
+      case AdminRole.support:
+        return 'Support';
+      case AdminRole.user:
+        return 'User';
+    }
+  }
+}
+
+final adminRoleProvider = FutureProvider<AdminRole>((ref) async {
+  final user = ref.watch(currentUserProvider);
+  if (user == null) return AdminRole.user;
+  final result = await user.getIdTokenResult(true);
+  final role = result.claims?['role'] as String?;
+  return AdminRole.fromClaim(role);
+});
+
+final isAdminUserProvider = Provider<bool>((ref) {
+  final roleAsync = ref.watch(adminRoleProvider);
+  final role = roleAsync.value;
+  return role != null && role.level >= AdminRole.support.level;
+});
+
 final authStateProvider = StreamProvider<User?>((ref) {
   return FirebaseAuth.instance.userChanges();
 });

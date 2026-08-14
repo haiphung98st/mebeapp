@@ -14,5 +14,17 @@ service cloud.firestore {
                familyMembers/$(request.auth.uid))
       );
     }
+
+    // Audit logs: admin read only, Cloud Functions write only.
+    match /adminLogs/{logId} {
+      allow read: if request.auth != null && request.auth.token.isAdmin == true;
+      allow write: if false;
+    }
+
+    // App config: public read (maintenance mode gate), Cloud Functions write only.
+    match /appConfig/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
   }
 }

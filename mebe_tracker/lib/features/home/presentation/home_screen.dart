@@ -7,6 +7,7 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/utils/date_utils.dart';
 import '../../../core/widgets/bunny_header.dart';
 import '../../../core/widgets/error_card.dart';
+import '../../../features/admin/data/admin_provider.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/home_provider.dart';
@@ -69,12 +70,35 @@ class HomeScreen extends ConsumerWidget {
       (sum, e) => sum + (e.leftAmountMl ?? 0) + (e.rightAmountMl ?? 0),
     );
 
+    final appConfig = ref.watch(appConfigProvider).value;
+    final announcementBanner = appConfig?.announcementBanner ?? '';
+
     return Scaffold(
       backgroundColor: AppColors.powder,
       body: RefreshIndicator(
         onRefresh: () => _onRefresh(ref),
         child: CustomScrollView(
           slivers: [
+            if (announcementBanner.isNotEmpty)
+              SliverToBoxAdapter(
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                    vertical: AppSpacing.sm,
+                  ),
+                  color: AppColors.warning,
+                  child: Text(
+                    announcementBanner,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
             SliverToBoxAdapter(
               child: BunnyHeader(
                 gradient: AppColors.gradientHome,
