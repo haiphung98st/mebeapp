@@ -86,3 +86,40 @@ class VaccineRepository {
 final vaccineRepositoryProvider = Provider<VaccineRepository>((ref) {
   return VaccineRepository(ref.watch(firestoreServiceProvider));
 });
+
+final upcomingVaccinesProvider = Provider<List<VaccineViewItem>>((ref) {
+  final items = ref.watch(vaccineViewListProvider);
+  return items.where((i) => i.status == VaccineStatus.upcoming).toList();
+});
+
+final overdueVaccinesProvider = Provider<List<VaccineViewItem>>((ref) {
+  final items = ref.watch(vaccineViewListProvider);
+  return items.where((i) => i.status == VaccineStatus.overdue).toList();
+});
+
+class VaccineProgress {
+  const VaccineProgress({required this.done, required this.total});
+  final int done;
+  final int total;
+  double get ratio => total == 0 ? 0 : done / total;
+}
+
+final vaccineProgressProvider = Provider<VaccineProgress>((ref) {
+  final items = ref.watch(vaccineViewListProvider);
+  final done = items.where((i) => i.isCompleted).length;
+  return VaccineProgress(done: done, total: items.length);
+});
+
+final vaccineSearchQueryProvider = StateProvider<String>((ref) => '');
+
+final filteredVaccineLibraryProvider = Provider<List<VaccineViewItem>>((ref) {
+  final items = ref.watch(vaccineViewListProvider);
+  final query = ref.watch(vaccineSearchQueryProvider).toLowerCase().trim();
+  if (query.isEmpty) return items;
+  return items
+      .where((i) =>
+          i.def.nameVi.toLowerCase().contains(query) ||
+          i.def.ageLabel.toLowerCase().contains(query) ||
+          i.def.descriptionVi.toLowerCase().contains(query))
+      .toList();
+});

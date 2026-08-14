@@ -59,6 +59,7 @@ dependencies:
   url_launcher: ^6.3.0
   connectivity_plus: ^6.0.5
   pdf: ^3.11.1
+  confetti: ^0.7.0
 
 dev_dependencies:
   flutter_test:

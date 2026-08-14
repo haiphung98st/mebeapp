@@ -128,6 +128,7 @@ class HomeScreen extends ConsumerWidget {
                           onTap: () => _comingSoon(context),
                         ),
                         QuickAction(icon: '⚖️', label: 'Cân nặng', onTap: () => context.go('/home/growth')),
+                        QuickAction(icon: '💉', label: 'Tiêm chủng', onTap: () => context.go('/home/vaccine')),
                       ],
                     ),
                     const SizedBox(height: AppSpacing.lg),

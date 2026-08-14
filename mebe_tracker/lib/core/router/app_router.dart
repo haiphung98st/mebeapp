@@ -18,6 +18,7 @@ import '../../features/pumping/presentation/milk_stash_detail_screen.dart';
 import '../../features/pumping/presentation/pumping_screen.dart';
 import '../../features/sleep/presentation/sleep_screen.dart';
 import '../../features/stats/presentation/stats_screen.dart';
+import '../../features/vaccine/presentation/vaccine_screen.dart';
 import '../../features/subscription/presentation/subscription_screen.dart';
 import '../../shared/models/baby_profile.dart';
 import '../../shared/models/milk_stash_entry.dart';
@@ -109,6 +110,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/home/diaper',
             builder: (context, state) => const DiaperScreen(),
+          ),
+          GoRoute(
+            path: '/home/vaccine',
+            builder: (context, state) => const VaccineScreen(),
           ),
           GoRoute(
             path: '/home/profile',
