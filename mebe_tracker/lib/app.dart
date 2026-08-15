@@ -4,15 +4,44 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'features/admin/data/admin_provider.dart';
+import 'features/widget/widget_provider.dart';
 import 'shared/providers/auth_provider.dart';
 import 'shared/providers/live_activity_provider.dart';
 
-class MeBeApp extends ConsumerWidget {
+class MeBeApp extends ConsumerStatefulWidget {
   const MeBeApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MeBeApp> createState() => _MeBeAppState();
+}
+
+class _MeBeAppState extends ConsumerState<MeBeApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // Refresh widget data whenever user brings the app to foreground.
+      ref.invalidate(widgetDataProvider);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     ref.watch(liveActivityCoordinatorProvider);
+    // Keep widget data live whenever the app is open.
+    ref.watch(widgetDataProvider);
+
     final router = ref.watch(goRouterProvider);
     final configAsync = ref.watch(appConfigProvider);
     final adminRoleAsync = ref.watch(adminRoleProvider);
@@ -20,7 +49,6 @@ class MeBeApp extends ConsumerWidget {
     final config = configAsync.value;
     final isAdmin = (adminRoleAsync.value?.level ?? 0) >= AdminRole.support.level;
 
-    // Show maintenance screen if enabled and user is not admin
     if (config != null && config.maintenanceMode && !isAdmin) {
       return MaterialApp(
         title: 'MeBé Tracker',

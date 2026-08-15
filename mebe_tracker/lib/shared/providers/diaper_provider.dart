@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/utils/date_utils.dart';
+import '../../features/widget/widget_service.dart';
 import '../models/diaper_entry.dart';
 import '../services/firestore_service.dart';
 import 'baby_provider.dart';
@@ -113,6 +114,7 @@ class DiaperRepository {
     } catch (_) {
       // Analytics failures must never block saving the diaper entry.
     }
+    WidgetService.triggerNativeRefresh().ignore();
   }
 
   Future<void> deleteDiaper(String userId, String babyId, String entryId) =>

@@ -4,6 +4,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/utils/date_utils.dart';
+import '../../features/widget/widget_service.dart';
 import '../models/sleep_entry.dart';
 import '../services/firestore_service.dart';
 import 'baby_provider.dart';
@@ -184,6 +185,7 @@ class SleepRepository {
     } catch (_) {
       // Analytics failures must never block saving the sleep entry.
     }
+    WidgetService.triggerNativeRefresh().ignore();
   }
 
   Future<void> deleteSleep(String userId, String babyId, String entryId) =>

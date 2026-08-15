@@ -4,6 +4,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/services/notification_service.dart';
+import '../../features/widget/widget_provider.dart';
 import '../models/feeding_entry.dart';
 import '../services/firestore_service.dart';
 import 'baby_provider.dart';
@@ -180,6 +181,7 @@ class FeedingRepository {
         entry.startTime.add(avgInterval),
       );
     }
+    _ref.invalidate(widgetDataProvider);
   }
 
   Future<void> deleteFeeding(String userId, String babyId, String entryId) =>

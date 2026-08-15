@@ -4,6 +4,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/utils/date_utils.dart';
+import '../../features/widget/widget_service.dart';
 import '../models/milk_stash_entry.dart';
 import '../models/pump_entry.dart';
 import '../services/firestore_service.dart';
@@ -181,6 +182,7 @@ class PumpRepository {
     } catch (_) {
       // Analytics failures must never block saving the pump entry.
     }
+    WidgetService.triggerNativeRefresh().ignore();
   }
 
   Future<void> addMilkStash(MilkStashEntry entry) => _firestoreService.addMilkStash(entry);
