@@ -99,13 +99,16 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       final adminRole = adminRoleAsync.value;
       final isAdmin = adminRole != null && adminRole.level >= AdminRole.support.level;
 
-      // After login / create-baby, route based on role
+      // After login / create-baby, route based on role.
+      // Wait for adminRoleProvider to resolve before deciding — otherwise
+      // the race between async token fetch and redirect sends admins to /home.
       if (authRoutes.contains(path) || path == '/create-baby') {
+        if (adminRoleAsync.isLoading) return null;
         return isAdmin ? '/admin/dashboard' : '/home';
       }
 
       // Block regular users from admin routes
-      if (!isAdmin && path.startsWith('/admin')) {
+      if (!isAdmin && !adminRoleAsync.isLoading && path.startsWith('/admin')) {
         return '/home';
       }
 
