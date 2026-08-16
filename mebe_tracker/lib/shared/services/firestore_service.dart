@@ -54,6 +54,9 @@ class FirestoreService {
   CollectionReference<Map<String, dynamic>> _vaccines(String userId, String babyId) =>
       _baby(userId, babyId).collection('vaccines');
 
+  DocumentReference<Map<String, dynamic>> _teethDoc(String userId, String babyId) =>
+      _baby(userId, babyId).collection('teeth').doc('eruptions');
+
   // ---- Baby profiles ----
 
   Future<void> createBaby(BabyProfile baby) =>
@@ -204,6 +207,24 @@ class FirestoreService {
           .orderBy('scheduledDate')
           .snapshots()
           .map((s) => s.docs.map(VaccineEntry.fromFirestore).toList());
+
+  // ---- Teeth ----
+
+  Stream<Map<String, DateTime>> watchTeeth(String userId, String babyId) =>
+      _teethDoc(userId, babyId).snapshots().map((doc) {
+        final data = doc.data();
+        if (data == null) return {};
+        return data.map((k, v) => MapEntry(k, (v as Timestamp).toDate()));
+      });
+
+  Future<void> markToothErupted(String userId, String babyId, String toothId, DateTime at) =>
+      _teethDoc(userId, babyId).set(
+        {toothId: Timestamp.fromDate(at)},
+        SetOptions(merge: true),
+      );
+
+  Future<void> unmarkToothErupted(String userId, String babyId, String toothId) =>
+      _teethDoc(userId, babyId).update({toothId: FieldValue.delete()});
 
   // ---- Subscription ----
 
