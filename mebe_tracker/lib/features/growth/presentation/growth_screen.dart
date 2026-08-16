@@ -12,6 +12,7 @@ import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/notification_config_provider.dart';
 import '../../../shared/providers/vaccine_provider.dart';
 import '../../subscription/presentation/premium_gate.dart';
+import '../data/motor_provider.dart';
 import '../data/teeth_provider.dart';
 import '../../wonder_weeks/data/wonder_weeks_data.dart';
 import '../../wonder_weeks/data/wonder_weeks_provider.dart';
@@ -136,6 +137,8 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
               const GrowthChartCard(),
               const SizedBox(height: AppSpacing.lg),
               _TeethQuickCard(onTap: () => context.push('/home/growth/teeth')),
+              const SizedBox(height: AppSpacing.sm),
+              _MotorQuickCard(onTap: () => context.push('/home/growth/motor')),
             ],
           ),
         );
@@ -393,6 +396,68 @@ class _TeethQuickCard extends ConsumerWidget {
                   ),
                   Text(
                     '$count / 20 răng đã mọc',
+                    style: AppTextStyles.bodySm.copyWith(color: AppColors.muted),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right, color: AppColors.muted),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MotorQuickCard extends ConsumerWidget {
+  const _MotorQuickCard({required this.onTap});
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final summary = ref.watch(weeklyMotorSummaryProvider);
+    final totalSecs = summary.values.fold<int>(0, (a, b) => a + b);
+    final totalMins = totalSecs ~/ 60;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.mint.withOpacity(0.12),
+              blurRadius: 12,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: AppColors.mintLight,
+                borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+              ),
+              child: const Center(
+                child: Text('🐢', style: TextStyle(fontSize: 22)),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Vận động & Nằm sấp',
+                    style: AppTextStyles.bodyMd.copyWith(color: AppColors.ink),
+                  ),
+                  Text(
+                    totalMins > 0 ? '$totalMins phút tuần này' : 'Chưa có hoạt động',
                     style: AppTextStyles.bodySm.copyWith(color: AppColors.muted),
                   ),
                 ],
