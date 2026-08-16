@@ -29,6 +29,7 @@ import '../../features/vaccine/presentation/vaccine_screen.dart';
 import '../../features/subscription/presentation/subscription_screen.dart';
 import '../../features/ai_chat/presentation/ai_chat_screen.dart';
 import '../../features/ai_chat/presentation/chat_history_screen.dart';
+import '../../features/achievement/presentation/achievements_screen.dart';
 import '../../features/wonder_weeks/data/wonder_weeks_data.dart';
 import '../../features/wonder_weeks/presentation/leap_detail_screen.dart';
 import '../../features/wonder_weeks/presentation/wonder_weeks_screen.dart';
@@ -153,6 +154,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/home/stats',
         builder: (context, state) => const StatsScreen(),
+      ),
+      GoRoute(
+        path: '/achievements',
+        builder: (context, state) => const AchievementsScreen(),
       ),
       GoRoute(
         path: '/home/growth/wonder-weeks',

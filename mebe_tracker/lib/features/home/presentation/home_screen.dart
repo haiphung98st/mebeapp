@@ -8,6 +8,7 @@ import '../../../core/utils/date_utils.dart';
 import '../../../core/widgets/bunny_header.dart';
 import '../../../core/widgets/error_card.dart';
 import '../../../features/admin/data/admin_provider.dart';
+import '../../../features/achievement/data/achievement_provider.dart';
 import '../../../features/wonder_weeks/data/wonder_weeks_data.dart';
 import '../../../features/wonder_weeks/data/wonder_weeks_provider.dart';
 import '../../../shared/providers/auth_provider.dart';
@@ -74,6 +75,7 @@ class HomeScreen extends ConsumerWidget {
 
     final appConfig = ref.watch(appConfigProvider).value;
     final announcementBanner = appConfig?.announcementBanner ?? '';
+    ref.watch(achievementEvaluatorProvider);
     final currentLeap = ref.watch(wonderWeeksCurrentLeapProvider);
     final nextLeap = ref.watch(wonderWeeksNextLeapProvider);
     final currentWwWeek = ref.watch(wonderWeeksCurrentWeekProvider);
@@ -160,9 +162,9 @@ class HomeScreen extends ConsumerWidget {
                         QuickAction(icon: '🌸', label: 'Thay tã', onTap: () => context.go('/home/diaper')),
                         QuickAction(icon: '🥛', label: 'Hút sữa', onTap: () => context.go('/home/pumping')),
                         QuickAction(
-                          icon: '💊',
-                          label: 'Thuốc',
-                          onTap: () => _comingSoon(context),
+                          icon: '🏆',
+                          label: 'Thành tích',
+                          onTap: () => context.push('/achievements'),
                         ),
                         QuickAction(
                           icon: '🌡️',

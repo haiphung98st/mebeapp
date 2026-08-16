@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'features/achievement/presentation/achievement_overlay.dart';
 import 'features/admin/data/admin_provider.dart';
 import 'features/widget/widget_provider.dart';
 import 'shared/providers/auth_provider.dart';
@@ -63,6 +64,8 @@ class _MeBeAppState extends ConsumerState<MeBeApp> with WidgetsBindingObserver {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       routerConfig: router,
+      builder: (context, child) =>
+          AchievementListener(child: child ?? const SizedBox()),
     );
   }
 }
