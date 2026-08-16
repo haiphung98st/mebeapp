@@ -5,8 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
-import '../../../../core/widgets/bunny_avatar.dart';
+import '../../../../core/widgets/animated_bunny_avatar.dart';
 import '../../../../shared/providers/baby_provider.dart';
+import '../../data/avatar_provider.dart';
 import '../../../subscription/presentation/premium_gate.dart';
 
 class BabyCard extends ConsumerWidget {
@@ -18,6 +19,7 @@ class BabyCard extends ConsumerWidget {
     if (baby == null) return const SizedBox.shrink();
 
     final age = _ageLabel(baby.dateOfBirth);
+    final avatarConfig = ref.watch(avatarConfigProvider).value ?? const AvatarConfig();
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
@@ -30,7 +32,24 @@ class BabyCard extends ConsumerWidget {
         children: [
           Row(
             children: [
-              const BunnyAvatar(size: 56, earColor: AppColors.petal),
+              GestureDetector(
+                onTap: () => context.push('/home/profile/avatar'),
+                child: Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    AnimatedBunnyAvatar(config: avatarConfig, size: 56),
+                    Container(
+                      width: 18,
+                      height: 18,
+                      decoration: const BoxDecoration(
+                        color: AppColors.blossom,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.brush, color: Colors.white, size: 11),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Column(

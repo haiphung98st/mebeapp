@@ -31,6 +31,7 @@ import '../../features/ai_chat/presentation/ai_chat_screen.dart';
 import '../../features/ai_chat/presentation/chat_history_screen.dart';
 import '../../features/achievement/presentation/achievements_screen.dart';
 import '../../features/growth/presentation/teeth_screen.dart';
+import '../../features/profile/presentation/avatar_customizer_screen.dart';
 import '../../features/wonder_weeks/data/wonder_weeks_data.dart';
 import '../../features/wonder_weeks/presentation/leap_detail_screen.dart';
 import '../../features/wonder_weeks/presentation/wonder_weeks_screen.dart';
@@ -163,6 +164,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/home/growth/teeth',
         builder: (context, state) => const TeethScreen(),
+      ),
+      GoRoute(
+        path: '/home/profile/avatar',
+        builder: (context, state) => const AvatarCustomizerScreen(),
       ),
       GoRoute(
         path: '/home/growth/wonder-weeks',
