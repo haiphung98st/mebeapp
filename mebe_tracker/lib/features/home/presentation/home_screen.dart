@@ -167,9 +167,9 @@ class HomeScreen extends ConsumerWidget {
                           onTap: () => context.push('/achievements'),
                         ),
                         QuickAction(
-                          icon: '🌡️',
-                          label: 'Nhiệt độ',
-                          onTap: () => _comingSoon(context),
+                          icon: '📅',
+                          label: 'EASY',
+                          onTap: () => context.push('/easy'),
                         ),
                         QuickAction(icon: '⚖️', label: 'Cân nặng', onTap: () => context.go('/home/growth')),
                         QuickAction(icon: '💉', label: 'Tiêm chủng', onTap: () => context.go('/home/vaccine')),
@@ -204,11 +204,6 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  void _comingSoon(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Tính năng sắp ra mắt 🐰')),
-    );
-  }
 }
 
 class _WonderWeeksBanner extends StatelessWidget {

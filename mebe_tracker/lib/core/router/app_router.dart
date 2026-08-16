@@ -34,6 +34,7 @@ import '../../features/growth/presentation/motor_skills_screen.dart';
 import '../../features/prenatal/presentation/prenatal_screen.dart';
 import '../../features/growth/presentation/teeth_screen.dart';
 import '../../features/profile/presentation/avatar_customizer_screen.dart';
+import '../../features/easy/presentation/easy_screen.dart';
 import '../../features/wonder_weeks/data/wonder_weeks_data.dart';
 import '../../features/wonder_weeks/presentation/leap_detail_screen.dart';
 import '../../features/wonder_weeks/presentation/wonder_weeks_screen.dart';
@@ -187,6 +188,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/home/growth/wonder-weeks/leap',
         builder: (context, state) =>
             LeapDetailScreen(leap: state.extra as LeapData),
+      ),
+      GoRoute(
+        path: '/easy',
+        builder: (_, __) => const EasyScreen(),
       ),
       GoRoute(
         path: '/home/profile/edit-baby',
