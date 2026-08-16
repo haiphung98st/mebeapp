@@ -34,6 +34,7 @@ import '../../features/growth/presentation/motor_skills_screen.dart';
 import '../../features/prenatal/presentation/prenatal_screen.dart';
 import '../../features/growth/presentation/teeth_screen.dart';
 import '../../features/profile/presentation/avatar_customizer_screen.dart';
+import '../../features/community/presentation/community_screen.dart';
 import '../../features/easy/presentation/easy_screen.dart';
 import '../../features/wrapped/presentation/wrapped_screen.dart';
 import '../../features/wonder_weeks/data/wonder_weeks_data.dart';
@@ -197,6 +198,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/wrapped',
         builder: (_, __) => const WrappedScreen(),
+      ),
+      GoRoute(
+        path: '/community',
+        builder: (_, __) => const CommunityScreen(),
       ),
       GoRoute(
         path: '/home/profile/edit-baby',

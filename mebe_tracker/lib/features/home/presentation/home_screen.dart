@@ -174,6 +174,11 @@ class HomeScreen extends ConsumerWidget {
                         QuickAction(icon: '⚖️', label: 'Cân nặng', onTap: () => context.go('/home/growth')),
                         QuickAction(icon: '💉', label: 'Tiêm chủng', onTap: () => context.go('/home/vaccine')),
                         QuickAction(
+                          icon: '👩‍👩‍👧',
+                          label: 'Cộng đồng',
+                          onTap: () => context.push('/community'),
+                        ),
+                        QuickAction(
                           icon: isPremium ? '🐰' : '🐰✨',
                           label: 'Hỏi AI',
                           onTap: () => _openAiChat(context),
