@@ -14,11 +14,14 @@ import '../../../shared/providers/vaccine_provider.dart';
 import '../../subscription/presentation/premium_gate.dart';
 import '../../wonder_weeks/data/wonder_weeks_data.dart';
 import '../../wonder_weeks/data/wonder_weeks_provider.dart';
+import '../../../core/constants/who_growth_data.dart';
+import '../../../shared/providers/growth_provider.dart';
 import 'widgets/add_growth_dialog.dart';
 import 'widgets/growth_chart_card.dart';
 import 'widgets/growth_stats_row.dart';
 import 'widgets/milestones_section.dart';
 import 'widgets/vaccine_section.dart';
+import 'widgets/who_arc_chart.dart';
 
 class GrowthScreen extends ConsumerStatefulWidget {
   const GrowthScreen({super.key});
@@ -97,6 +100,11 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
   Widget _buildBody() {
     switch (_selectedIndex) {
       case 0:
+        final baby = ref.watch(activeBabyProvider);
+        final latest = ref.watch(latestGrowthProvider);
+        final ageMonths = (baby != null && latest != null)
+            ? ageInMonthsAt(baby.dateOfBirth, latest.measuredAt)
+            : null;
         return SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(
             AppSpacing.lg,
@@ -108,6 +116,22 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
             children: [
               const GrowthStatsRow(),
               const SizedBox(height: AppSpacing.lg),
+              if (ageMonths != null && latest != null)
+                ...GrowthMetric.values.map((metric) {
+                  final value = valueForMetric(latest, metric);
+                  if (value == null) return const SizedBox.shrink();
+                  final percentile = WhoGrowthStandard.percentileFor(
+                      metric, ageMonths, value);
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+                    child: WhoArcChartCard(
+                      metric: metric,
+                      value: value,
+                      percentile: percentile,
+                      ageMonths: ageMonths,
+                    ),
+                  );
+                }),
               const GrowthChartCard(),
             ],
           ),
