@@ -29,6 +29,7 @@ mixin _$BabyProfile {
   double? get heightCm => throw _privateConstructorUsedError;
   double? get headCircumferenceCm => throw _privateConstructorUsedError;
   String? get avatarUrl => throw _privateConstructorUsedError;
+  DateTime? get edd => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
@@ -58,6 +59,7 @@ abstract class $BabyProfileCopyWith<$Res> {
       double? heightCm,
       double? headCircumferenceCm,
       String? avatarUrl,
+      DateTime? edd,
       DateTime createdAt,
       DateTime updatedAt});
 }
@@ -86,6 +88,7 @@ class _$BabyProfileCopyWithImpl<$Res, $Val extends BabyProfile>
     Object? heightCm = freezed,
     Object? headCircumferenceCm = freezed,
     Object? avatarUrl = freezed,
+    Object? edd = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -126,6 +129,10 @@ class _$BabyProfileCopyWithImpl<$Res, $Val extends BabyProfile>
           ? _value.avatarUrl
           : avatarUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      edd: freezed == edd
+          ? _value.edd
+          : edd // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -156,6 +163,7 @@ abstract class _$$BabyProfileImplCopyWith<$Res>
       double? heightCm,
       double? headCircumferenceCm,
       String? avatarUrl,
+      DateTime? edd,
       DateTime createdAt,
       DateTime updatedAt});
 }
@@ -182,6 +190,7 @@ class __$$BabyProfileImplCopyWithImpl<$Res>
     Object? heightCm = freezed,
     Object? headCircumferenceCm = freezed,
     Object? avatarUrl = freezed,
+    Object? edd = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -222,6 +231,10 @@ class __$$BabyProfileImplCopyWithImpl<$Res>
           ? _value.avatarUrl
           : avatarUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      edd: freezed == edd
+          ? _value.edd
+          : edd // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -247,6 +260,7 @@ class _$BabyProfileImpl extends _BabyProfile {
       this.heightCm,
       this.headCircumferenceCm,
       this.avatarUrl,
+      this.edd,
       required this.createdAt,
       required this.updatedAt})
       : super._();
@@ -273,13 +287,15 @@ class _$BabyProfileImpl extends _BabyProfile {
   @override
   final String? avatarUrl;
   @override
+  final DateTime? edd;
+  @override
   final DateTime createdAt;
   @override
   final DateTime updatedAt;
 
   @override
   String toString() {
-    return 'BabyProfile(id: $id, userId: $userId, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, weightKg: $weightKg, heightCm: $heightCm, headCircumferenceCm: $headCircumferenceCm, avatarUrl: $avatarUrl, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'BabyProfile(id: $id, userId: $userId, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, weightKg: $weightKg, heightCm: $heightCm, headCircumferenceCm: $headCircumferenceCm, avatarUrl: $avatarUrl, edd: $edd, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -301,6 +317,7 @@ class _$BabyProfileImpl extends _BabyProfile {
                 other.headCircumferenceCm == headCircumferenceCm) &&
             (identical(other.avatarUrl, avatarUrl) ||
                 other.avatarUrl == avatarUrl) &&
+            (identical(other.edd, edd) || other.edd == edd) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -320,6 +337,7 @@ class _$BabyProfileImpl extends _BabyProfile {
       heightCm,
       headCircumferenceCm,
       avatarUrl,
+      edd,
       createdAt,
       updatedAt);
 
@@ -350,6 +368,7 @@ abstract class _BabyProfile extends BabyProfile {
       final double? heightCm,
       final double? headCircumferenceCm,
       final String? avatarUrl,
+      final DateTime? edd,
       required final DateTime createdAt,
       required final DateTime updatedAt}) = _$BabyProfileImpl;
   const _BabyProfile._() : super._();
@@ -375,6 +394,8 @@ abstract class _BabyProfile extends BabyProfile {
   double? get headCircumferenceCm;
   @override
   String? get avatarUrl;
+  @override
+  DateTime? get edd;
   @override
   DateTime get createdAt;
   @override

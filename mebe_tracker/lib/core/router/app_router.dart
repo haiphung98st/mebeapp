@@ -29,6 +29,9 @@ import '../../features/vaccine/presentation/vaccine_screen.dart';
 import '../../features/subscription/presentation/subscription_screen.dart';
 import '../../features/ai_chat/presentation/ai_chat_screen.dart';
 import '../../features/ai_chat/presentation/chat_history_screen.dart';
+import '../../features/wonder_weeks/data/wonder_weeks_data.dart';
+import '../../features/wonder_weeks/presentation/leap_detail_screen.dart';
+import '../../features/wonder_weeks/presentation/wonder_weeks_screen.dart';
 import '../../shared/models/baby_profile.dart';
 import '../../shared/models/milk_stash_entry.dart';
 import '../../shared/providers/auth_provider.dart';
@@ -150,6 +153,15 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/home/stats',
         builder: (context, state) => const StatsScreen(),
+      ),
+      GoRoute(
+        path: '/home/growth/wonder-weeks',
+        builder: (context, state) => const WonderWeeksScreen(),
+      ),
+      GoRoute(
+        path: '/home/growth/wonder-weeks/leap',
+        builder: (context, state) =>
+            LeapDetailScreen(leap: state.extra as LeapData),
       ),
       GoRoute(
         path: '/home/profile/edit-baby',

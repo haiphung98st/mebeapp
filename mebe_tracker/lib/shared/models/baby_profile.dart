@@ -16,6 +16,7 @@ class BabyProfile with _$BabyProfile {
     double? heightCm,
     double? headCircumferenceCm,
     String? avatarUrl,
+    DateTime? edd,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _BabyProfile;
@@ -31,6 +32,8 @@ class BabyProfile with _$BabyProfile {
       ...data,
       'id': doc.id,
       'dateOfBirth': (data['dateOfBirth'] as Timestamp).toDate().toIso8601String(),
+      if (data['edd'] != null)
+        'edd': (data['edd'] as Timestamp).toDate().toIso8601String(),
       'createdAt': (data['createdAt'] as Timestamp).toDate().toIso8601String(),
       'updatedAt': (data['updatedAt'] as Timestamp).toDate().toIso8601String(),
     });
@@ -39,6 +42,7 @@ class BabyProfile with _$BabyProfile {
   Map<String, dynamic> toFirestore() {
     final json = toJson()..remove('id');
     json['dateOfBirth'] = Timestamp.fromDate(dateOfBirth);
+    if (edd != null) json['edd'] = Timestamp.fromDate(edd!);
     json['createdAt'] = Timestamp.fromDate(createdAt);
     json['updatedAt'] = Timestamp.fromDate(updatedAt);
     return json;

@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:go_router/go_router.dart';
+
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../core/widgets/bunny_header.dart';
+import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/notification_config_provider.dart';
 import '../../../shared/providers/vaccine_provider.dart';
 import '../../subscription/presentation/premium_gate.dart';
+import '../../wonder_weeks/data/wonder_weeks_data.dart';
+import '../../wonder_weeks/data/wonder_weeks_provider.dart';
 import 'widgets/add_growth_dialog.dart';
 import 'widgets/growth_chart_card.dart';
 import 'widgets/growth_stats_row.dart';
@@ -109,17 +114,210 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
         );
       case 1:
         return const MilestonesSection();
-      default:
+      case 2:
         return const Padding(
           padding: EdgeInsets.all(AppSpacing.lg),
           child: PremiumGate(feature: 'vaccine_schedule', child: VaccineSection()),
         );
+      default:
+        return const _WonderWeeksTab();
     }
   }
 }
 
 String _formatDmy(DateTime date) =>
     '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
+
+class _WonderWeeksTab extends ConsumerWidget {
+  const _WonderWeeksTab();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final baby = ref.watch(activeBabyProvider);
+    final allStates = ref.watch(wonderWeeksAllStatesProvider);
+    final currentWeek = ref.watch(wonderWeeksCurrentWeekProvider);
+    final currentLeap = ref.watch(wonderWeeksCurrentLeapProvider);
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.xxxl,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _WwSummaryCard(
+            currentWeek: currentWeek,
+            currentLeap: currentLeap,
+            hasEdd: baby?.edd != null,
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          ...allStates.take(5).map(
+                (state) => Padding(
+                  padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                  child: _WwMiniCard(
+                    state: state,
+                    onTap: () => context.push(
+                      '/home/growth/wonder-weeks/leap',
+                      extra: state.leap,
+                    ),
+                  ),
+                ),
+              ),
+          const SizedBox(height: AppSpacing.sm),
+          OutlinedButton.icon(
+            onPressed: () => context.push('/home/growth/wonder-weeks'),
+            icon: const Icon(Icons.auto_awesome, color: Color(0xFF7B5AAA)),
+            label: const Text('Xem tất cả 10 Leap'),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: const Color(0xFF7B5AAA),
+              side: const BorderSide(color: Color(0xFF7B5AAA)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _WwSummaryCard extends StatelessWidget {
+  const _WwSummaryCard({
+    required this.currentWeek,
+    required this.currentLeap,
+    required this.hasEdd,
+  });
+
+  final int currentWeek;
+  final LeapData? currentLeap;
+  final bool hasEdd;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFF7B5AAA), Color(0xFF5B3A8A)],
+        ),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Text('🧠', style: TextStyle(fontSize: 28)),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Wonder Weeks · Tuần $currentWeek',
+                      style: AppTextStyles.bodyMd.copyWith(color: const Color(0xFFEEE0FF)),
+                    ),
+                    Text(
+                      currentLeap != null
+                          ? 'Đang ở Leap ${currentLeap!.number}: ${currentLeap!.name}'
+                          : 'Giai đoạn bình yên ☀️',
+                      style: AppTextStyles.headingSm.copyWith(color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          if (!hasEdd) ...[
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              'Thêm ngày dự sinh để tính chính xác hơn',
+              style: AppTextStyles.bodySm.copyWith(color: const Color(0xFFEEE0FF)),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _WwMiniCard extends StatelessWidget {
+  const _WwMiniCard({required this.state, required this.onTap});
+  final LeapState state;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final leap = state.leap;
+    final isActive = state.status == LeapStatus.stormy || state.status == LeapStatus.sunny;
+    final isDone = state.status == LeapStatus.done;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm,
+          ),
+          decoration: BoxDecoration(
+            color: isActive
+                ? const Color(0xFF5B3A8A).withOpacity(0.08)
+                : AppColors.white,
+            borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+            border: Border.all(
+              color: isActive
+                  ? const Color(0xFF7B5AAA)
+                  : AppColors.divider,
+            ),
+          ),
+          child: Row(
+            children: [
+              Text(
+                isDone ? '✓' : '${leap.number}',
+                style: TextStyle(
+                  color: isDone ? AppColors.success : const Color(0xFF5B3A8A),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Text(
+                  'Leap ${leap.number}: ${leap.name}',
+                  style: AppTextStyles.bodyMd.copyWith(
+                    color: isDone ? AppColors.muted : AppColors.ink,
+                  ),
+                ),
+              ),
+              if (isActive)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.sm,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: state.status == LeapStatus.stormy
+                        ? AppColors.warning.withOpacity(0.15)
+                        : AppColors.mint.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
+                  ),
+                  child: Text(
+                    state.status == LeapStatus.stormy ? '⛈️' : '☀️',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ),
+              const Icon(Icons.chevron_right, size: 16, color: AppColors.muted),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class _GrowthSegmentedTabs extends StatelessWidget {
   const _GrowthSegmentedTabs({required this.selectedIndex, required this.onTap});
@@ -131,6 +329,7 @@ class _GrowthSegmentedTabs extends StatelessWidget {
     (icon: '📈', label: 'Phát triển'),
     (icon: '🎯', label: 'Mốc phát triển'),
     (icon: '💉', label: 'Tiêm chủng'),
+    (icon: '🧠', label: 'Wonder Weeks'),
   ];
 
   @override

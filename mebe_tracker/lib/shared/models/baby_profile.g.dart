@@ -17,6 +17,7 @@ _$BabyProfileImpl _$$BabyProfileImplFromJson(Map<String, dynamic> json) =>
       heightCm: (json['heightCm'] as num?)?.toDouble(),
       headCircumferenceCm: (json['headCircumferenceCm'] as num?)?.toDouble(),
       avatarUrl: json['avatarUrl'] as String?,
+      edd: json['edd'] == null ? null : DateTime.parse(json['edd'] as String),
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
@@ -32,6 +33,7 @@ Map<String, dynamic> _$$BabyProfileImplToJson(_$BabyProfileImpl instance) =>
       'heightCm': instance.heightCm,
       'headCircumferenceCm': instance.headCircumferenceCm,
       'avatarUrl': instance.avatarUrl,
+      'edd': instance.edd?.toIso8601String(),
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
     };

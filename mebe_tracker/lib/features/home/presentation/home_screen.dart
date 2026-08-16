@@ -8,6 +8,8 @@ import '../../../core/utils/date_utils.dart';
 import '../../../core/widgets/bunny_header.dart';
 import '../../../core/widgets/error_card.dart';
 import '../../../features/admin/data/admin_provider.dart';
+import '../../../features/wonder_weeks/data/wonder_weeks_data.dart';
+import '../../../features/wonder_weeks/data/wonder_weeks_provider.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/home_provider.dart';
@@ -72,6 +74,9 @@ class HomeScreen extends ConsumerWidget {
 
     final appConfig = ref.watch(appConfigProvider).value;
     final announcementBanner = appConfig?.announcementBanner ?? '';
+    final currentLeap = ref.watch(wonderWeeksCurrentLeapProvider);
+    final nextLeap = ref.watch(wonderWeeksNextLeapProvider);
+    final currentWwWeek = ref.watch(wonderWeeksCurrentWeekProvider);
 
     return Scaffold(
       backgroundColor: AppColors.powder,
@@ -138,6 +143,15 @@ class HomeScreen extends ConsumerWidget {
                 ),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate([
+                    if (currentLeap != null || (nextLeap != null && currentWwWeek >= nextLeap.stormStartWeek - 2))
+                      _WonderWeeksBanner(
+                        currentLeap: currentLeap,
+                        nextLeap: nextLeap,
+                        currentWeek: currentWwWeek,
+                        onTap: () => context.push('/home/growth/wonder-weeks'),
+                      ),
+                    if (currentLeap != null || (nextLeap != null && currentWwWeek >= nextLeap.stormStartWeek - 2))
+                      const SizedBox(height: AppSpacing.lg),
                     QuickActionsGrid(
                       actions: [
                         QuickAction(icon: '🤱', label: 'Bú mẹ', onTap: () => context.go('/home/feeding')),
@@ -191,6 +205,80 @@ class HomeScreen extends ConsumerWidget {
   void _comingSoon(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Tính năng sắp ra mắt 🐰')),
+    );
+  }
+}
+
+class _WonderWeeksBanner extends StatelessWidget {
+  const _WonderWeeksBanner({
+    required this.currentLeap,
+    required this.nextLeap,
+    required this.currentWeek,
+    required this.onTap,
+  });
+
+  final LeapData? currentLeap;
+  final LeapData? nextLeap;
+  final int currentWeek;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final isStormy = currentLeap != null;
+    final weeksUntilNext = nextLeap != null ? nextLeap!.stormStartWeek - currentWeek : 0;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        decoration: BoxDecoration(
+          color: isStormy
+              ? AppColors.warning.withOpacity(0.08)
+              : const Color(0xFF7B5AAA).withOpacity(0.07),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+          border: Border.all(
+            color: isStormy
+                ? AppColors.warning.withOpacity(0.3)
+                : const Color(0xFF7B5AAA).withOpacity(0.25),
+          ),
+        ),
+        child: Row(
+          children: [
+            Text(
+              isStormy ? '⛈️' : '🧠',
+              style: const TextStyle(fontSize: 22),
+            ),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    isStormy
+                        ? 'Leap ${currentLeap!.number}: ${currentLeap!.name}'
+                        : 'Sắp đến Leap ${nextLeap!.number} ($weeksUntilNext tuần nữa)',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF5B3A8A),
+                    ),
+                  ),
+                  Text(
+                    isStormy
+                        ? 'Bé đang trong giai đoạn phát triển nhảy vọt 🌟'
+                        : nextLeap!.name,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: AppColors.body,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right, color: Color(0xFF7B5AAA), size: 18),
+          ],
+        ),
+      ),
     );
   }
 }

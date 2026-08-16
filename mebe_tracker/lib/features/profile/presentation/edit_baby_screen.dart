@@ -25,6 +25,7 @@ class _EditBabyScreenState extends ConsumerState<EditBabyScreen> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _nameController;
   late DateTime _dateOfBirth;
+  DateTime? _edd;
   late String _gender;
   File? _avatarFile;
   bool _saving = false;
@@ -34,6 +35,7 @@ class _EditBabyScreenState extends ConsumerState<EditBabyScreen> {
     super.initState();
     _nameController = TextEditingController(text: widget.baby.name);
     _dateOfBirth = widget.baby.dateOfBirth;
+    _edd = widget.baby.edd;
     _gender = widget.baby.gender;
   }
 
@@ -59,6 +61,18 @@ class _EditBabyScreenState extends ConsumerState<EditBabyScreen> {
     if (picked != null) setState(() => _dateOfBirth = picked);
   }
 
+  Future<void> _pickEdd() async {
+    final now = DateTime.now();
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _edd ?? now,
+      firstDate: DateTime(now.year - 2),
+      lastDate: DateTime(now.year + 1),
+      helpText: 'Ngày dự sinh',
+    );
+    if (picked != null) setState(() => _edd = picked);
+  }
+
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _saving = true);
@@ -68,6 +82,7 @@ class _EditBabyScreenState extends ConsumerState<EditBabyScreen> {
         name: _nameController.text.trim(),
         dateOfBirth: _dateOfBirth,
         gender: _gender,
+        edd: _edd,
         updatedAt: DateTime.now(),
       );
       await firestoreService.updateBaby(updated);
@@ -137,6 +152,24 @@ class _EditBabyScreenState extends ConsumerState<EditBabyScreen> {
                     ),
                     child: Text(
                       '${_dateOfBirth.day}/${_dateOfBirth.month}/${_dateOfBirth.year}',
+                      style: AppTextStyles.bodyLg,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                InkWell(
+                  onTap: _pickEdd,
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                  child: InputDecorator(
+                    decoration: const InputDecoration(
+                      hintText: 'Ngày dự sinh (tùy chọn)',
+                      prefixIcon: Icon(Icons.calendar_today_outlined),
+                      helperText: 'Dùng để tính Wonder Weeks chính xác hơn',
+                    ),
+                    child: Text(
+                      _edd == null
+                          ? ''
+                          : '${_edd!.day}/${_edd!.month}/${_edd!.year}',
                       style: AppTextStyles.bodyLg,
                     ),
                   ),
