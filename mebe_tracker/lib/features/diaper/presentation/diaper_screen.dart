@@ -10,6 +10,7 @@ import '../../../shared/providers/home_provider.dart';
 import 'widgets/daily_count_row.dart';
 import 'widgets/diaper_color_guide.dart';
 import 'widgets/diaper_log_list.dart';
+import 'widgets/mood_section.dart';
 import 'widgets/quick_log_section.dart';
 
 class DiaperScreen extends ConsumerWidget {
@@ -49,6 +50,8 @@ class DiaperScreen extends ConsumerWidget {
                 const QuickLogSection(),
                 const SizedBox(height: AppSpacing.lg),
                 const DailyCountRow(),
+                const SizedBox(height: AppSpacing.lg),
+                const MoodSection(),
                 const SizedBox(height: AppSpacing.lg),
                 const DiaperColorGuide(),
                 const SizedBox(height: AppSpacing.lg),

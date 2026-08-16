@@ -10,6 +10,7 @@ import '../models/milk_stash_entry.dart';
 import '../models/pump_entry.dart';
 import '../models/sleep_entry.dart';
 import '../models/vaccine_entry.dart';
+import '../../features/diaper/data/mood_entry.dart';
 
 /// Wraps all Firestore reads/writes for the `users/{userId}/babies/{babyId}/...`
 /// data hierarchy described in the data-model spec.
@@ -56,6 +57,9 @@ class FirestoreService {
 
   DocumentReference<Map<String, dynamic>> _teethDoc(String userId, String babyId) =>
       _baby(userId, babyId).collection('teeth').doc('eruptions');
+
+  CollectionReference<Map<String, dynamic>> _moods(String userId, String babyId) =>
+      _baby(userId, babyId).collection('moods');
 
   // ---- Baby profiles ----
 
@@ -225,6 +229,20 @@ class FirestoreService {
 
   Future<void> unmarkToothErupted(String userId, String babyId, String toothId) =>
       _teethDoc(userId, babyId).update({toothId: FieldValue.delete()});
+
+  // ---- Mood ----
+
+  Stream<List<MoodEntry>> watchMoods(String userId, String babyId) =>
+      _moods(userId, babyId)
+          .orderBy('time', descending: true)
+          .snapshots()
+          .map((s) => s.docs.map(MoodEntry.fromFirestore).toList());
+
+  Future<void> addMood(MoodEntry entry) =>
+      _moods(entry.userId, entry.babyId).doc(entry.id).set(entry.toFirestore());
+
+  Future<void> deleteMood(String userId, String babyId, String entryId) =>
+      _moods(userId, babyId).doc(entryId).delete();
 
   // ---- Subscription ----
 
