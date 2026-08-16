@@ -139,6 +139,8 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
               _TeethQuickCard(onTap: () => context.push('/home/growth/teeth')),
               const SizedBox(height: AppSpacing.sm),
               _MotorQuickCard(onTap: () => context.push('/home/growth/motor')),
+              const SizedBox(height: AppSpacing.sm),
+              _PrenatalQuickCard(onTap: () => context.push('/prenatal')),
             ],
           ),
         );
@@ -458,6 +460,64 @@ class _MotorQuickCard extends ConsumerWidget {
                   ),
                   Text(
                     totalMins > 0 ? '$totalMins phút tuần này' : 'Chưa có hoạt động',
+                    style: AppTextStyles.bodySm.copyWith(color: AppColors.muted),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right, color: AppColors.muted),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PrenatalQuickCard extends StatelessWidget {
+  const _PrenatalQuickCard({required this.onTap});
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.petal.withOpacity(0.2),
+              blurRadius: 12,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: AppColors.blush,
+                borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+              ),
+              child: const Center(
+                child: Text('🤰', style: TextStyle(fontSize: 22)),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Nhật ký thai kỳ',
+                    style: AppTextStyles.bodyMd.copyWith(color: AppColors.ink),
+                  ),
+                  Text(
+                    'Ghi chép tuần thai, triệu chứng',
                     style: AppTextStyles.bodySm.copyWith(color: AppColors.muted),
                   ),
                 ],

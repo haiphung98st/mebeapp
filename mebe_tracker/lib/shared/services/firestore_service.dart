@@ -12,6 +12,7 @@ import '../models/sleep_entry.dart';
 import '../models/vaccine_entry.dart';
 import '../../features/diaper/data/mood_entry.dart';
 import '../../features/growth/data/motor_entry.dart';
+import '../../features/prenatal/data/prenatal_entry.dart';
 
 /// Wraps all Firestore reads/writes for the `users/{userId}/babies/{babyId}/...`
 /// data hierarchy described in the data-model spec.
@@ -64,6 +65,9 @@ class FirestoreService {
 
   CollectionReference<Map<String, dynamic>> _motors(String userId, String babyId) =>
       _baby(userId, babyId).collection('motorActivities');
+
+  CollectionReference<Map<String, dynamic>> _prenatal(String userId) =>
+      _firestore.collection('users').doc(userId).collection('prenatal');
 
   // ---- Baby profiles ----
 
@@ -261,6 +265,20 @@ class FirestoreService {
 
   Future<void> deleteMotor(String userId, String babyId, String entryId) =>
       _motors(userId, babyId).doc(entryId).delete();
+
+  // ---- Prenatal ----
+
+  Stream<List<PrenatalEntry>> watchPrenatal(String userId) =>
+      _prenatal(userId)
+          .orderBy('date', descending: true)
+          .snapshots()
+          .map((s) => s.docs.map(PrenatalEntry.fromFirestore).toList());
+
+  Future<void> addPrenatalEntry(PrenatalEntry entry) =>
+      _prenatal(entry.userId).doc(entry.id).set(entry.toFirestore());
+
+  Future<void> deletePrenatalEntry(String userId, String entryId) =>
+      _prenatal(userId).doc(entryId).delete();
 
   // ---- Subscription ----
 
