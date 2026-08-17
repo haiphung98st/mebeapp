@@ -34,8 +34,7 @@ _$NotificationConfigImpl _$$NotificationConfigImplFromJson(
       feedingIntervalMinutes:
           (json['feedingIntervalMinutes'] as num?)?.toInt() ?? 150,
       feedingFixedTimes: (json['feedingFixedTimes'] as List<dynamic>?)
-              ?.map((e) =>
-                  TimeOfDayConfig.fromJson(e as Map<String, dynamic>))
+              ?.map((e) => TimeOfDayConfig.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
       feedingVibrate: json['feedingVibrate'] as bool? ?? true,
@@ -49,12 +48,10 @@ _$NotificationConfigImpl _$$NotificationConfigImplFromJson(
       pumpIntervalMinutes:
           (json['pumpIntervalMinutes'] as num?)?.toInt() ?? 180,
       pumpFixedTimes: (json['pumpFixedTimes'] as List<dynamic>?)
-              ?.map((e) =>
-                  TimeOfDayConfig.fromJson(e as Map<String, dynamic>))
+              ?.map((e) => TimeOfDayConfig.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      pumpActiveHourStart:
-          (json['pumpActiveHourStart'] as num?)?.toInt() ?? 6,
+      pumpActiveHourStart: (json['pumpActiveHourStart'] as num?)?.toInt() ?? 6,
       pumpActiveHourEnd: (json['pumpActiveHourEnd'] as num?)?.toInt() ?? 23,
       pumpDailyGoalSessions:
           (json['pumpDailyGoalSessions'] as num?)?.toInt() ?? 3,
@@ -62,16 +59,14 @@ _$NotificationConfigImpl _$$NotificationConfigImplFromJson(
       sleepEnabled: json['sleepEnabled'] as bool? ?? true,
       sleepWindowReminder: json['sleepWindowReminder'] as bool? ?? true,
       sleepOvertimeAlert: json['sleepOvertimeAlert'] as bool? ?? true,
-      sleepMaxNapMinutes:
-          (json['sleepMaxNapMinutes'] as num?)?.toInt() ?? 120,
+      sleepMaxNapMinutes: (json['sleepMaxNapMinutes'] as num?)?.toInt() ?? 120,
       vaccineEnabled: json['vaccineEnabled'] as bool? ?? true,
       vaccineDaysBeforeAlert:
           (json['vaccineDaysBeforeAlert'] as num?)?.toInt() ?? 7,
       vaccineSecondAlert: json['vaccineSecondAlert'] as bool? ?? true,
       vaccineOverdueAlert: json['vaccineOverdueAlert'] as bool? ?? true,
       milkStashEnabled: json['milkStashEnabled'] as bool? ?? true,
-      milkStashExpiryDays:
-          (json['milkStashExpiryDays'] as num?)?.toInt() ?? 2,
+      milkStashExpiryDays: (json['milkStashExpiryDays'] as num?)?.toInt() ?? 2,
       milkStashLowAlert: json['milkStashLowAlert'] as bool? ?? true,
       milkStashLowThresholdMl:
           (json['milkStashLowThresholdMl'] as num?)?.toInt() ?? 200,
@@ -92,15 +87,13 @@ Map<String, dynamic> _$$NotificationConfigImplToJson(
       'feedingEnabled': instance.feedingEnabled,
       'feedingMode': _$FeedingReminderModeEnumMap[instance.feedingMode]!,
       'feedingIntervalMinutes': instance.feedingIntervalMinutes,
-      'feedingFixedTimes':
-          instance.feedingFixedTimes.map((e) => e.toJson()).toList(),
+      'feedingFixedTimes': instance.feedingFixedTimes,
       'feedingVibrate': instance.feedingVibrate,
       'feedingSound': _$NotificationSoundEnumMap[instance.feedingSound]!,
       'pumpEnabled': instance.pumpEnabled,
       'pumpMode': _$PumpReminderModeEnumMap[instance.pumpMode]!,
       'pumpIntervalMinutes': instance.pumpIntervalMinutes,
-      'pumpFixedTimes':
-          instance.pumpFixedTimes.map((e) => e.toJson()).toList(),
+      'pumpFixedTimes': instance.pumpFixedTimes,
       'pumpActiveHourStart': instance.pumpActiveHourStart,
       'pumpActiveHourEnd': instance.pumpActiveHourEnd,
       'pumpDailyGoalSessions': instance.pumpDailyGoalSessions,
@@ -131,15 +124,15 @@ const _$FeedingReminderModeEnumMap = {
   FeedingReminderMode.fixed: 'fixed',
 };
 
-const _$PumpReminderModeEnumMap = {
-  PumpReminderMode.interval: 'interval',
-  PumpReminderMode.fixed: 'fixed',
-  PumpReminderMode.disabled: 'disabled',
-};
-
 const _$NotificationSoundEnumMap = {
   NotificationSound.gentle: 'gentle',
   NotificationSound.default_: 'default_',
   NotificationSound.cheerful: 'cheerful',
   NotificationSound.silent: 'silent',
+};
+
+const _$PumpReminderModeEnumMap = {
+  PumpReminderMode.interval: 'interval',
+  PumpReminderMode.fixed: 'fixed',
+  PumpReminderMode.disabled: 'disabled',
 };

@@ -17,13 +17,15 @@ class WidgetService {
   }
 
   static Future<void> scheduleBackgroundRefresh() async {
-    await Workmanager().registerPeriodicTask(
-      _bgTaskName,
-      _bgTaskName,
-      frequency: const Duration(minutes: 15),
-      constraints: Constraints(networkType: NetworkType.not_required),
-      existingWorkPolicy: ExistingWorkPolicy.keep,
-    );
+    try {
+      await Workmanager().registerPeriodicTask(
+        _bgTaskName,
+        _bgTaskName,
+        frequency: const Duration(minutes: 15),
+        constraints: Constraints(networkType: NetworkType.not_required),
+        existingWorkPolicy: ExistingWorkPolicy.keep,
+      );
+    } catch (_) {}
   }
 
   static Future<void> save(WidgetData data) async {

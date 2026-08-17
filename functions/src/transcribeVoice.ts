@@ -38,7 +38,7 @@ export const transcribeVoice = onObjectFinalized(
       });
 
       await db
-        .doc(`users/${userId}/babies/${babyId}/voiceJournal/${id}`)
+        .doc(`users/${userId}/babies/${babyId}/voiceEntries/${id}`)
         .update({
           transcriptText: transcription.text,
           transcriptPending: false,

@@ -100,8 +100,8 @@ abstract class _$$TimeOfDayConfigImplCopyWith<$Res>
 class __$$TimeOfDayConfigImplCopyWithImpl<$Res>
     extends _$TimeOfDayConfigCopyWithImpl<$Res, _$TimeOfDayConfigImpl>
     implements _$$TimeOfDayConfigImplCopyWith<$Res> {
-  __$$TimeOfDayConfigImplCopyWithImpl(_$TimeOfDayConfigImpl _value,
-      $Res Function(_$TimeOfDayConfigImpl) _then)
+  __$$TimeOfDayConfigImplCopyWithImpl(
+      _$TimeOfDayConfigImpl _value, $Res Function(_$TimeOfDayConfigImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of TimeOfDayConfig
@@ -137,13 +137,12 @@ class __$$TimeOfDayConfigImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$TimeOfDayConfigImpl extends _TimeOfDayConfig {
+class _$TimeOfDayConfigImpl implements _TimeOfDayConfig {
   const _$TimeOfDayConfigImpl(
       {required this.hour,
       required this.minute,
       this.enabled = true,
-      this.label})
-      : super._();
+      this.label});
 
   factory _$TimeOfDayConfigImpl.fromJson(Map<String, dynamic> json) =>
       _$$TimeOfDayConfigImplFromJson(json);
@@ -195,13 +194,12 @@ class _$TimeOfDayConfigImpl extends _TimeOfDayConfig {
   }
 }
 
-abstract class _TimeOfDayConfig extends TimeOfDayConfig {
+abstract class _TimeOfDayConfig implements TimeOfDayConfig {
   const factory _TimeOfDayConfig(
       {required final int hour,
       required final int minute,
       final bool enabled,
       final String? label}) = _$TimeOfDayConfigImpl;
-  const _TimeOfDayConfig._() : super._();
 
   factory _TimeOfDayConfig.fromJson(Map<String, dynamic> json) =
       _$TimeOfDayConfigImpl.fromJson;
@@ -229,13 +227,15 @@ NotificationConfig _$NotificationConfigFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$NotificationConfig {
+// ── CỮ BÚ ──
   bool get feedingEnabled => throw _privateConstructorUsedError;
   FeedingReminderMode get feedingMode => throw _privateConstructorUsedError;
   int get feedingIntervalMinutes => throw _privateConstructorUsedError;
   List<TimeOfDayConfig> get feedingFixedTimes =>
       throw _privateConstructorUsedError;
   bool get feedingVibrate => throw _privateConstructorUsedError;
-  NotificationSound get feedingSound => throw _privateConstructorUsedError;
+  NotificationSound get feedingSound =>
+      throw _privateConstructorUsedError; // ── HÚT SỮA ──
   bool get pumpEnabled => throw _privateConstructorUsedError;
   PumpReminderMode get pumpMode => throw _privateConstructorUsedError;
   int get pumpIntervalMinutes => throw _privateConstructorUsedError;
@@ -244,23 +244,28 @@ mixin _$NotificationConfig {
   int get pumpActiveHourStart => throw _privateConstructorUsedError;
   int get pumpActiveHourEnd => throw _privateConstructorUsedError;
   int get pumpDailyGoalSessions => throw _privateConstructorUsedError;
-  bool get pumpShowProgress => throw _privateConstructorUsedError;
+  bool get pumpShowProgress =>
+      throw _privateConstructorUsedError; // ── GIẤC NGỦ ──
   bool get sleepEnabled => throw _privateConstructorUsedError;
   bool get sleepWindowReminder => throw _privateConstructorUsedError;
   bool get sleepOvertimeAlert => throw _privateConstructorUsedError;
-  int get sleepMaxNapMinutes => throw _privateConstructorUsedError;
+  int get sleepMaxNapMinutes =>
+      throw _privateConstructorUsedError; // ── TIÊM CHỦNG ──
   bool get vaccineEnabled => throw _privateConstructorUsedError;
   int get vaccineDaysBeforeAlert => throw _privateConstructorUsedError;
   bool get vaccineSecondAlert => throw _privateConstructorUsedError;
-  bool get vaccineOverdueAlert => throw _privateConstructorUsedError;
+  bool get vaccineOverdueAlert =>
+      throw _privateConstructorUsedError; // ── SỮA TỦ ──
   bool get milkStashEnabled => throw _privateConstructorUsedError;
   int get milkStashExpiryDays => throw _privateConstructorUsedError;
   bool get milkStashLowAlert => throw _privateConstructorUsedError;
-  int get milkStashLowThresholdMl => throw _privateConstructorUsedError;
+  int get milkStashLowThresholdMl =>
+      throw _privateConstructorUsedError; // ── GIỜ YÊN TĨNH ──
   bool get quietHoursEnabled => throw _privateConstructorUsedError;
   int get quietHourStart => throw _privateConstructorUsedError;
   int get quietHourEnd => throw _privateConstructorUsedError;
-  bool get quietHoursExceptVaccine => throw _privateConstructorUsedError;
+  bool get quietHoursExceptVaccine =>
+      throw _privateConstructorUsedError; // ── BÁO CÁO TUẦN ──
   bool get weeklyReportEnabled => throw _privateConstructorUsedError;
   int get weeklyReportDayOfWeek => throw _privateConstructorUsedError;
   int get weeklyReportHour => throw _privateConstructorUsedError;
@@ -281,41 +286,40 @@ abstract class $NotificationConfigCopyWith<$Res> {
           NotificationConfig value, $Res Function(NotificationConfig) then) =
       _$NotificationConfigCopyWithImpl<$Res, NotificationConfig>;
   @useResult
-  $Res call({
-    bool feedingEnabled,
-    FeedingReminderMode feedingMode,
-    int feedingIntervalMinutes,
-    List<TimeOfDayConfig> feedingFixedTimes,
-    bool feedingVibrate,
-    NotificationSound feedingSound,
-    bool pumpEnabled,
-    PumpReminderMode pumpMode,
-    int pumpIntervalMinutes,
-    List<TimeOfDayConfig> pumpFixedTimes,
-    int pumpActiveHourStart,
-    int pumpActiveHourEnd,
-    int pumpDailyGoalSessions,
-    bool pumpShowProgress,
-    bool sleepEnabled,
-    bool sleepWindowReminder,
-    bool sleepOvertimeAlert,
-    int sleepMaxNapMinutes,
-    bool vaccineEnabled,
-    int vaccineDaysBeforeAlert,
-    bool vaccineSecondAlert,
-    bool vaccineOverdueAlert,
-    bool milkStashEnabled,
-    int milkStashExpiryDays,
-    bool milkStashLowAlert,
-    int milkStashLowThresholdMl,
-    bool quietHoursEnabled,
-    int quietHourStart,
-    int quietHourEnd,
-    bool quietHoursExceptVaccine,
-    bool weeklyReportEnabled,
-    int weeklyReportDayOfWeek,
-    int weeklyReportHour,
-  });
+  $Res call(
+      {bool feedingEnabled,
+      FeedingReminderMode feedingMode,
+      int feedingIntervalMinutes,
+      List<TimeOfDayConfig> feedingFixedTimes,
+      bool feedingVibrate,
+      NotificationSound feedingSound,
+      bool pumpEnabled,
+      PumpReminderMode pumpMode,
+      int pumpIntervalMinutes,
+      List<TimeOfDayConfig> pumpFixedTimes,
+      int pumpActiveHourStart,
+      int pumpActiveHourEnd,
+      int pumpDailyGoalSessions,
+      bool pumpShowProgress,
+      bool sleepEnabled,
+      bool sleepWindowReminder,
+      bool sleepOvertimeAlert,
+      int sleepMaxNapMinutes,
+      bool vaccineEnabled,
+      int vaccineDaysBeforeAlert,
+      bool vaccineSecondAlert,
+      bool vaccineOverdueAlert,
+      bool milkStashEnabled,
+      int milkStashExpiryDays,
+      bool milkStashLowAlert,
+      int milkStashLowThresholdMl,
+      bool quietHoursEnabled,
+      int quietHourStart,
+      int quietHourEnd,
+      bool quietHoursExceptVaccine,
+      bool weeklyReportEnabled,
+      int weeklyReportDayOfWeek,
+      int weeklyReportHour});
 }
 
 /// @nodoc
@@ -512,41 +516,40 @@ abstract class _$$NotificationConfigImplCopyWith<$Res>
       __$$NotificationConfigImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    bool feedingEnabled,
-    FeedingReminderMode feedingMode,
-    int feedingIntervalMinutes,
-    List<TimeOfDayConfig> feedingFixedTimes,
-    bool feedingVibrate,
-    NotificationSound feedingSound,
-    bool pumpEnabled,
-    PumpReminderMode pumpMode,
-    int pumpIntervalMinutes,
-    List<TimeOfDayConfig> pumpFixedTimes,
-    int pumpActiveHourStart,
-    int pumpActiveHourEnd,
-    int pumpDailyGoalSessions,
-    bool pumpShowProgress,
-    bool sleepEnabled,
-    bool sleepWindowReminder,
-    bool sleepOvertimeAlert,
-    int sleepMaxNapMinutes,
-    bool vaccineEnabled,
-    int vaccineDaysBeforeAlert,
-    bool vaccineSecondAlert,
-    bool vaccineOverdueAlert,
-    bool milkStashEnabled,
-    int milkStashExpiryDays,
-    bool milkStashLowAlert,
-    int milkStashLowThresholdMl,
-    bool quietHoursEnabled,
-    int quietHourStart,
-    int quietHourEnd,
-    bool quietHoursExceptVaccine,
-    bool weeklyReportEnabled,
-    int weeklyReportDayOfWeek,
-    int weeklyReportHour,
-  });
+  $Res call(
+      {bool feedingEnabled,
+      FeedingReminderMode feedingMode,
+      int feedingIntervalMinutes,
+      List<TimeOfDayConfig> feedingFixedTimes,
+      bool feedingVibrate,
+      NotificationSound feedingSound,
+      bool pumpEnabled,
+      PumpReminderMode pumpMode,
+      int pumpIntervalMinutes,
+      List<TimeOfDayConfig> pumpFixedTimes,
+      int pumpActiveHourStart,
+      int pumpActiveHourEnd,
+      int pumpDailyGoalSessions,
+      bool pumpShowProgress,
+      bool sleepEnabled,
+      bool sleepWindowReminder,
+      bool sleepOvertimeAlert,
+      int sleepMaxNapMinutes,
+      bool vaccineEnabled,
+      int vaccineDaysBeforeAlert,
+      bool vaccineSecondAlert,
+      bool vaccineOverdueAlert,
+      bool milkStashEnabled,
+      int milkStashExpiryDays,
+      bool milkStashLowAlert,
+      int milkStashLowThresholdMl,
+      bool quietHoursEnabled,
+      int quietHourStart,
+      int quietHourEnd,
+      bool quietHoursExceptVaccine,
+      bool weeklyReportEnabled,
+      int weeklyReportDayOfWeek,
+      int weeklyReportHour});
 }
 
 /// @nodoc
@@ -735,48 +738,48 @@ class __$$NotificationConfigImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$NotificationConfigImpl extends _NotificationConfig {
-  const _$NotificationConfigImpl({
-    this.feedingEnabled = true,
-    this.feedingMode = FeedingReminderMode.auto,
-    this.feedingIntervalMinutes = 150,
-    final List<TimeOfDayConfig> feedingFixedTimes = const [],
-    this.feedingVibrate = true,
-    this.feedingSound = NotificationSound.gentle,
-    this.pumpEnabled = true,
-    this.pumpMode = PumpReminderMode.interval,
-    this.pumpIntervalMinutes = 180,
-    final List<TimeOfDayConfig> pumpFixedTimes = const [],
-    this.pumpActiveHourStart = 6,
-    this.pumpActiveHourEnd = 23,
-    this.pumpDailyGoalSessions = 3,
-    this.pumpShowProgress = true,
-    this.sleepEnabled = true,
-    this.sleepWindowReminder = true,
-    this.sleepOvertimeAlert = true,
-    this.sleepMaxNapMinutes = 120,
-    this.vaccineEnabled = true,
-    this.vaccineDaysBeforeAlert = 7,
-    this.vaccineSecondAlert = true,
-    this.vaccineOverdueAlert = true,
-    this.milkStashEnabled = true,
-    this.milkStashExpiryDays = 2,
-    this.milkStashLowAlert = true,
-    this.milkStashLowThresholdMl = 200,
-    this.quietHoursEnabled = true,
-    this.quietHourStart = 22,
-    this.quietHourEnd = 6,
-    this.quietHoursExceptVaccine = false,
-    this.weeklyReportEnabled = true,
-    this.weeklyReportDayOfWeek = 0,
-    this.weeklyReportHour = 9,
-  })  : _feedingFixedTimes = feedingFixedTimes,
-        _pumpFixedTimes = pumpFixedTimes,
-        super._();
+class _$NotificationConfigImpl implements _NotificationConfig {
+  const _$NotificationConfigImpl(
+      {this.feedingEnabled = true,
+      this.feedingMode = FeedingReminderMode.auto,
+      this.feedingIntervalMinutes = 150,
+      final List<TimeOfDayConfig> feedingFixedTimes = const [],
+      this.feedingVibrate = true,
+      this.feedingSound = NotificationSound.gentle,
+      this.pumpEnabled = true,
+      this.pumpMode = PumpReminderMode.interval,
+      this.pumpIntervalMinutes = 180,
+      final List<TimeOfDayConfig> pumpFixedTimes = const [],
+      this.pumpActiveHourStart = 6,
+      this.pumpActiveHourEnd = 23,
+      this.pumpDailyGoalSessions = 3,
+      this.pumpShowProgress = true,
+      this.sleepEnabled = true,
+      this.sleepWindowReminder = true,
+      this.sleepOvertimeAlert = true,
+      this.sleepMaxNapMinutes = 120,
+      this.vaccineEnabled = true,
+      this.vaccineDaysBeforeAlert = 7,
+      this.vaccineSecondAlert = true,
+      this.vaccineOverdueAlert = true,
+      this.milkStashEnabled = true,
+      this.milkStashExpiryDays = 2,
+      this.milkStashLowAlert = true,
+      this.milkStashLowThresholdMl = 200,
+      this.quietHoursEnabled = true,
+      this.quietHourStart = 22,
+      this.quietHourEnd = 6,
+      this.quietHoursExceptVaccine = false,
+      this.weeklyReportEnabled = true,
+      this.weeklyReportDayOfWeek = 0,
+      this.weeklyReportHour = 9})
+      : _feedingFixedTimes = feedingFixedTimes,
+        _pumpFixedTimes = pumpFixedTimes;
 
   factory _$NotificationConfigImpl.fromJson(Map<String, dynamic> json) =>
       _$$NotificationConfigImplFromJson(json);
 
+// ── CỮ BÚ ──
   @override
   @JsonKey()
   final bool feedingEnabled;
@@ -802,6 +805,7 @@ class _$NotificationConfigImpl extends _NotificationConfig {
   @override
   @JsonKey()
   final NotificationSound feedingSound;
+// ── HÚT SỮA ──
   @override
   @JsonKey()
   final bool pumpEnabled;
@@ -832,6 +836,7 @@ class _$NotificationConfigImpl extends _NotificationConfig {
   @override
   @JsonKey()
   final bool pumpShowProgress;
+// ── GIẤC NGỦ ──
   @override
   @JsonKey()
   final bool sleepEnabled;
@@ -844,6 +849,7 @@ class _$NotificationConfigImpl extends _NotificationConfig {
   @override
   @JsonKey()
   final int sleepMaxNapMinutes;
+// ── TIÊM CHỦNG ──
   @override
   @JsonKey()
   final bool vaccineEnabled;
@@ -856,6 +862,7 @@ class _$NotificationConfigImpl extends _NotificationConfig {
   @override
   @JsonKey()
   final bool vaccineOverdueAlert;
+// ── SỮA TỦ ──
   @override
   @JsonKey()
   final bool milkStashEnabled;
@@ -868,6 +875,7 @@ class _$NotificationConfigImpl extends _NotificationConfig {
   @override
   @JsonKey()
   final int milkStashLowThresholdMl;
+// ── GIỜ YÊN TĨNH ──
   @override
   @JsonKey()
   final bool quietHoursEnabled;
@@ -880,6 +888,7 @@ class _$NotificationConfigImpl extends _NotificationConfig {
   @override
   @JsonKey()
   final bool quietHoursExceptVaccine;
+// ── BÁO CÁO TUẦN ──
   @override
   @JsonKey()
   final bool weeklyReportEnabled;
@@ -1006,7 +1015,7 @@ class _$NotificationConfigImpl extends _NotificationConfig {
         quietHoursExceptVaccine,
         weeklyReportEnabled,
         weeklyReportDayOfWeek,
-        weeklyReportHour,
+        weeklyReportHour
       ]);
 
   /// Create a copy of NotificationConfig
@@ -1026,47 +1035,46 @@ class _$NotificationConfigImpl extends _NotificationConfig {
   }
 }
 
-abstract class _NotificationConfig extends NotificationConfig {
-  const factory _NotificationConfig({
-    final bool feedingEnabled,
-    final FeedingReminderMode feedingMode,
-    final int feedingIntervalMinutes,
-    final List<TimeOfDayConfig> feedingFixedTimes,
-    final bool feedingVibrate,
-    final NotificationSound feedingSound,
-    final bool pumpEnabled,
-    final PumpReminderMode pumpMode,
-    final int pumpIntervalMinutes,
-    final List<TimeOfDayConfig> pumpFixedTimes,
-    final int pumpActiveHourStart,
-    final int pumpActiveHourEnd,
-    final int pumpDailyGoalSessions,
-    final bool pumpShowProgress,
-    final bool sleepEnabled,
-    final bool sleepWindowReminder,
-    final bool sleepOvertimeAlert,
-    final int sleepMaxNapMinutes,
-    final bool vaccineEnabled,
-    final int vaccineDaysBeforeAlert,
-    final bool vaccineSecondAlert,
-    final bool vaccineOverdueAlert,
-    final bool milkStashEnabled,
-    final int milkStashExpiryDays,
-    final bool milkStashLowAlert,
-    final int milkStashLowThresholdMl,
-    final bool quietHoursEnabled,
-    final int quietHourStart,
-    final int quietHourEnd,
-    final bool quietHoursExceptVaccine,
-    final bool weeklyReportEnabled,
-    final int weeklyReportDayOfWeek,
-    final int weeklyReportHour,
-  }) = _$NotificationConfigImpl;
-  const _NotificationConfig._() : super._();
+abstract class _NotificationConfig implements NotificationConfig {
+  const factory _NotificationConfig(
+      {final bool feedingEnabled,
+      final FeedingReminderMode feedingMode,
+      final int feedingIntervalMinutes,
+      final List<TimeOfDayConfig> feedingFixedTimes,
+      final bool feedingVibrate,
+      final NotificationSound feedingSound,
+      final bool pumpEnabled,
+      final PumpReminderMode pumpMode,
+      final int pumpIntervalMinutes,
+      final List<TimeOfDayConfig> pumpFixedTimes,
+      final int pumpActiveHourStart,
+      final int pumpActiveHourEnd,
+      final int pumpDailyGoalSessions,
+      final bool pumpShowProgress,
+      final bool sleepEnabled,
+      final bool sleepWindowReminder,
+      final bool sleepOvertimeAlert,
+      final int sleepMaxNapMinutes,
+      final bool vaccineEnabled,
+      final int vaccineDaysBeforeAlert,
+      final bool vaccineSecondAlert,
+      final bool vaccineOverdueAlert,
+      final bool milkStashEnabled,
+      final int milkStashExpiryDays,
+      final bool milkStashLowAlert,
+      final int milkStashLowThresholdMl,
+      final bool quietHoursEnabled,
+      final int quietHourStart,
+      final int quietHourEnd,
+      final bool quietHoursExceptVaccine,
+      final bool weeklyReportEnabled,
+      final int weeklyReportDayOfWeek,
+      final int weeklyReportHour}) = _$NotificationConfigImpl;
 
   factory _NotificationConfig.fromJson(Map<String, dynamic> json) =
       _$NotificationConfigImpl.fromJson;
 
+// ── CỮ BÚ ──
   @override
   bool get feedingEnabled;
   @override
@@ -1078,7 +1086,7 @@ abstract class _NotificationConfig extends NotificationConfig {
   @override
   bool get feedingVibrate;
   @override
-  NotificationSound get feedingSound;
+  NotificationSound get feedingSound; // ── HÚT SỮA ──
   @override
   bool get pumpEnabled;
   @override
@@ -1094,7 +1102,7 @@ abstract class _NotificationConfig extends NotificationConfig {
   @override
   int get pumpDailyGoalSessions;
   @override
-  bool get pumpShowProgress;
+  bool get pumpShowProgress; // ── GIẤC NGỦ ──
   @override
   bool get sleepEnabled;
   @override
@@ -1102,7 +1110,7 @@ abstract class _NotificationConfig extends NotificationConfig {
   @override
   bool get sleepOvertimeAlert;
   @override
-  int get sleepMaxNapMinutes;
+  int get sleepMaxNapMinutes; // ── TIÊM CHỦNG ──
   @override
   bool get vaccineEnabled;
   @override
@@ -1110,7 +1118,7 @@ abstract class _NotificationConfig extends NotificationConfig {
   @override
   bool get vaccineSecondAlert;
   @override
-  bool get vaccineOverdueAlert;
+  bool get vaccineOverdueAlert; // ── SỮA TỦ ──
   @override
   bool get milkStashEnabled;
   @override
@@ -1118,7 +1126,7 @@ abstract class _NotificationConfig extends NotificationConfig {
   @override
   bool get milkStashLowAlert;
   @override
-  int get milkStashLowThresholdMl;
+  int get milkStashLowThresholdMl; // ── GIỜ YÊN TĨNH ──
   @override
   bool get quietHoursEnabled;
   @override
@@ -1126,7 +1134,7 @@ abstract class _NotificationConfig extends NotificationConfig {
   @override
   int get quietHourEnd;
   @override
-  bool get quietHoursExceptVaccine;
+  bool get quietHoursExceptVaccine; // ── BÁO CÁO TUẦN ──
   @override
   bool get weeklyReportEnabled;
   @override

@@ -43,13 +43,11 @@ class EasyScreen extends ConsumerWidget {
               icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.refresh, color: Colors.white),
-                onPressed: () => ref.read(easyScheduleProvider.notifier).resetToDefault(),
-                tooltip: 'Đặt lại mặc định',
-              ),
-            ],
+            actions: IconButton(
+              icon: const Icon(Icons.refresh, color: Colors.white),
+              onPressed: () => ref.read(easyScheduleProvider.notifier).resetToDefault(),
+              tooltip: 'Đặt lại mặc định',
+            ),
           ),
           Expanded(
             child: SingleChildScrollView(

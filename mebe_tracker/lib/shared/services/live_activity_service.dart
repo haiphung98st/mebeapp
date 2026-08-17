@@ -1,16 +1,21 @@
 import 'dart:io';
 
 import 'package:live_activities/live_activities.dart';
+import 'package:uuid/uuid.dart';
 
 /// Wraps the live_activities plugin for Dynamic Island / Lock Screen
-/// Live Activities (iOS 16.1+). All calls are no-ops on Android and
-/// on older iOS versions that don't support Live Activities.
+/// Live Activities (iOS 16.1+). All calls are no-ops on Android, on older
+/// iOS versions, and on builds signed with a personal (free) Apple team —
+/// the plugin always requests a push token internally, which Apple blocks
+/// for personal teams, so every call is guarded to fail silently instead
+/// of throwing.
 class LiveActivityService {
   LiveActivityService._();
 
   static final instance = LiveActivityService._();
 
   final _plugin = LiveActivities();
+  final _uuid = const Uuid();
   String? _feedingActivityId;
   String? _pumpActivityId;
   String? _sleepActivityId;
@@ -19,7 +24,7 @@ class LiveActivityService {
 
   Future<void> init() async {
     if (!Platform.isIOS) return;
-    await _plugin.init(appGroupId: _appGroupId);
+    await _guard(() => _plugin.init(appGroupId: _appGroupId));
   }
 
   // ── FEEDING ──────────────────────────────────────────────────────────────
@@ -37,7 +42,8 @@ class LiveActivityService {
       startTime: startTime,
       babyName: babyName,
     );
-    _feedingActivityId = await _plugin.createActivity(data);
+    final id = _uuid.v4();
+    _feedingActivityId = await _guard<String?>(() => _plugin.createActivity(id, data)) ?? id;
   }
 
   Future<void> updateFeeding({
@@ -52,7 +58,7 @@ class LiveActivityService {
       startTime: startTime,
       elapsedSeconds: elapsedSeconds,
     );
-    await _plugin.updateActivity(_feedingActivityId!, data);
+    await _guard(() => _plugin.updateActivity(_feedingActivityId!, data));
   }
 
   Future<void> stopFeeding() async {
@@ -62,7 +68,7 @@ class LiveActivityService {
 
   Future<void> _endFeeding() async {
     if (_feedingActivityId == null) return;
-    await _plugin.endActivity(_feedingActivityId!);
+    await _guard(() => _plugin.endActivity(_feedingActivityId!));
     _feedingActivityId = null;
   }
 
@@ -80,7 +86,8 @@ class LiveActivityService {
       startTime: startTime,
       babyName: babyName,
     );
-    _pumpActivityId = await _plugin.createActivity(data);
+    final id = _uuid.v4();
+    _pumpActivityId = await _guard<String?>(() => _plugin.createActivity(id, data)) ?? id;
   }
 
   Future<void> updatePump({
@@ -94,7 +101,7 @@ class LiveActivityService {
       startTime: startTime,
       elapsedSeconds: elapsedSeconds,
     );
-    await _plugin.updateActivity(_pumpActivityId!, data);
+    await _guard(() => _plugin.updateActivity(_pumpActivityId!, data));
   }
 
   Future<void> stopPump() async {
@@ -104,7 +111,7 @@ class LiveActivityService {
 
   Future<void> _endPump() async {
     if (_pumpActivityId == null) return;
-    await _plugin.endActivity(_pumpActivityId!);
+    await _guard(() => _plugin.endActivity(_pumpActivityId!));
     _pumpActivityId = null;
   }
 
@@ -124,7 +131,8 @@ class LiveActivityService {
       babyName: babyName,
       totalTargetSeconds: targetMinutes * 60,
     );
-    _sleepActivityId = await _plugin.createActivity(data);
+    final id = _uuid.v4();
+    _sleepActivityId = await _guard<String?>(() => _plugin.createActivity(id, data)) ?? id;
   }
 
   Future<void> updateSleep({
@@ -140,7 +148,7 @@ class LiveActivityService {
       elapsedSeconds: elapsedSeconds,
       totalTargetSeconds: targetMinutes * 60,
     );
-    await _plugin.updateActivity(_sleepActivityId!, data);
+    await _guard(() => _plugin.updateActivity(_sleepActivityId!, data));
   }
 
   Future<void> stopSleep() async {
@@ -150,11 +158,19 @@ class LiveActivityService {
 
   Future<void> _endSleep() async {
     if (_sleepActivityId == null) return;
-    await _plugin.endActivity(_sleepActivityId!);
+    await _guard(() => _plugin.endActivity(_sleepActivityId!));
     _sleepActivityId = null;
   }
 
   // ── HELPERS ──────────────────────────────────────────────────────────────
+
+  Future<T?> _guard<T>(Future<T> Function() action) async {
+    try {
+      return await action();
+    } catch (_) {
+      return null;
+    }
+  }
 
   Map<String, dynamic> _buildData({
     required String timerType,

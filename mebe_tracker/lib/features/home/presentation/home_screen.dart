@@ -29,8 +29,6 @@ import 'widgets/recent_events_list.dart';
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
-  void _openAiChat(BuildContext context) => context.push('/ai-chat');
-
   Future<void> _onRefresh(WidgetRef ref) async {
     ref.invalidate(allFeedingsProvider);
     ref.invalidate(allSleepsProvider);
@@ -81,7 +79,7 @@ class HomeScreen extends ConsumerWidget {
       (sum, e) => sum + (e.leftAmountMl ?? 0) + (e.rightAmountMl ?? 0),
     );
 
-    final appConfig = ref.watch(appConfigProvider).value;
+    final appConfig = ref.watch(appConfigProvider).valueOrNull;
     final announcementBanner = appConfig?.announcementBanner ?? '';
     ref.watch(achievementEvaluatorProvider);
     final currentLeap = ref.watch(wonderWeeksCurrentLeapProvider);
@@ -205,7 +203,9 @@ class HomeScreen extends ConsumerWidget {
                         QuickAction(
                           icon: isPremium ? '🐰' : '🐰✨',
                           label: 'Hỏi AI',
-                          onTap: () => _openAiChat(context),
+                          onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('🐰 Sắp ra mắt')),
+                          ),
                         ),
                         QuickAction(
                           icon: '💝',

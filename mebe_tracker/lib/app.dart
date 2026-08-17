@@ -48,8 +48,8 @@ class _MeBeAppState extends ConsumerState<MeBeApp> with WidgetsBindingObserver {
     final configAsync = ref.watch(appConfigProvider);
     final adminRoleAsync = ref.watch(adminRoleProvider);
 
-    final config = configAsync.value;
-    final isAdmin = (adminRoleAsync.value?.level ?? 0) >= AdminRole.support.level;
+    final config = configAsync.valueOrNull;
+    final isAdmin = (adminRoleAsync.valueOrNull?.level ?? 0) >= AdminRole.support.level;
 
     if (config != null && config.maintenanceMode && !isAdmin) {
       return MaterialApp(

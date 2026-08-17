@@ -24,7 +24,9 @@ class DefaultFirebaseOptions {
     appId: AppSecrets.firebaseWebAppId,
     messagingSenderId: AppSecrets.firebaseWebMessagingSenderId,
     projectId: AppSecrets.firebaseProjectId,
+    authDomain: AppSecrets.firebaseWebAuthDomain,
     storageBucket: AppSecrets.firebaseStorageBucket,
+    measurementId: AppSecrets.firebaseWebMeasurementId,
   );
 
   static const android = FirebaseOptions(
@@ -41,6 +43,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: AppSecrets.firebaseIosMessagingSenderId,
     projectId: AppSecrets.firebaseProjectId,
     storageBucket: AppSecrets.firebaseStorageBucket,
+    iosClientId: AppSecrets.firebaseIosClientId,
     iosBundleId: AppSecrets.firebaseIosBundleId,
   );
 }

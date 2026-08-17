@@ -199,7 +199,7 @@ class _TimelineWidget extends StatelessWidget {
                         color: AppColors.muted,
                       ),
                     ),
-                    const SizedBox(height: isLast ? 0 : 16),
+                    SizedBox(height: isLast ? 0 : 16),
                   ],
                 ),
               ),

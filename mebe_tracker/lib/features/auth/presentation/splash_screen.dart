@@ -48,6 +48,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       if (!mounted) return;
       if (babies.isEmpty) {
         context.go('/create-baby');
+        return;
+      }
+
+      final adminRole = await ref.read(adminRoleProvider.future);
+      if (!mounted) return;
+      if (adminRole.level >= AdminRole.support.level) {
+        context.go('/admin/dashboard');
       } else {
         context.go('/home');
       }

@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import '../../core/config/app_secrets.dart';
 
 // ── Admin role ────────────────────────────────────────────────────────────────
 
@@ -68,7 +71,8 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 class AuthRepository {
   AuthRepository({FirebaseAuth? auth, GoogleSignIn? googleSignIn})
       : _auth = auth ?? FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn();
+        _googleSignIn = googleSignIn ??
+            GoogleSignIn(clientId: kIsWeb ? AppSecrets.webGoogleClientId : null);
 
   final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;

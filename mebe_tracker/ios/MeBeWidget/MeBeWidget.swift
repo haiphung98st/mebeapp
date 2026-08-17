@@ -123,6 +123,19 @@ private extension Color {
     static let mebeAccentPink  = Color(red: 0.96, green: 0.67, blue: 0.76) // #F5ABC2
 }
 
+// MARK: - Container background (iOS 17+ WidgetKit API)
+
+private extension View {
+    @ViewBuilder
+    func widgetContainerBackground(_ color: Color) -> some View {
+        if #available(iOSApplicationExtension 17.0, *) {
+            containerBackground(color, for: .widget)
+        } else {
+            background(color)
+        }
+    }
+}
+
 // MARK: - Small widget (premium + free)
 
 struct SmallWidgetView: View {
@@ -165,7 +178,7 @@ struct SmallWidgetView: View {
         }
         .padding(12)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(Color.mebeBackground)
+        .widgetContainerBackground(Color.mebeBackground)
         .widgetURL(URL(string: "mebe://home"))
     }
 
@@ -181,7 +194,7 @@ struct SmallWidgetView: View {
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.mebeBackground)
+        .widgetContainerBackground(Color.mebeBackground)
         .widgetURL(URL(string: "mebe://home"))
     }
 
@@ -213,6 +226,7 @@ struct MediumWidgetView: View {
     private var premiumMedium: some View {
         HStack(spacing: 0) {
             // Left: baby status
+            Link(destination: URL(string: "mebe://feeding")!) {
             VStack(alignment: .leading, spacing: 6) {
                 Text(data.babyName.isEmpty ? "MeBé" : data.babyName)
                     .font(.system(size: 15, weight: .bold))
@@ -249,7 +263,7 @@ struct MediumWidgetView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.leading, 14)
             .padding(.vertical, 14)
-            .widgetLink(URL(string: "mebe://feeding")!)
+            }
 
             Divider().padding(.vertical, 14)
 
@@ -266,7 +280,7 @@ struct MediumWidgetView: View {
             .padding(.trailing, 14)
             .padding(.vertical, 14)
         }
-        .background(Color.mebeBackground)
+        .widgetContainerBackground(Color.mebeBackground)
     }
 
     private var freeMedium: some View {
@@ -282,7 +296,7 @@ struct MediumWidgetView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.mebeBackground)
+        .widgetContainerBackground(Color.mebeBackground)
         .widgetURL(URL(string: "mebe://home"))
     }
 
@@ -380,7 +394,7 @@ struct LargeWidgetView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
         }
-        .background(Color.mebeBackground)
+        .widgetContainerBackground(Color.mebeBackground)
     }
 
     private var freeLarge: some View {
@@ -398,7 +412,7 @@ struct LargeWidgetView: View {
                 .foregroundColor(.mebePrimary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.mebeBackground)
+        .widgetContainerBackground(Color.mebeBackground)
         .widgetURL(URL(string: "mebe://home"))
     }
 

@@ -10,8 +10,7 @@ service cloud.firestore {
     match /users/{userId}/babies/{babyId}/{collection}/{docId} {
       allow read: if request.auth != null && (
         request.auth.uid == userId ||
-        exists(/databases/$(database)/documents/users/$(userId)/
-               familyMembers/$(request.auth.uid))
+        exists(/databases/$(database)/documents/users/$(userId)/familyMembers/$(request.auth.uid))
       );
     }
 

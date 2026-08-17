@@ -7,6 +7,7 @@ import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/widgets/animated_bunny_avatar.dart';
 import '../../../../shared/providers/baby_provider.dart';
+import '../../data/avatar_config.dart';
 import '../../data/avatar_provider.dart';
 import '../../../subscription/presentation/premium_gate.dart';
 

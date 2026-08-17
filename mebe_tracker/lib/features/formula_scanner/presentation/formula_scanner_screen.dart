@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../../core/constants/app_colors.dart';
@@ -26,26 +27,35 @@ class _FormulaScannerScreenState extends State<FormulaScannerScreen> {
     for (final barcode in capture.barcodes) {
       final raw = barcode.rawValue;
       if (raw == null) continue;
-      final formula = lookupBarcode(raw);
-      if (formula != null) {
-        _controller.stop();
-        setState(() {
-          _found = formula;
-          _scannedBarcode = raw;
-          _paused = true;
-        });
-        return;
-      }
-      // Unknown barcode — show not-found state once
-      if (!_paused) {
-        _controller.stop();
-        setState(() {
-          _scannedBarcode = raw;
-          _paused = true;
-        });
-        return;
-      }
+      _controller.stop();
+      _handleBarcode(raw);
+      return;
     }
+  }
+
+  void _handleBarcode(String raw) {
+    setState(() {
+      _found = lookupBarcode(raw);
+      _scannedBarcode = raw;
+      _paused = true;
+    });
+  }
+
+  Future<void> _pickFromGallery() async {
+    final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (picked == null || !mounted) return;
+    _controller.stop();
+    final capture = await _controller.analyzeImage(picked.path);
+    if (!mounted) return;
+    final raw = capture?.barcodes.firstOrNull?.rawValue;
+    if (raw == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Không tìm thấy mã vạch trong ảnh này')),
+      );
+      _controller.start();
+      return;
+    }
+    _handleBarcode(raw);
   }
 
   void _retry() {
@@ -71,6 +81,13 @@ class _FormulaScannerScreenState extends State<FormulaScannerScreen> {
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
         title: const Text('Quét mã sữa công thức'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.photo_library_outlined),
+            tooltip: 'Tải ảnh mã vạch từ thư viện',
+            onPressed: _pickFromGallery,
+          ),
+        ],
       ),
       body: Stack(
         children: [

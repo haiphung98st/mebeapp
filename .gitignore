@@ -1,0 +1,12 @@
+# Secrets — never commit. See mebe_tracker/lib/core/config/app_secrets.example.dart
+GoogleService-Info.plist
+google-services.json
+*.env
+.env.*
+
+# Cloud Functions build output / deps (not secrets, but shouldn't be committed)
+functions/node_modules/
+functions/lib/
+functions/package-lock.json
+
+.DS_Store

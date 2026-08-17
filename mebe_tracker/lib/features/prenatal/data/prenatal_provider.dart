@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../shared/providers/auth_provider.dart';
-import '../../../shared/services/firestore_service.dart';
+import '../../../shared/providers/baby_provider.dart';
 import 'prenatal_entry.dart';
 
 final allPrenatalProvider = StreamProvider<List<PrenatalEntry>>((ref) {

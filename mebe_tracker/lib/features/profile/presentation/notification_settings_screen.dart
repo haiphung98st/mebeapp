@@ -170,7 +170,7 @@ class _NotificationSettingsScreenState
                           .copyWith(fontWeight: FontWeight.w700)),
                   const SizedBox(height: 2),
                   Text(sub,
-                      style: AppTextStyles.caption
+                      style: AppTextStyles.bodySm
                           .copyWith(color: AppColors.muted)),
                 ],
               ),
@@ -211,7 +211,7 @@ class _NotificationSettingsScreenState
     return SwitchListTile(
       title: Text(title, style: AppTextStyles.bodyMd),
       subtitle:
-          subtitle != null ? Text(subtitle, style: AppTextStyles.caption) : null,
+          subtitle != null ? Text(subtitle, style: AppTextStyles.bodySm) : null,
       value: value,
       onChanged: onChanged,
       activeColor: AppColors.blossom,
@@ -368,7 +368,7 @@ class _NotificationSettingsScreenState
                 children: quickTimes.map((qt) {
                   return ActionChip(
                     label:
-                        Text(_fmtHm(qt.$1, qt.$2), style: AppTextStyles.caption),
+                        Text(_fmtHm(qt.$1, qt.$2), style: AppTextStyles.bodySm),
                     onPressed: () {
                       onChanged([
                         ...times,
@@ -709,7 +709,7 @@ class _NotificationSettingsScreenState
                   AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.md),
               child: Text(
                 'Không nhắc từ ${_fmtHm(_draft.quietHourStart, 0)} đến ${_fmtHm(_draft.quietHourEnd, 0)}',
-                style: AppTextStyles.caption
+                style: AppTextStyles.bodySm
                     .copyWith(color: AppColors.muted),
               ),
             ),

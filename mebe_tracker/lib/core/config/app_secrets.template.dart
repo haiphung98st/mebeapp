@@ -19,13 +19,21 @@ class AppSecrets {
   static const firebaseIosAppId = 'REPLACE_WITH_FIREBASE_IOS_APP_ID';
   static const firebaseIosMessagingSenderId =
       'REPLACE_WITH_FIREBASE_MESSAGING_SENDER_ID';
+  static const firebaseIosClientId = 'REPLACE_WITH_FIREBASE_IOS_CLIENT_ID';
 
   static const firebaseWebApiKey = 'REPLACE_WITH_FIREBASE_WEB_API_KEY';
   static const firebaseWebAppId = 'REPLACE_WITH_FIREBASE_WEB_APP_ID';
   static const firebaseWebMessagingSenderId =
       'REPLACE_WITH_FIREBASE_MESSAGING_SENDER_ID';
+  static const firebaseWebAuthDomain = 'REPLACE_WITH_FIREBASE_WEB_AUTH_DOMAIN';
+  static const firebaseWebMeasurementId = 'REPLACE_WITH_FIREBASE_WEB_MEASUREMENT_ID';
 
   static const firebaseProjectId = 'mebe-tracker';
-  static const firebaseStorageBucket = 'mebe-tracker.appspot.com';
+  static const firebaseStorageBucket = 'mebe-tracker.firebasestorage.app';
   static const firebaseIosBundleId = 'com.mebe.mebeTracker';
+
+  // ── Google Sign-In ───────────────────────────────────────────────────────
+  // Firebase Console → Authentication → Sign-in method → Google → Web SDK configuration
+
+  static const webGoogleClientId = 'REPLACE_WITH_WEB_GOOGLE_CLIENT_ID';
 }

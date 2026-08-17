@@ -1,4 +1,4 @@
-import * as functions from 'firebase-functions';
+import * as functions from 'firebase-functions/v1';
 import * as admin from 'firebase-admin';
 
 const db = admin.firestore();
@@ -29,7 +29,7 @@ async function writeAuditLog(
     adminEmail: context.auth!.token.email ?? '',
     targetUid: targetUid ?? null,
     targetEmail: targetEmail ?? null,
-    details,
+    details: JSON.parse(JSON.stringify(details)),
     timestamp: admin.firestore.FieldValue.serverTimestamp(),
   });
 }
@@ -58,18 +58,19 @@ export const adminGrantPremium = region.https.onCall(async (data, context) => {
     throw new functions.https.HttpsError('not-found', `User ${uid} not found`);
   }
 
-  const now = admin.firestore.Timestamp.now();
-  const expiresAt = admin.firestore.Timestamp.fromDate(
-    new Date(Date.now() + durationDays * 86400 * 1000),
-  );
+  const now = new Date();
+  const expiresAt = new Date(now.getTime() + durationDays * 86400 * 1000);
 
-  const subscriptionRef = db.doc(`users/${uid}/subscriptions/current`);
+  // Same doc + schema the app's real IAP flow writes to (iap_service.dart
+  // _persistSubscription), so an admin grant is indistinguishable from a
+  // real purchase to the client's premium gate.
+  const subscriptionRef = db.doc(`users/${uid}/meta/subscription`);
   await subscriptionRef.set({
-    isActive: true,
+    isPremium: true,
     productId: 'admin_grant',
-    purchaseToken: `admin_${context.auth!.uid}_${Date.now()}`,
-    startedAt: now,
-    expiresAt,
+    purchaseDate: now.toISOString(),
+    expiryDate: expiresAt.toISOString(),
+    platform: 'admin',
     grantedBy: context.auth!.uid,
     grantReason: reason,
     isManualGrant: true,
@@ -77,9 +78,9 @@ export const adminGrantPremium = region.https.onCall(async (data, context) => {
     cancelledAt: null,
   });
 
-  await writeAuditLog(context, 'grant_premium', { durationDays, reason, note, expiresAt: expiresAt.toDate().toISOString() }, uid, targetEmail);
+  await writeAuditLog(context, 'grant_premium', { durationDays, reason, note, expiresAt: expiresAt.toISOString() }, uid, targetEmail);
 
-  return { success: true, expiresAt: expiresAt.toDate().toISOString() };
+  return { success: true, expiresAt: expiresAt.toISOString() };
 });
 
 // ── Revoke Premium ───────────────────────────────────────────────────────────
@@ -101,10 +102,10 @@ export const adminRevokePremium = region.https.onCall(async (data, context) => {
     throw new functions.https.HttpsError('not-found', `User ${uid} not found`);
   }
 
-  const subscriptionRef = db.doc(`users/${uid}/subscriptions/current`);
+  const subscriptionRef = db.doc(`users/${uid}/meta/subscription`);
   await subscriptionRef.set(
     {
-      isActive: false,
+      isPremium: false,
       cancelledAt: admin.firestore.FieldValue.serverTimestamp(),
       note: note ?? null,
     },
@@ -171,7 +172,7 @@ export const adminGetUser = region.https.onCall(async (data, context) => {
     throw new functions.https.HttpsError('not-found', 'User not found');
   }
 
-  const subscriptionSnap = await db.doc(`users/${authUser.uid}/subscriptions/current`).get();
+  const subscriptionSnap = await db.doc(`users/${authUser.uid}/meta/subscription`).get();
   const sub = subscriptionSnap.data();
 
   const serializeTimestamp = (ts: admin.firestore.Timestamp | undefined) =>
@@ -188,10 +189,10 @@ export const adminGetUser = region.https.onCall(async (data, context) => {
     isAdmin: authUser.customClaims?.['isAdmin'] ?? false,
     subscription: sub
       ? {
-          isActive: sub['isActive'] ?? false,
+          isActive: sub['isPremium'] ?? false,
           productId: sub['productId'] ?? '',
-          expiresAt: serializeTimestamp(sub['expiresAt']),
-          startedAt: serializeTimestamp(sub['startedAt']),
+          expiresAt: sub['expiryDate'] ?? null,
+          startedAt: sub['purchaseDate'] ?? null,
           isManualGrant: sub['isManualGrant'] ?? false,
           grantReason: sub['grantReason'] ?? null,
           grantedBy: sub['grantedBy'] ?? null,
@@ -209,7 +210,7 @@ export const adminGetStats = region.https.onCall(async (_data, context) => {
 
   const [totalUsersSnap, premiumSnap, auditSnap] = await Promise.all([
     db.collection('users').count().get(),
-    db.collectionGroup('subscriptions').where('isActive', '==', true).count().get(),
+    db.collectionGroup('meta').where('isPremium', '==', true).count().get(),
     db.collection('adminLogs').orderBy('timestamp', 'desc').limit(1).get(),
   ]);
 

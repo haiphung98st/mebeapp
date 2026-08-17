@@ -178,13 +178,6 @@ class ProfileScreen extends ConsumerWidget {
           ),
           const SizedBox(height: AppSpacing.lg),
           _SettingsGroup(
-            title: 'BẢO MẬT',
-            children: [
-              _BiometricTile(),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          _SettingsGroup(
             title: 'TÀI KHOẢN',
             children: [
               ListTile(

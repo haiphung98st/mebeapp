@@ -71,7 +71,6 @@ class NotificationService {
     String channelId,
     String channelName, {
     bool vibrate = true,
-    String? sound,
   }) {
     return NotificationDetails(
       android: AndroidNotificationDetails(

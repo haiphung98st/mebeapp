@@ -31,13 +31,28 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>MeBé Tracker cần quyền truy cập camera để chụp ảnh bé</string>
+	<string>MeBé Tracker cần quyền truy cập camera để chụp ảnh bé và quét mã vạch sữa công thức</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>MeBé Tracker dùng Face ID để đăng nhập nhanh và bảo mật</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>MeBé Tracker cần quyền truy cập micro để ghi nhật ký giọng nói và âm thanh kỷ niệm của bé</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>MeBé Tracker cần quyền truy cập thư viện ảnh để chọn ảnh bé</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
 		<string>remote-notification</string>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1038033703745-s8op8mjva4lsar2891lucg4p2np4les0</string>
+			</array>
+		</dict>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

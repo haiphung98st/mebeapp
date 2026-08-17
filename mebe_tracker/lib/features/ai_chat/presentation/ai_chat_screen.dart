@@ -8,7 +8,6 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/providers/subscription_provider.dart';
 import '../data/chat_provider.dart';
-import '../data/chat_service.dart';
 import '../domain/models/chat_models.dart';
 
 class AiChatScreen extends ConsumerStatefulWidget {
