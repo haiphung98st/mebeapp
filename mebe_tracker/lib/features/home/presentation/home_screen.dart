@@ -196,6 +196,7 @@ class HomeScreen extends ConsumerWidget {
                         QuickAction(icon: '💉', label: 'Tiêm chủng', onTap: () => context.go('/home/vaccine')),
                         QuickAction(icon: '🌡️', label: 'Sức khoẻ', onTap: () => context.push('/home/health')),
                         QuickAction(icon: '💆', label: 'Sức khoẻ mẹ', onTap: () => context.push('/home/mom-health')),
+                        QuickAction(icon: '🥣', label: 'Ăn dặm', onTap: () => context.push('/home/solid-food')),
                         QuickAction(
                           icon: '👩‍👩‍👧',
                           label: 'Cộng đồng',

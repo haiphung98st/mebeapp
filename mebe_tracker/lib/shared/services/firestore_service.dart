@@ -13,6 +13,7 @@ import '../models/vaccine_entry.dart';
 import '../../features/diaper/data/mood_entry.dart';
 import '../../features/growth/data/motor_entry.dart';
 import '../../features/health/data/health_models.dart';
+import '../../features/solid_food/data/solid_food_entry.dart';
 import '../../features/prenatal/data/prenatal_entry.dart';
 
 /// Wraps all Firestore reads/writes for the `users/{userId}/babies/{babyId}/...`
@@ -347,6 +348,28 @@ class FirestoreService {
 
   Future<void> deleteIllness(String userId, String babyId, String entryId) =>
       _illnesses(userId, babyId).doc(entryId).delete();
+
+  // ---- Solid Food ----
+
+  CollectionReference<Map<String, dynamic>> _solidFoods(
+          String userId, String babyId) =>
+      _baby(userId, babyId).collection('solid_foods');
+
+  Stream<List<SolidFoodEntry>> watchSolidFoods(
+          String userId, String babyId) =>
+      _solidFoods(userId, babyId)
+          .orderBy('givenAt', descending: true)
+          .limit(200)
+          .snapshots()
+          .map((s) => s.docs.map(SolidFoodEntry.fromFirestore).toList());
+
+  Future<void> addSolidFood(SolidFoodEntry entry) =>
+      _solidFoods(entry.userId, entry.babyId)
+          .doc(entry.id)
+          .set(entry.toFirestore());
+
+  Future<void> deleteSolidFood(String userId, String babyId, String entryId) =>
+      _solidFoods(userId, babyId).doc(entryId).delete();
 
   // ---- Subscription ----
 
