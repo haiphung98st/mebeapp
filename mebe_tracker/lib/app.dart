@@ -8,6 +8,7 @@ import 'features/admin/data/admin_provider.dart';
 import 'features/widget/widget_provider.dart';
 import 'shared/providers/auth_provider.dart';
 import 'shared/providers/live_activity_provider.dart';
+import 'shared/providers/night_mode_provider.dart';
 
 class MeBeApp extends ConsumerStatefulWidget {
   const MeBeApp({super.key});
@@ -59,10 +60,14 @@ class _MeBeAppState extends ConsumerState<MeBeApp> with WidgetsBindingObserver {
       );
     }
 
+    final isNight = ref.watch(nightModeProvider);
+
     return MaterialApp.router(
       title: 'MeBé Tracker',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
+      darkTheme: AppTheme.night,
+      themeMode: isNight ? ThemeMode.dark : ThemeMode.light,
       routerConfig: router,
       builder: (context, child) =>
           AchievementListener(child: child ?? const SizedBox()),

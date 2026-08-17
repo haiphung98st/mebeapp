@@ -135,4 +135,50 @@ class AppTheme {
       iconTheme: const IconThemeData(color: AppColors.ink),
     );
   }
+
+  static ThemeData get night {
+    final base = ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: const Color(0xFF0D0A1A),
+      colorScheme: const ColorScheme.dark(
+        primary: Color(0xFFFFB7CE),
+        secondary: Color(0xFFC9A8F5),
+        surface: Color(0xFF1A1228),
+        onSurface: Color(0xFFE8D5F5),
+        error: Color(0xFFFF6B6B),
+      ),
+    );
+
+    final textTheme = GoogleFonts.nunitoTextTheme(ThemeData.dark().textTheme).apply(
+      bodyColor: const Color(0xFFE8D5F5),
+      displayColor: Colors.white,
+      fontSizeFactor: 1.15,
+    );
+
+    return base.copyWith(
+      textTheme: textTheme,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        foregroundColor: Colors.white,
+      ),
+      cardTheme: CardThemeData(
+        color: const Color(0xFF1A1228),
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+          side: const BorderSide(color: Color(0xFF2D1A5C), width: 1),
+        ),
+      ),
+      dividerTheme: const DividerThemeData(
+        color: Color(0xFF2D1A5C),
+        thickness: 1,
+        space: 1,
+      ),
+      iconTheme: const IconThemeData(color: Color(0xFFE8D5F5)),
+    );
+  }
 }

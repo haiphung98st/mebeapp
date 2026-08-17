@@ -14,6 +14,8 @@ import '../../../features/wonder_weeks/data/wonder_weeks_provider.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/home_provider.dart';
+import '../../../shared/providers/night_mode_provider.dart';
+import '../../../shared/providers/sleep_provider.dart';
 import '../../../shared/providers/stats_provider.dart';
 import '../../../shared/providers/subscription_provider.dart';
 import 'widgets/baby_pill.dart';
@@ -42,6 +44,9 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isNight = ref.watch(nightModeProvider);
+    if (isNight) return const _NightHomeView();
+
     final user = ref.watch(currentUserProvider);
     final baby = ref.watch(activeBabyProvider);
     ref.watch(weeklyReportSchedulerProvider);
@@ -115,6 +120,13 @@ class HomeScreen extends ConsumerWidget {
                   radius: 20,
                   backgroundColor: Colors.white24,
                   child: Icon(Icons.person, color: Colors.white),
+                ),
+                actions: IconButton(
+                  icon: const Icon(Icons.bedtime_outlined, color: Colors.white),
+                  tooltip: 'Chế độ ban đêm',
+                  onPressed: () => ref
+                      .read(nightModeOverrideProvider.notifier)
+                      .forceEnable(),
                 ),
                 title: greetingForNow(),
                 subtitle: 'Chị ${user?.displayName ?? 'mẹ'} ơi!',
@@ -209,6 +221,191 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
+}
+
+// ── Night Home View ───────────────────────────────────────────────────────────
+
+class _NightHomeView extends ConsumerWidget {
+  const _NightHomeView();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final nextFeedingTime = ref.watch(nextFeedingTimeProvider);
+    final sleepState = ref.watch(activeSleepProvider);
+
+    String? nextStr;
+    if (nextFeedingTime != null) {
+      final h = nextFeedingTime.hour.toString().padLeft(2, '0');
+      final m = nextFeedingTime.minute.toString().padLeft(2, '0');
+      nextStr = '$h:$m';
+    }
+
+    String elapsedStr = '';
+    if (sleepState.isActive) {
+      final s = sleepState.elapsedSeconds;
+      final hh = (s ~/ 3600).toString().padLeft(2, '0');
+      final mm = ((s % 3600) ~/ 60).toString().padLeft(2, '0');
+      elapsedStr = '$hh:$mm';
+    }
+
+    return Scaffold(
+      backgroundColor: const Color(0xFF0D0A1A),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+              child: Row(
+                children: [
+                  const Text('🌙', style: TextStyle(fontSize: 18)),
+                  const SizedBox(width: 8),
+                  const Text('Chế độ ban đêm',
+                      style: TextStyle(color: Colors.white38, fontSize: 12)),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () => ref
+                        .read(nightModeOverrideProvider.notifier)
+                        .forceDisable(),
+                    child: const Text('Tắt',
+                        style: TextStyle(color: Colors.white38, fontSize: 12)),
+                  ),
+                ],
+              ),
+            ),
+            const Spacer(),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Cữ tiếp theo',
+                  style: TextStyle(
+                      color: Colors.white38,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  nextStr ?? '--:--',
+                  style: const TextStyle(
+                    color: Color(0xFFFFB7CE),
+                    fontSize: 80,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: -4,
+                  ),
+                ),
+              ],
+            ),
+            if (sleepState.isActive) ...[
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20, vertical: 12),
+                margin: const EdgeInsets.symmetric(horizontal: 32),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1A1228),
+                  borderRadius: BorderRadius.circular(20),
+                  border:
+                      Border.all(color: const Color(0xFF2D1A5C)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('🌙',
+                        style: TextStyle(fontSize: 24)),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Bé đang ngủ',
+                            style: TextStyle(
+                                color: Colors.white60, fontSize: 12)),
+                        Text(
+                          elapsedStr,
+                          style: const TextStyle(
+                            color: Color(0xFFC9A8F5),
+                            fontSize: 28,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+              child: Row(
+                children: [
+                  _NightButton('🤱', 'Ghi bú',
+                      onTap: () => context.push('/home/feeding')),
+                  const SizedBox(width: 12),
+                  _NightButton('🌸', 'Ghi tã',
+                      onTap: () => context.push('/home/diaper')),
+                  const SizedBox(width: 12),
+                  _NightButton(
+                    '⏹',
+                    'Dừng ngủ',
+                    onTap: () =>
+                        ref.read(activeSleepProvider.notifier).reset(),
+                    enabled: sleepState.isActive,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _NightButton extends StatelessWidget {
+  const _NightButton(this.icon, this.label,
+      {required this.onTap, this.enabled = true});
+
+  final String icon;
+  final String label;
+  final VoidCallback onTap;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: enabled ? onTap : null,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 18),
+          decoration: BoxDecoration(
+            color: enabled
+                ? const Color(0xFF1A1228)
+                : const Color(0xFF0F0A18),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: enabled
+                  ? const Color(0xFF2D1A5C)
+                  : const Color(0xFF1A1228),
+            ),
+          ),
+          child: Column(
+            children: [
+              Text(icon,
+                  style: TextStyle(
+                      fontSize: 28,
+                      color: enabled ? null : Colors.white12)),
+              const SizedBox(height: 6),
+              Text(label,
+                  style: TextStyle(
+                      color: enabled ? Colors.white60 : Colors.white12,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _WonderWeeksBanner extends StatelessWidget {
