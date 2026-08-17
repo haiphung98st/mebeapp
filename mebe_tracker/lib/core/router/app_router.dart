@@ -45,7 +45,22 @@ import '../../features/wrapped/presentation/wrapped_screen.dart';
 import '../../features/wonder_weeks/data/wonder_weeks_data.dart';
 import '../../features/wonder_weeks/presentation/leap_detail_screen.dart';
 import '../../features/wonder_weeks/presentation/wonder_weeks_screen.dart';
+import '../../features/memory/presentation/memory_hub_screen.dart';
+import '../../features/memory/presentation/story_cards_screen.dart';
+import '../../features/memory/presentation/letters_screen.dart';
+import '../../features/memory/presentation/write_letter_screen.dart';
+import '../../features/memory/presentation/letter_read_screen.dart';
+import '../../features/memory/presentation/voice_journal_screen.dart';
+import '../../features/memory/presentation/mood_timeline_screen.dart';
+import '../../features/memory/presentation/monthly_digest_screen.dart';
+import '../../features/memory/presentation/growth_poster_screen.dart';
+import '../../features/memory/presentation/baby_book_screen.dart';
+import '../../features/memory/presentation/time_capsule_screen.dart';
+import '../../features/memory/presentation/create_capsule_screen.dart';
+import '../../features/memory/presentation/milestone_map_screen.dart';
+import '../../features/memory/presentation/soundscape_screen.dart';
 import '../../shared/models/baby_profile.dart';
+import '../../shared/models/future_letter.dart';
 import '../../shared/models/milk_stash_entry.dart';
 import '../../shared/providers/auth_provider.dart';
 import '../../shared/providers/baby_provider.dart';
@@ -232,6 +247,24 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/home/profile/edit-baby',
         builder: (context, state) => EditBabyScreen(baby: state.extra as BabyProfile),
       ),
+      // ── Memory routes ────────────────────────────────────────────────────────
+      GoRoute(path: '/memory', builder: (_, __) => const MemoryHubScreen()),
+      GoRoute(path: '/memory/story-cards', builder: (_, __) => const StoryCardsScreen()),
+      GoRoute(path: '/memory/letters', builder: (_, __) => const LettersScreen()),
+      GoRoute(path: '/memory/letters/write', builder: (_, __) => const WriteLetterScreen()),
+      GoRoute(
+        path: '/memory/letters/read',
+        builder: (_, state) => LetterReadScreen(letter: state.extra as FutureLetter),
+      ),
+      GoRoute(path: '/memory/voice-journal', builder: (_, __) => const VoiceJournalScreen()),
+      GoRoute(path: '/memory/mood-timeline', builder: (_, __) => const MoodTimelineScreen()),
+      GoRoute(path: '/memory/digest', builder: (_, __) => const MonthlyDigestScreen()),
+      GoRoute(path: '/memory/growth-poster', builder: (_, __) => const GrowthPosterScreen()),
+      GoRoute(path: '/memory/baby-book', builder: (_, __) => const BabyBookScreen()),
+      GoRoute(path: '/memory/time-capsule', builder: (_, __) => const TimeCapsuleScreen()),
+      GoRoute(path: '/memory/time-capsule/create', builder: (_, __) => const CreateCapsuleScreen()),
+      GoRoute(path: '/memory/milestone-map', builder: (_, __) => const MilestoneMapScreen()),
+      GoRoute(path: '/memory/soundscape', builder: (_, __) => const SoundscapeScreen()),
       // ── Admin shell ──────────────────────────────────────────────────────────
       ShellRoute(
         builder: (context, state, child) => AdminShell(child: child),

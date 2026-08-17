@@ -207,6 +207,11 @@ class HomeScreen extends ConsumerWidget {
                           label: 'Hỏi AI',
                           onTap: () => _openAiChat(context),
                         ),
+                        QuickAction(
+                          icon: '💝',
+                          label: 'Kỷ niệm',
+                          onTap: () => context.push('/memory'),
+                        ),
                       ],
                     ),
                     const SizedBox(height: AppSpacing.lg),

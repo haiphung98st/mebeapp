@@ -10,3 +10,4 @@ export {
   adminGetStats,
   adminUpdateConfig,
 } from './adminFunctions';
+export { transcribeVoice } from './transcribeVoice';
