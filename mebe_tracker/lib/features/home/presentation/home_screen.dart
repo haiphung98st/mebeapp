@@ -16,6 +16,7 @@ import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/home_provider.dart';
 import '../../../shared/providers/night_mode_provider.dart';
 import '../../../shared/providers/sleep_provider.dart';
+import '../../../shared/providers/smart_notification_provider.dart';
 import '../../../shared/providers/stats_provider.dart';
 import '../../../shared/providers/subscription_provider.dart';
 import 'widgets/baby_pill.dart';
@@ -51,6 +52,7 @@ class HomeScreen extends ConsumerWidget {
     final user = ref.watch(currentUserProvider);
     final baby = ref.watch(activeBabyProvider);
     ref.watch(weeklyReportSchedulerProvider);
+    ref.watch(smartNotificationSchedulerProvider);
 
     final isPremium = ref.watch(isPremiumProvider);
     final feedingsAsync = ref.watch(allFeedingsProvider);

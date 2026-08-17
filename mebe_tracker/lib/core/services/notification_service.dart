@@ -335,6 +335,124 @@ class NotificationService {
     }
   }
 
+  // ── WONDER WEEKS ─────────────────────────────────────────
+  // IDs 6000–6099 (3 per leap: pre-storm, storm-start, storm-end)
+
+  Future<void> scheduleWonderWeeksAlerts({
+    required DateTime dateOfBirth,
+    required DateTime? edd,
+    required List<({int number, String name, int stormStartWeek, int stormEndWeek})> leaps,
+  }) async {
+    if (!_initialized) await init();
+    for (var i = 6000; i <= 6099; i++) {
+      await _plugin.cancel(i);
+    }
+
+    final base = edd?.subtract(const Duration(days: 280)) ?? dateOfBirth;
+
+    for (final leap in leaps) {
+      final stormStart = base.add(Duration(days: leap.stormStartWeek * 7));
+      final stormEnd = base.add(Duration(days: leap.stormEndWeek * 7));
+      final preStorm = stormStart.subtract(const Duration(days: 3));
+      final now = DateTime.now();
+
+      final baseId = 6000 + leap.number * 3;
+
+      if (preStorm.isAfter(now)) {
+        await _plugin.zonedSchedule(
+          baseId,
+          '🌪️ Giai đoạn khủng hoảng ${leap.name} sắp bắt đầu',
+          'Còn 3 ngày nữa đến Wonder Week #${leap.number}. Hãy chuẩn bị nhé!',
+          tz.TZDateTime.from(
+              DateTime(preStorm.year, preStorm.month, preStorm.day, 9), tz.local),
+          _details('wonder_weeks', 'Wonder Weeks'),
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          payload: 'wonder_weeks',
+        );
+      }
+      if (stormStart.isAfter(now)) {
+        await _plugin.zonedSchedule(
+          baseId + 1,
+          '🌪️ Leap ${leap.number}: ${leap.name} bắt đầu',
+          'Bé có thể quấy và khó ngủ hơn trong ${leap.stormEndWeek - leap.stormStartWeek} tuần tới',
+          tz.TZDateTime.from(
+              DateTime(stormStart.year, stormStart.month, stormStart.day, 9), tz.local),
+          _details('wonder_weeks', 'Wonder Weeks'),
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          payload: 'wonder_weeks',
+        );
+      }
+      if (stormEnd.isAfter(now)) {
+        await _plugin.zonedSchedule(
+          baseId + 2,
+          '☀️ Leap ${leap.number} qua rồi!',
+          'Bé đã vượt qua Wonder Week #${leap.number} — giai đoạn tươi sáng bắt đầu!',
+          tz.TZDateTime.from(
+              DateTime(stormEnd.year, stormEnd.month, stormEnd.day, 9), tz.local),
+          _details('wonder_weeks', 'Wonder Weeks'),
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          payload: 'wonder_weeks',
+        );
+      }
+    }
+  }
+
+  // ── ANNIVERSARY ───────────────────────────────────────────
+  // ID 7000: next monthly milestone, 7001: yearly birthday
+
+  Future<void> scheduleAnniversaryReminders({
+    required String babyName,
+    required DateTime dateOfBirth,
+  }) async {
+    if (!_initialized) await init();
+    await _plugin.cancel(7000);
+    await _plugin.cancel(7001);
+
+    final now = DateTime.now();
+
+    // Next monthly milestone
+    final months = now.difference(dateOfBirth).inDays ~/ 30 + 1;
+    final nextMonthly = DateTime(
+        dateOfBirth.year + (dateOfBirth.month + months - 1) ~/ 12,
+        (dateOfBirth.month + months - 1) % 12 + 1,
+        dateOfBirth.day,
+        9);
+    if (nextMonthly.isAfter(now) && months < 24) {
+      await _plugin.zonedSchedule(
+        7000,
+        '🎂 $babyName tròn $months tháng tuổi rồi!',
+        'Chúc mừng cột mốc quan trọng của bé nhé!',
+        tz.TZDateTime.from(nextMonthly, tz.local),
+        _details('anniversary', 'Kỷ niệm'),
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+      );
+    }
+
+    // First birthday
+    final firstBirthday = DateTime(dateOfBirth.year + 1, dateOfBirth.month,
+        dateOfBirth.day, 9);
+    if (firstBirthday.isAfter(now)) {
+      await _plugin.zonedSchedule(
+        7001,
+        '🎉 $babyName tròn 1 tuổi!',
+        'Một năm tuyệt vời đã qua — Chúc mừng sinh nhật bé yêu!',
+        tz.TZDateTime.from(firstBirthday, tz.local),
+        _details('anniversary', 'Kỷ niệm'),
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+      );
+    }
+  }
+
   // ── LEGACY / CONVENIENCE ─────────────────────────────────
 
   Future<void> showImmediateNotification(int id, String title, String body,

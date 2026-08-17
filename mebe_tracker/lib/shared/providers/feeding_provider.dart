@@ -10,6 +10,7 @@ import '../services/firestore_service.dart';
 import 'baby_provider.dart';
 import 'home_provider.dart';
 import 'notification_config_provider.dart';
+import 'sleep_provider.dart';
 
 class FeedingTimerState {
   const FeedingTimerState({
@@ -171,15 +172,19 @@ class FeedingRepository {
     }
 
     if (_ref.read(notificationConfigProvider).feedingEnabled) {
-      final recent = (_ref.read(allFeedingsProvider).value ?? const <FeedingEntry>[]).take(5).toList();
-      final avgInterval = _averageFeedingInterval(recent);
-      await NotificationService.instance.cancelNotification(2001);
-      await NotificationService.instance.scheduleNotification(
-        2001,
-        '🐰 Đến giờ cho bé bú rồi!',
-        'Lần trước bú lúc ${_formatHm(entry.startTime)} · ${avgInterval.inMinutes} phút',
-        entry.startTime.add(avgInterval),
-      );
+      // Skip scheduling if baby is currently sleeping (sleep-aware notifications)
+      final isSleeping = _ref.read(activeSleepProvider).isActive;
+      if (!isSleeping) {
+        final recent = (_ref.read(allFeedingsProvider).value ?? const <FeedingEntry>[]).take(5).toList();
+        final avgInterval = _averageFeedingInterval(recent);
+        await NotificationService.instance.cancelNotification(2001);
+        await NotificationService.instance.scheduleNotification(
+          2001,
+          '🐰 Đến giờ cho bé bú rồi!',
+          'Lần trước bú lúc ${_formatHm(entry.startTime)} · ${avgInterval.inMinutes} phút',
+          entry.startTime.add(avgInterval),
+        );
+      }
     }
     _ref.invalidate(widgetDataProvider);
   }
