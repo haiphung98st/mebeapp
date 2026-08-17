@@ -10,6 +10,9 @@ import '../../../shared/providers/app_settings_provider.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/notification_config_provider.dart';
 import '../../../shared/providers/pdf_export_provider.dart';
+import '../../../shared/services/biometric_service.dart';
+import '../../../shared/services/credential_service.dart';
+
 import '../../subscription/presentation/premium_gate.dart';
 import 'widgets/baby_card.dart';
 import 'widgets/family_sharing_section.dart';
@@ -168,6 +171,20 @@ class ProfileScreen extends ConsumerWidget {
           ),
           const SizedBox(height: AppSpacing.lg),
           _SettingsGroup(
+            title: 'BẢO MẬT',
+            children: [
+              _BiometricTile(),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          _SettingsGroup(
+            title: 'BẢO MẬT',
+            children: [
+              _BiometricTile(),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          _SettingsGroup(
             title: 'TÀI KHOẢN',
             children: [
               ListTile(
@@ -252,6 +269,90 @@ class _SettingsGroup extends StatelessWidget {
           child: Column(children: children),
         ),
       ],
+    );
+  }
+}
+
+class _BiometricTile extends ConsumerStatefulWidget {
+  @override
+  ConsumerState<_BiometricTile> createState() => _BiometricTileState();
+}
+
+class _BiometricTileState extends ConsumerState<_BiometricTile> {
+  bool? _enabled;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadState();
+  }
+
+  Future<void> _loadState() async {
+    final svc = ref.read(biometricServiceProvider);
+    final enabled = await svc.isBiometricEnabled();
+    if (mounted) setState(() => _enabled = enabled);
+  }
+
+  Future<void> _toggle(bool value) async {
+    final svc = ref.read(biometricServiceProvider);
+    final credSvc = ref.read(credentialServiceProvider);
+    if (value) {
+      final available = await svc.isAvailable();
+      if (!available) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Thiết bị không hỗ trợ sinh trắc học')),
+          );
+        }
+        return;
+      }
+      final hasCreds = await credSvc.hasSavedCredentials();
+      if (!hasCreds) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Hãy bật "Nhớ mật khẩu" và đăng nhập trước nhé'),
+            ),
+          );
+        }
+        return;
+      }
+      final success = await svc.authenticate(reason: 'Xác thực để bật đăng nhập sinh trắc học');
+      if (!success) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Xác thực không thành công')),
+          );
+        }
+        return;
+      }
+    }
+    await svc.setBiometricEnabled(value);
+    if (mounted) {
+      setState(() => _enabled = value);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(value ? 'Đã bật đăng nhập sinh trắc học' : 'Đã tắt đăng nhập sinh trắc học'),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_enabled == null) return const SizedBox.shrink();
+    return FutureBuilder<String>(
+      future: ref.read(biometricServiceProvider).getBiometricName(),
+      builder: (context, snap) {
+        final name = snap.data ?? 'Sinh trắc học';
+        final icon = name == 'Face ID' ? Icons.face_retouching_natural : Icons.fingerprint;
+        return SwitchListTile(
+          secondary: Icon(icon),
+          title: Text('Đăng nhập bằng $name'),
+          value: _enabled!,
+          onChanged: _toggle,
+        );
+      },
     );
   }
 }

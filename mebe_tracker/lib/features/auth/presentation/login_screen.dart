@@ -8,6 +8,8 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/widgets/bunny_avatar.dart';
 import '../../../shared/providers/auth_provider.dart';
+import '../../../shared/services/credential_service.dart';
+import 'biometric_login_widget.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -22,6 +24,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
   bool _loading = false;
+  bool _rememberMe = false;
+  bool _credentialsLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedCredentials();
+  }
+
+  Future<void> _loadSavedCredentials() async {
+    final creds =
+        await ref.read(credentialServiceProvider).loadCredentials();
+    if (creds != null && mounted) {
+      setState(() {
+        _emailController.text = creds.email ?? '';
+        _passwordController.text = creds.password ?? '';
+        _rememberMe = true;
+        _credentialsLoaded = true;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -44,6 +67,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             _emailController.text.trim(),
             _passwordController.text,
           );
+      final credService = ref.read(credentialServiceProvider);
+      if (_rememberMe) {
+        await credService.saveCredentials(
+            _emailController.text.trim(), _passwordController.text);
+      } else {
+        await credService.clearCredentials();
+      }
     } on FirebaseAuthException catch (e) {
       _showError(e.message ?? 'Đăng nhập thất bại.');
     } finally {
@@ -84,6 +114,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: AppSpacing.xxxl),
+                if (_credentialsLoaded) ...[
+                  Row(
+                    children: [
+                      const Icon(Icons.check_circle,
+                          size: 14, color: AppColors.mint),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Đã nhớ tài khoản từ lần trước',
+                        style: AppTextStyles.bodySm
+                            .copyWith(color: AppColors.mint),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                ],
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -92,7 +137,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     prefixIcon: Icon(Icons.email_outlined),
                   ),
                   validator: (value) {
-                    if (value == null || value.trim().isEmpty) return 'Vui lòng nhập email';
+                    if (value == null || value.trim().isEmpty)
+                      return 'Vui lòng nhập email';
                     if (!value.contains('@')) return 'Email không hợp lệ';
                     return null;
                   },
@@ -105,37 +151,82 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     hintText: 'Mật khẩu',
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
-                      icon: Icon(_obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined),
-                      tooltip: _obscurePassword ? 'Hiện mật khẩu' : 'Ẩn mật khẩu',
-                      onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                      icon: Icon(_obscurePassword
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined),
+                      tooltip: _obscurePassword
+                          ? 'Hiện mật khẩu'
+                          : 'Ẩn mật khẩu',
+                      onPressed: () => setState(
+                          () => _obscurePassword = !_obscurePassword),
                     ),
                   ),
                   validator: (value) {
-                    if (value == null || value.length < 6) return 'Mật khẩu tối thiểu 6 ký tự';
+                    if (value == null || value.length < 6)
+                      return 'Mật khẩu tối thiểu 6 ký tự';
                     return null;
                   },
                 ),
-                const SizedBox(height: AppSpacing.xl),
+                const SizedBox(height: AppSpacing.sm),
+                // Remember me row
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _rememberMe,
+                      activeColor: AppColors.blossom,
+                      onChanged: (v) =>
+                          setState(() => _rememberMe = v ?? false),
+                    ),
+                    const Text('Nhớ mật khẩu'),
+                    const Spacer(),
+                    if (_credentialsLoaded)
+                      TextButton(
+                        onPressed: () async {
+                          await ref
+                              .read(credentialServiceProvider)
+                              .clearCredentials();
+                          setState(() {
+                            _emailController.clear();
+                            _passwordController.clear();
+                            _rememberMe = false;
+                            _credentialsLoaded = false;
+                          });
+                        },
+                        child: Text(
+                          'Xoá đã lưu',
+                          style: TextStyle(
+                              color: AppColors.muted, fontSize: 12),
+                        ),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.lg),
                 SizedBox(
                   height: 52,
                   child: ElevatedButton(
                     onPressed: _loading ? null : _submit,
-                    style: ElevatedButton.styleFrom(backgroundColor: AppColors.blossom),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.blossom),
                     child: _loading
                         ? const SizedBox(
                             width: 20,
                             height: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.white),
+                            child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: AppColors.white),
                           )
                         : const Text('Đăng nhập'),
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xl),
+                const BiometricLoginWidget(),
+                const SizedBox(height: AppSpacing.lg),
                 Row(
                   children: [
                     const Expanded(child: Divider()),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.md),
                       child: Text('hoặc', style: AppTextStyles.bodySm),
                     ),
                     const Expanded(child: Divider()),
@@ -146,7 +237,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   height: 52,
                   child: OutlinedButton.icon(
                     onPressed: _loading ? null : _signInWithGoogle,
-                    icon: const Text('🇬', style: TextStyle(fontSize: 18)),
+                    icon: const Text('🇬',
+                        style: TextStyle(fontSize: 18)),
                     label: const Text('Đăng nhập với Google'),
                   ),
                 ),
@@ -161,7 +253,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         children: [
                           TextSpan(
                             text: 'Đăng ký',
-                            style: TextStyle(color: AppColors.blossom, fontWeight: FontWeight.w800),
+                            style: TextStyle(
+                                color: AppColors.blossom,
+                                fontWeight: FontWeight.w800),
                           ),
                         ],
                       ),
