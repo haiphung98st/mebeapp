@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/error_handling.dart';
+import '../../../../features/formula_scanner/presentation/formula_scanner_screen.dart';
 import '../../../../shared/models/feeding_entry.dart';
 import '../../../../shared/providers/auth_provider.dart';
 import '../../../../shared/providers/baby_provider.dart';
@@ -49,6 +51,7 @@ class _AmountCardState extends ConsumerState<_AmountCard> {
   double _amountMl = 60;
   bool _useOz = false;
   String _milkType = _milkTypes.first;
+  String? _formulaName;
 
   String get _displayAmount {
     if (_useOz) return (_amountMl / 29.5735).toStringAsFixed(1);
@@ -59,6 +62,17 @@ class _AmountCardState extends ConsumerState<_AmountCard> {
     setState(() {
       _amountMl = (_amountMl + deltaMl).clamp(10, 500);
     });
+  }
+
+  Future<void> _scanFormula() async {
+    final result = await context.push<FormulaScanResult>('/formula-scanner');
+    if (result != null) {
+      setState(() {
+        _milkType = 'Sữa công thức';
+        _formulaName = result.formula.displayName;
+        _amountMl = result.formula.typicalServingMl;
+      });
+    }
   }
 
   @override
@@ -116,6 +130,36 @@ class _AmountCardState extends ConsumerState<_AmountCard> {
               if (value != null) setState(() => _milkType = value);
             },
           ),
+          const SizedBox(height: AppSpacing.sm),
+          Row(
+            children: [
+              if (_formulaName != null)
+                Expanded(
+                  child: Chip(
+                    label: Text(_formulaName!, overflow: TextOverflow.ellipsis),
+                    backgroundColor: AppColors.petal,
+                    deleteIconColor: AppColors.blossom,
+                    onDeleted: () => setState(() => _formulaName = null),
+                  ),
+                ),
+              if (_formulaName == null)
+                Expanded(
+                  child: OutlinedButton.icon(
+                    icon: const Icon(Icons.qr_code_scanner,
+                        color: AppColors.blossom),
+                    label: const Text('Quét hộp sữa'),
+                    onPressed: _scanFormula,
+                  ),
+                )
+              else
+                IconButton(
+                  icon: const Icon(Icons.qr_code_scanner,
+                      color: AppColors.blossom),
+                  tooltip: 'Quét lại',
+                  onPressed: _scanFormula,
+                ),
+            ],
+          ),
           const SizedBox(height: AppSpacing.lg),
           Row(
             children: [
@@ -159,7 +203,7 @@ class _AmountCardState extends ConsumerState<_AmountCard> {
       startTime: now,
       endTime: now,
       amountMl: _amountMl,
-      notes: _milkType,
+      notes: _formulaName ?? _milkType,
       createdAt: now,
     );
     runWriteAction(
