@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
@@ -84,6 +85,11 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () => Navigator.of(context).pop(),
+            ),
+            actions: IconButton(
+              icon: const Icon(Icons.bar_chart_rounded, color: Colors.white),
+              onPressed: () => context.push('/community/stats'),
+              tooltip: 'Thống kê nhóm',
             ),
             child: memberCountAsync.whenOrNull(
               data: (count) => count > 0

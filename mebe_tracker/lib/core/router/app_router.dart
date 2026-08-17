@@ -35,6 +35,7 @@ import '../../features/prenatal/presentation/prenatal_screen.dart';
 import '../../features/growth/presentation/teeth_screen.dart';
 import '../../features/profile/presentation/avatar_customizer_screen.dart';
 import '../../features/community/presentation/community_screen.dart';
+import '../../features/community/presentation/community_stats_screen.dart';
 import '../../features/easy/presentation/easy_screen.dart';
 import '../../features/health/presentation/health_screen.dart';
 import '../../features/formula_scanner/presentation/formula_scanner_screen.dart';
@@ -206,6 +207,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/community',
         builder: (_, __) => const CommunityScreen(),
+      ),
+      GoRoute(
+        path: '/community/stats',
+        builder: (_, __) => const CommunityStatsScreen(),
       ),
       GoRoute(
         path: '/home/health',
