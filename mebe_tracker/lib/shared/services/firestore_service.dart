@@ -12,6 +12,7 @@ import '../models/sleep_entry.dart';
 import '../models/vaccine_entry.dart';
 import '../../features/diaper/data/mood_entry.dart';
 import '../../features/growth/data/motor_entry.dart';
+import '../../features/health/data/health_models.dart';
 import '../../features/prenatal/data/prenatal_entry.dart';
 
 /// Wraps all Firestore reads/writes for the `users/{userId}/babies/{babyId}/...`
@@ -279,6 +280,73 @@ class FirestoreService {
 
   Future<void> deletePrenatalEntry(String userId, String entryId) =>
       _prenatal(userId).doc(entryId).delete();
+
+  // ---- Health: Temperature ----
+
+  CollectionReference<Map<String, dynamic>> _temperatures(
+          String userId, String babyId) =>
+      _baby(userId, babyId).collection('temperatures');
+
+  CollectionReference<Map<String, dynamic>> _medicines(
+          String userId, String babyId) =>
+      _baby(userId, babyId).collection('medicines');
+
+  CollectionReference<Map<String, dynamic>> _illnesses(
+          String userId, String babyId) =>
+      _baby(userId, babyId).collection('illnesses');
+
+  Stream<List<TemperatureReading>> watchTemperatures(
+          String userId, String babyId) =>
+      _temperatures(userId, babyId)
+          .orderBy('recordedAt', descending: true)
+          .limit(30)
+          .snapshots()
+          .map((s) => s.docs.map(TemperatureReading.fromFirestore).toList());
+
+  Future<void> addTemperature(TemperatureReading entry) =>
+      _temperatures(entry.userId, entry.babyId)
+          .doc(entry.id)
+          .set(entry.toFirestore());
+
+  Future<void> deleteTemperature(
+          String userId, String babyId, String entryId) =>
+      _temperatures(userId, babyId).doc(entryId).delete();
+
+  Stream<List<MedicineRecord>> watchMedicines(
+          String userId, String babyId) =>
+      _medicines(userId, babyId)
+          .orderBy('givenAt', descending: true)
+          .limit(50)
+          .snapshots()
+          .map((s) => s.docs.map(MedicineRecord.fromFirestore).toList());
+
+  Future<void> addMedicine(MedicineRecord entry) =>
+      _medicines(entry.userId, entry.babyId)
+          .doc(entry.id)
+          .set(entry.toFirestore());
+
+  Future<void> deleteMedicine(String userId, String babyId, String entryId) =>
+      _medicines(userId, babyId).doc(entryId).delete();
+
+  Stream<List<IllnessEpisode>> watchIllnesses(
+          String userId, String babyId) =>
+      _illnesses(userId, babyId)
+          .orderBy('startedAt', descending: true)
+          .snapshots()
+          .map((s) => s.docs.map(IllnessEpisode.fromFirestore).toList());
+
+  Future<void> addIllness(IllnessEpisode entry) =>
+      _illnesses(entry.userId, entry.babyId)
+          .doc(entry.id)
+          .set(entry.toFirestore());
+
+  Future<void> updateIllness(IllnessEpisode entry) =>
+      _illnesses(entry.userId, entry.babyId)
+          .doc(entry.id)
+          .update(entry.toFirestore());
+
+  Future<void> deleteIllness(String userId, String babyId, String entryId) =>
+      _illnesses(userId, babyId).doc(entryId).delete();
 
   // ---- Subscription ----
 
