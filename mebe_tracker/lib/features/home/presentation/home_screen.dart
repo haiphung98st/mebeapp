@@ -19,6 +19,7 @@ import '../../../shared/providers/sleep_provider.dart';
 import '../../../shared/providers/stats_provider.dart';
 import '../../../shared/providers/subscription_provider.dart';
 import 'widgets/baby_pill.dart';
+import 'widgets/baby_switcher.dart';
 import 'widgets/daily_summary_card.dart';
 import 'widgets/home_skeleton.dart';
 import 'widgets/quick_actions_grid.dart';
@@ -136,6 +137,12 @@ class HomeScreen extends ConsumerWidget {
                         child: BabyPill(baby: baby, nextFeedingTime: nextFeedingTime),
                       )
                     : null,
+              ),
+            ),
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(top: AppSpacing.sm),
+                child: BabySwitcher(),
               ),
             ),
             if (isLoading)
