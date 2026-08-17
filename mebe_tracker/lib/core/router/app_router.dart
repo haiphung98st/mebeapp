@@ -37,6 +37,7 @@ import '../../features/profile/presentation/avatar_customizer_screen.dart';
 import '../../features/community/presentation/community_screen.dart';
 import '../../features/easy/presentation/easy_screen.dart';
 import '../../features/health/presentation/health_screen.dart';
+import '../../features/mom_health/presentation/mom_health_screen.dart';
 import '../../features/wrapped/presentation/wrapped_screen.dart';
 import '../../features/wonder_weeks/data/wonder_weeks_data.dart';
 import '../../features/wonder_weeks/presentation/leap_detail_screen.dart';
@@ -207,6 +208,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/home/health',
         builder: (_, __) => const HealthScreen(),
+      ),
+      GoRoute(
+        path: '/home/mom-health',
+        builder: (_, __) => const MomHealthScreen(),
       ),
       GoRoute(
         path: '/home/profile/edit-baby',
