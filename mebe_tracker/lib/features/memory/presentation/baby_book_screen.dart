@@ -27,7 +27,13 @@ class _BabyBookScreenState extends ConsumerState<BabyBookScreen> {
     final baby = ref.read(activeBabyProvider);
     final growths = ref.read(allGrowthsProvider).value ?? [];
     final cards = ref.read(storyCardsProvider).value ?? [];
-    final doc = pw.Document();
+    // Default PDF fonts (Helvetica) don't cover Vietnamese diacritics —
+    // load a Unicode font so the whole document renders correctly.
+    final baseFont = await PdfGoogleFonts.notoSansRegular();
+    final boldFont = await PdfGoogleFonts.notoSansBold();
+    final doc = pw.Document(
+      theme: pw.ThemeData.withFont(base: baseFont, bold: boldFont),
+    );
 
     // Cover page
     doc.addPage(pw.Page(

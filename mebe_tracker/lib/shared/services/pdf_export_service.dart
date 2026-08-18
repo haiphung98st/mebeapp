@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../models/feeding_entry.dart';
@@ -30,7 +31,13 @@ class MonthlyReportData {
 
 class PdfExportService {
   Future<File> generateMonthlyReport(MonthlyReportData data) async {
-    final doc = pw.Document();
+    // Default PDF fonts (Helvetica) don't cover Vietnamese diacritics —
+    // load a Unicode font so the whole document renders correctly.
+    final baseFont = await PdfGoogleFonts.notoSansRegular();
+    final boldFont = await PdfGoogleFonts.notoSansBold();
+    final doc = pw.Document(
+      theme: pw.ThemeData.withFont(base: baseFont, bold: boldFont),
+    );
     final totalFeedMl = data.feedings.fold<double>(0, (sum, f) => sum + (f.amountMl ?? 0));
     final totalSleepMin = data.sleeps.fold<int>(0, (sum, s) => sum + (s.durationMinutes ?? 0));
     final completedVaccines = data.vaccineItems.where((v) => v.isCompleted).length;
