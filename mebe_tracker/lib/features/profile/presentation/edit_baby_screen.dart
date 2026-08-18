@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -77,12 +78,20 @@ class _EditBabyScreenState extends ConsumerState<EditBabyScreen> {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _saving = true);
     try {
+      var avatarUrl = widget.baby.avatarUrl;
+      if (_avatarFile != null) {
+        final storageRef = FirebaseStorage.instance
+            .ref('avatars/${widget.baby.userId}/${widget.baby.id}.jpg');
+        await storageRef.putFile(_avatarFile!);
+        avatarUrl = await storageRef.getDownloadURL();
+      }
       final firestoreService = ref.read(firestoreServiceProvider);
       final updated = widget.baby.copyWith(
         name: _nameController.text.trim(),
         dateOfBirth: _dateOfBirth,
         gender: _gender,
         edd: _edd,
+        avatarUrl: avatarUrl,
         updatedAt: DateTime.now(),
       );
       await firestoreService.updateBaby(updated);
@@ -119,6 +128,15 @@ class _EditBabyScreenState extends ConsumerState<EditBabyScreen> {
                         if (_avatarFile != null)
                           ClipOval(
                             child: Image.file(_avatarFile!, width: 120, height: 120, fit: BoxFit.cover),
+                          )
+                        else if (widget.baby.avatarUrl != null)
+                          ClipOval(
+                            child: Image.network(
+                              widget.baby.avatarUrl!,
+                              width: 120,
+                              height: 120,
+                              fit: BoxFit.cover,
+                            ),
                           )
                         else
                           const BunnyAvatar(size: 100, primaryColor: AppColors.white),

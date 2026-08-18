@@ -33,6 +33,9 @@ class _ProfileHeaderState extends ConsumerState<ProfileHeader> {
       await storageRef.putFile(File(picked.path));
       final url = await storageRef.getDownloadURL();
       await user.updatePhotoURL(url);
+      // updatePhotoURL doesn't refresh the cached User object on its own —
+      // reload so authStateProvider emits the new photoURL and the UI updates.
+      await user.reload();
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

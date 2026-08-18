@@ -18,14 +18,11 @@ class AvatarCustomizerScreen extends ConsumerStatefulWidget {
 
 class _AvatarCustomizerScreenState
     extends ConsumerState<AvatarCustomizerScreen> {
-  late AvatarConfig _config;
+  // Null until the saved config finishes loading from SharedPreferences —
+  // reading avatarConfigProvider's value synchronously in initState would
+  // race the async load and silently reset the editor to defaults.
+  AvatarConfig? _config;
   bool _dirty = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _config = ref.read(avatarConfigProvider).value ?? const AvatarConfig();
-  }
 
   void _update(AvatarConfig c) => setState(() {
         _config = c;
@@ -33,7 +30,9 @@ class _AvatarCustomizerScreenState
       });
 
   Future<void> _save() async {
-    await ref.read(avatarConfigProvider.notifier).save(_config);
+    final config = _config;
+    if (config == null) return;
+    await ref.read(avatarConfigProvider.notifier).save(config);
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Đã lưu avatar bé! 🐰')),
@@ -44,6 +43,11 @@ class _AvatarCustomizerScreenState
 
   @override
   Widget build(BuildContext context) {
+    final saved = ref.watch(avatarConfigProvider);
+    _config ??= saved.value;
+    final config = _config ?? const AvatarConfig();
+    final stillLoading = saved.isLoading && _config == null;
+
     return Scaffold(
       backgroundColor: AppColors.powder,
       appBar: AppBar(
@@ -62,92 +66,94 @@ class _AvatarCustomizerScreenState
             ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(
-          AppSpacing.lg,
-          AppSpacing.lg,
-          AppSpacing.lg,
-          AppSpacing.xxxl,
-        ),
-        child: Column(
-          children: [
-            // Live preview
-            Container(
-              padding: const EdgeInsets.all(AppSpacing.xl),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFFFD6E4), Color(0xFFFFF0F6)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+      body: stillLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.lg,
+                AppSpacing.lg,
+                AppSpacing.xxxl,
               ),
-              child: Center(
-                child: AnimatedBunnyAvatar(config: _config, size: 120),
+              child: Column(
+                children: [
+                  // Live preview
+                  Container(
+                    padding: const EdgeInsets.all(AppSpacing.xl),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFFFD6E4), Color(0xFFFFF0F6)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+                    ),
+                    child: Center(
+                      child: AnimatedBunnyAvatar(config: config, size: 120),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xl),
+
+                  _ColorSection(
+                    title: '🐰 Màu lông',
+                    colors: _skinColors,
+                    selected: config.headColor,
+                    onSelect: (c) => _update(config.copyWith(headColor: c)),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+
+                  _ColorSection(
+                    title: '👂 Màu tai',
+                    colors: _earColors,
+                    selected: config.earColor,
+                    onSelect: (c) => _update(config.copyWith(earColor: c)),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+
+                  _ColorSection(
+                    title: '👁️ Màu mắt',
+                    colors: _eyeColors,
+                    selected: config.eyeColor,
+                    onSelect: (c) => _update(config.copyWith(eyeColor: c)),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+
+                  _ColorSection(
+                    title: '💗 Màu mũi & má',
+                    colors: _blushColors,
+                    selected: config.noseColor,
+                    onSelect: (c) => _update(
+                      config.copyWith(noseColor: c, cheekColor: c),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xl),
+
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: () => _update(const AvatarConfig()),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.muted,
+                        side: const BorderSide(color: AppColors.divider),
+                      ),
+                      child: const Text('Đặt lại mặc định'),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _dirty ? _save : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.blossom,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text('Lưu avatar'),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: AppSpacing.xl),
-
-            _ColorSection(
-              title: '🐰 Màu lông',
-              colors: _skinColors,
-              selected: _config.headColor,
-              onSelect: (c) => _update(_config.copyWith(headColor: c)),
-            ),
-            const SizedBox(height: AppSpacing.lg),
-
-            _ColorSection(
-              title: '👂 Màu tai',
-              colors: _earColors,
-              selected: _config.earColor,
-              onSelect: (c) => _update(_config.copyWith(earColor: c)),
-            ),
-            const SizedBox(height: AppSpacing.lg),
-
-            _ColorSection(
-              title: '👁️ Màu mắt',
-              colors: _eyeColors,
-              selected: _config.eyeColor,
-              onSelect: (c) => _update(_config.copyWith(eyeColor: c)),
-            ),
-            const SizedBox(height: AppSpacing.lg),
-
-            _ColorSection(
-              title: '💗 Màu mũi & má',
-              colors: _blushColors,
-              selected: _config.noseColor,
-              onSelect: (c) => _update(
-                _config.copyWith(noseColor: c, cheekColor: c),
-              ),
-            ),
-            const SizedBox(height: AppSpacing.xl),
-
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                onPressed: () => _update(const AvatarConfig()),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.muted,
-                  side: const BorderSide(color: AppColors.divider),
-                ),
-                child: const Text('Đặt lại mặc định'),
-              ),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _dirty ? _save : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.blossom,
-                  foregroundColor: Colors.white,
-                ),
-                child: const Text('Lưu avatar'),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
