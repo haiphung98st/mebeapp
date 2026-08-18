@@ -23,7 +23,6 @@ class BabySwitcher extends ConsumerWidget {
       height: 44,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
         itemCount: babies.length,
         separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
         itemBuilder: (context, index) {
@@ -47,26 +46,37 @@ class BabySwitcher extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.md, vertical: AppSpacing.xs),
               decoration: BoxDecoration(
-                color: isActive ? AppColors.blossom : AppColors.white,
+                color: isActive
+                    ? AppColors.blossom
+                    : AppColors.white.withValues(alpha: 0.28),
                 borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
-                border: Border.all(
-                  color: isActive ? AppColors.blossom : AppColors.divider,
-                ),
+                boxShadow: isActive
+                    ? [
+                        BoxShadow(
+                          color: AppColors.blossom.withValues(alpha: 0.4),
+                          blurRadius: 10,
+                          offset: const Offset(0, 3),
+                        ),
+                      ]
+                    : null,
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (isLocked) ...[
-                    const Icon(Icons.lock_outline,
-                        size: 12, color: AppColors.blossom),
+                    Icon(Icons.lock_outline,
+                        size: 12,
+                        color: AppColors.white.withValues(alpha: 0.85)),
                     const SizedBox(width: 4),
                   ],
                   Text(
                     baby.name,
                     style: AppTextStyles.bodySm.copyWith(
-                      color: isActive ? AppColors.white : AppColors.body,
+                      color: isActive
+                          ? AppColors.white
+                          : AppColors.white.withValues(alpha: 0.85),
                       fontWeight:
-                          isActive ? FontWeight.w600 : FontWeight.normal,
+                          isActive ? FontWeight.w700 : FontWeight.w600,
                     ),
                   ),
                 ],

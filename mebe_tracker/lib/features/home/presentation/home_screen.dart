@@ -4,14 +4,11 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
-import '../../../core/utils/date_utils.dart';
-import '../../../core/widgets/bunny_header.dart';
 import '../../../core/widgets/error_card.dart';
 import '../../../features/admin/data/admin_provider.dart';
 import '../../../features/achievement/data/achievement_provider.dart';
 import '../../../features/wonder_weeks/data/wonder_weeks_data.dart';
 import '../../../features/wonder_weeks/data/wonder_weeks_provider.dart';
-import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/home_provider.dart';
 import '../../../shared/providers/night_mode_provider.dart';
@@ -19,11 +16,10 @@ import '../../../shared/providers/sleep_provider.dart';
 import '../../../shared/providers/smart_notification_provider.dart';
 import '../../../shared/providers/stats_provider.dart';
 import '../../../shared/providers/subscription_provider.dart';
-import 'widgets/baby_pill.dart';
-import 'widgets/baby_switcher.dart';
 import 'widgets/daily_summary_card.dart';
+import 'widgets/feature_group.dart';
+import 'widgets/home_header.dart';
 import 'widgets/home_skeleton.dart';
-import 'widgets/quick_actions_grid.dart';
 import 'widgets/recent_events_list.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -47,7 +43,6 @@ class HomeScreen extends ConsumerWidget {
     final isNight = ref.watch(nightModeProvider);
     if (isNight) return const _NightHomeView();
 
-    final user = ref.watch(currentUserProvider);
     final baby = ref.watch(activeBabyProvider);
     ref.watch(weeklyReportSchedulerProvider);
     ref.watch(smartNotificationSchedulerProvider);
@@ -68,7 +63,6 @@ class HomeScreen extends ConsumerWidget {
     final todayDiapers = ref.watch(todayDiapersProvider);
     final todayPumps = ref.watch(todayPumpsProvider);
     final recentEvents = ref.watch(recentEventsProvider);
-    final nextFeedingTime = ref.watch(nextFeedingTimeProvider);
 
     final sleepHours = todaySleeps.fold<double>(
       0,
@@ -85,6 +79,8 @@ class HomeScreen extends ConsumerWidget {
     final currentLeap = ref.watch(wonderWeeksCurrentLeapProvider);
     final nextLeap = ref.watch(wonderWeeksNextLeapProvider);
     final currentWwWeek = ref.watch(wonderWeeksCurrentWeekProvider);
+    final showWwBanner = currentLeap != null ||
+        (nextLeap != null && currentWwWeek >= nextLeap.stormStartWeek - 2);
 
     return Scaffold(
       backgroundColor: AppColors.powder,
@@ -112,39 +108,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-            SliverToBoxAdapter(
-              child: BunnyHeader(
-                gradient: AppColors.gradientHome,
-                earLeftColor: AppColors.petal,
-                earRightColor: AppColors.lilac,
-                leading: const CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.white24,
-                  child: Icon(Icons.person, color: Colors.white),
-                ),
-                actions: IconButton(
-                  icon: const Icon(Icons.bedtime_outlined, color: Colors.white),
-                  tooltip: 'Chế độ ban đêm',
-                  onPressed: () => ref
-                      .read(nightModeOverrideProvider.notifier)
-                      .forceEnable(),
-                ),
-                title: greetingForNow(),
-                subtitle: 'Chị ${user?.displayName ?? 'mẹ'} ơi!',
-                child: baby != null
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: AppSpacing.lg),
-                        child: BabyPill(baby: baby, nextFeedingTime: nextFeedingTime),
-                      )
-                    : null,
-              ),
-            ),
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.only(top: AppSpacing.sm),
-                child: BabySwitcher(),
-              ),
-            ),
+            const SliverToBoxAdapter(child: HomeHeader()),
             if (isLoading)
               const SliverToBoxAdapter(child: HomeSkeleton())
             else if (hasError)
@@ -164,57 +128,107 @@ class HomeScreen extends ConsumerWidget {
                 ),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate([
-                    if (currentLeap != null || (nextLeap != null && currentWwWeek >= nextLeap.stormStartWeek - 2))
+                    if (showWwBanner)
                       _WonderWeeksBanner(
                         currentLeap: currentLeap,
                         nextLeap: nextLeap,
                         currentWeek: currentWwWeek,
                         onTap: () => context.push('/home/growth/wonder-weeks'),
                       ),
-                    if (currentLeap != null || (nextLeap != null && currentWwWeek >= nextLeap.stormStartWeek - 2))
-                      const SizedBox(height: AppSpacing.lg),
-                    QuickActionsGrid(
-                      actions: [
-                        QuickAction(icon: '🤱', label: 'Bú mẹ', onTap: () => context.go('/home/feeding')),
-                        QuickAction(icon: '🍼', label: 'Bú bình', onTap: () => context.go('/home/feeding')),
-                        QuickAction(icon: '🌙', label: 'Ngủ', onTap: () => context.go('/home/sleep')),
-                        QuickAction(icon: '🌸', label: 'Thay tã', onTap: () => context.go('/home/diaper')),
-                        QuickAction(icon: '🥛', label: 'Hút sữa', onTap: () => context.go('/home/pumping')),
-                        QuickAction(
-                          icon: '🏆',
-                          label: 'Thành tích',
-                          onTap: () => context.push('/achievements'),
-                        ),
-                        QuickAction(
-                          icon: '📅',
-                          label: 'EASY',
-                          onTap: () => context.push('/easy'),
-                        ),
-                        QuickAction(icon: '⚖️', label: 'Cân nặng', onTap: () => context.go('/home/growth')),
-                        QuickAction(icon: '💉', label: 'Tiêm chủng', onTap: () => context.go('/home/vaccine')),
-                        QuickAction(icon: '🌡️', label: 'Sức khoẻ', onTap: () => context.push('/home/health')),
-                        QuickAction(icon: '💆', label: 'Sức khoẻ mẹ', onTap: () => context.push('/home/mom-health')),
-                        QuickAction(icon: '🥣', label: 'Ăn dặm', onTap: () => context.push('/home/solid-food')),
-                        QuickAction(
-                          icon: '👩‍👩‍👧',
-                          label: 'Cộng đồng',
-                          onTap: () => context.push('/community'),
-                        ),
-                        QuickAction(
-                          icon: isPremium ? '🐰' : '🐰✨',
-                          label: 'Hỏi AI',
-                          onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('🐰 Sắp ra mắt')),
-                          ),
-                        ),
-                        QuickAction(
-                          icon: '💝',
-                          label: 'Kỷ niệm',
-                          onTap: () => context.push('/memory'),
-                        ),
+                    if (showWwBanner) const SizedBox(height: AppSpacing.lg),
+
+                    // ── Sinh hoạt hàng ngày ─────────────────────────────
+                    HomeFeatureGroup(
+                      icon: '🤱',
+                      iconBg: const Color(0xFFFFE8F3),
+                      featureIconBg: const Color(0xFFFFF0F7),
+                      name: 'Sinh hoạt hàng ngày',
+                      description: 'Bú · Ngủ · Tã · Hút sữa',
+                      badge: '${todayFeedings.length} cữ hôm nay',
+                      initiallyExpanded: true,
+                      features: [
+                        HomeFeature(icon: '🤱', label: 'Bú mẹ', onTap: () => context.go('/home/feeding')),
+                        HomeFeature(icon: '🍼', label: 'Bú bình', onTap: () => context.go('/home/feeding')),
+                        HomeFeature(icon: '🌙', label: 'Ngủ', onTap: () => context.go('/home/sleep')),
+                        HomeFeature(icon: '🌸', label: 'Thay tã', onTap: () => context.go('/home/diaper')),
+                        HomeFeature(icon: '🥛', label: 'Hút sữa', onTap: () => context.go('/home/pumping')),
+                        HomeFeature(icon: '🧊', label: 'Kho sữa', onTap: () => context.go('/home/pumping')),
+                        HomeFeature(icon: '🥣', label: 'Ăn dặm', onTap: () => context.push('/home/solid-food')),
+                        HomeFeature(icon: '📷', label: 'Quét sữa CT', onTap: () => context.push('/formula-scanner')),
                       ],
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+
+                    // ── Phát triển & Sức khoẻ ───────────────────────────
+                    HomeFeatureGroup(
+                      icon: '📈',
+                      iconBg: const Color(0xFFE4FBF4),
+                      featureIconBg: const Color(0xFFEDFDF7),
+                      name: 'Phát triển & Sức khoẻ',
+                      description: 'Cân nặng · Vaccine · Thuốc',
+                      features: [
+                        HomeFeature(icon: '⚖️', label: 'Cân nặng', onTap: () => context.go('/home/growth')),
+                        HomeFeature(icon: '💉', label: 'Tiêm chủng', onTap: () => context.go('/home/vaccine')),
+                        HomeFeature(icon: '🌡️', label: 'Sức khoẻ', onTap: () => context.push('/home/health')),
+                        HomeFeature(icon: '🦷', label: 'Mọc răng', onTap: () => context.push('/home/growth/teeth')),
+                        HomeFeature(icon: '🏃', label: 'Vận động', onTap: () => context.push('/home/growth/motor')),
+                        HomeFeature(icon: '🤰', label: 'Mang thai', onTap: () => context.push('/prenatal')),
+                      ],
+                    ),
+
+                    // ── Kế hoạch & Lịch ──────────────────────────────────
+                    HomeFeatureGroup(
+                      icon: '📅',
+                      iconBg: const Color(0xFFFFF3E0),
+                      featureIconBg: const Color(0xFFFFFBF0),
+                      name: 'Kế hoạch & Lịch',
+                      description: 'EASY · Wonder Weeks · Thống kê',
+                      features: [
+                        HomeFeature(icon: '📋', label: 'Lịch EASY', onTap: () => context.push('/easy')),
+                        HomeFeature(icon: '🌙', label: 'Wonder Weeks', onTap: () => context.push('/home/growth/wonder-weeks')),
+                        HomeFeature(icon: '📊', label: 'Thống kê', onTap: () => context.push('/home/stats')),
+                        HomeFeature(icon: '🏅', label: 'Thành tích', onTap: () => context.push('/achievements')),
+                        HomeFeature(icon: '😊', label: 'Cảm xúc', onTap: () => context.go('/home/diaper')),
+                        HomeFeature(icon: '👥', label: 'Cộng đồng', onTap: () => context.push('/community')),
+                        HomeFeature(icon: '🎉', label: 'Year Wrapped', onTap: () => context.push('/wrapped')),
+                      ],
+                    ),
+
+                    // ── Kỷ niệm (Premium) ────────────────────────────────
+                    HomeFeatureGroup(
+                      icon: '💝',
+                      iconBg: const Color(0xFFF0EAFF),
+                      featureIconBg: const Color(0xFFF5F0FF),
+                      name: 'Kỷ niệm',
+                      description: 'Nhật ký · Thư · Hộp thời gian',
+                      isPremium: true,
+                      features: [
+                        HomeFeature(icon: '✨', label: 'Story Cards', isPremium: !isPremium, onTap: () => context.push('/memory/story-cards')),
+                        HomeFeature(icon: '💌', label: 'Thư tương lai', isPremium: !isPremium, onTap: () => context.push('/memory/letters')),
+                        HomeFeature(icon: '🎙️', label: 'Voice Journal', isPremium: !isPremium, onTap: () => context.push('/memory/voice-journal')),
+                        HomeFeature(icon: '⏳', label: 'Hộp thời gian', isPremium: !isPremium, onTap: () => context.push('/memory/time-capsule')),
+                        HomeFeature(icon: '📖', label: 'Baby Book', isPremium: !isPremium, onTap: () => context.push('/memory/baby-book')),
+                        HomeFeature(icon: '🌈', label: 'Mood Timeline', isPremium: !isPremium, onTap: () => context.push('/memory/mood-timeline')),
+                        HomeFeature(icon: '🗺️', label: 'Milestone Map', isPremium: !isPremium, onTap: () => context.push('/memory/milestone-map')),
+                        HomeFeature(icon: '🎵', label: 'Soundscape', isPremium: !isPremium, onTap: () => context.push('/memory/soundscape')),
+                      ],
+                    ),
+
+                    // ── Mẹ khoẻ ──────────────────────────────────────────
+                    HomeFeatureGroup(
+                      icon: '🌸',
+                      iconBg: const Color(0xFFFFE8F3),
+                      featureIconBg: const Color(0xFFFFF0F7),
+                      name: 'Mẹ khoẻ',
+                      description: 'Mood · Nước · Thuốc bổ',
+                      features: [
+                        HomeFeature(icon: '😊', label: 'Tâm trạng mẹ', onTap: () => context.push('/home/mom-health')),
+                        HomeFeature(icon: '💧', label: 'Uống nước', onTap: () => context.push('/home/mom-health')),
+                        HomeFeature(icon: '💊', label: 'Thuốc bổ', onTap: () => context.push('/home/mom-health')),
+                        HomeFeature(icon: '😴', label: 'Giấc ngủ mẹ', onTap: () => context.push('/home/mom-health')),
+                      ],
+                    ),
+
+                    const SizedBox(height: AppSpacing.sm),
                     DailySummaryCard(
                       feedingCount: todayFeedings.length,
                       sleepHours: sleepHours,
