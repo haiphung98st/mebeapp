@@ -6,6 +6,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/constants/vaccine_schedule_data.dart';
+import '../../../core/widgets/disclaimer_banner.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/vaccine_provider.dart';
@@ -68,6 +69,11 @@ class _VaccineScreenState extends ConsumerState<VaccineScreen>
         children: [
           Column(
             children: [
+              const DisclaimerBanner(
+                text:
+                    'Lịch tiêm chủng gợi ý dựa trên khuyến cáo chung, chỉ mang tính tham khảo. '
+                    'Hãy xác nhận lịch tiêm cụ thể cho bé với bác sĩ hoặc cơ sở y tế.',
+              ),
               _ProgressBanner(progress: progress),
               Expanded(
                 child: TabBarView(

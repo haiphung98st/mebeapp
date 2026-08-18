@@ -8,6 +8,7 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../core/widgets/bunny_header.dart';
+import '../../../core/widgets/disclaimer_banner.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/notification_config_provider.dart';
 import '../../../shared/providers/vaccine_provider.dart';
@@ -92,6 +93,11 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
                 onTap: (index) => setState(() => _selectedIndex = index),
               ),
             ),
+          ),
+          const DisclaimerBanner(
+            text:
+                'Biểu đồ tăng trưởng tham khảo chuẩn WHO, chỉ mang tính tham khảo. '
+                'Hãy trao đổi với bác sĩ để đánh giá chính xác sự phát triển của bé.',
           ),
           Expanded(child: _buildBody()),
         ],

@@ -18,6 +18,12 @@ import '../../features/diaper/presentation/diaper_screen.dart';
 import '../../features/feeding/presentation/feeding_screen.dart';
 import '../../features/growth/presentation/growth_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
+import '../../features/legal/presentation/about_screen.dart';
+import '../../features/legal/presentation/contact_screen.dart';
+import '../../features/legal/presentation/disclaimer_screen.dart';
+import '../../features/legal/presentation/faq_screen.dart';
+import '../../features/legal/presentation/privacy_screen.dart';
+import '../../features/legal/presentation/terms_screen.dart';
 import '../../features/profile/presentation/edit_baby_screen.dart';
 import '../../features/profile/presentation/notification_settings_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
@@ -266,6 +272,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/memory/time-capsule/create', builder: (_, __) => const CreateCapsuleScreen()),
       GoRoute(path: '/memory/milestone-map', builder: (_, __) => const MilestoneMapScreen()),
       GoRoute(path: '/memory/soundscape', builder: (_, __) => const SoundscapeScreen()),
+      // ── Legal / support routes ───────────────────────────────────────────────
+      GoRoute(path: '/legal/terms', builder: (_, __) => const TermsScreen()),
+      GoRoute(path: '/legal/privacy', builder: (_, __) => const PrivacyScreen()),
+      GoRoute(path: '/legal/disclaimer', builder: (_, __) => const DisclaimerScreen()),
+      GoRoute(path: '/legal/contact', builder: (_, __) => const ContactScreen()),
+      GoRoute(path: '/legal/faq', builder: (_, __) => const FAQScreen()),
+      GoRoute(path: '/legal/about', builder: (_, __) => const AboutScreen()),
       // ── Admin shell ──────────────────────────────────────────────────────────
       ShellRoute(
         builder: (context, state, child) => AdminShell(child: child),

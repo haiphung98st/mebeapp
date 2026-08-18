@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/widgets/disclaimer_banner.dart';
 import '../../../shared/providers/subscription_provider.dart';
 import '../data/chat_provider.dart';
 import '../domain/models/chat_models.dart';
@@ -66,7 +67,17 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
         ],
       ),
       body: isPremium
-          ? _ChatContent(prefilledMessage: widget.prefilledMessage)
+          ? Column(
+              children: [
+                const DisclaimerBanner(
+                  text:
+                      'Câu trả lời từ "Hỏi bé" chỉ mang tính tham khảo, không phải chẩn đoán y khoa. '
+                      'Luôn hỏi ý kiến bác sĩ trước khi quyết định về sức khoẻ của bé.',
+                  dismissible: false,
+                ),
+                Expanded(child: _ChatContent(prefilledMessage: widget.prefilledMessage)),
+              ],
+            )
           : const AiChatPaywall(),
     );
   }
