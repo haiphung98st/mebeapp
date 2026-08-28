@@ -4,11 +4,12 @@ import 'package:go_router/go_router.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_spacing.dart';
 import '../constants/app_text_styles.dart';
+import '../icons/mebe_icons.dart';
 
 class _NavTab {
   const _NavTab({required this.path, required this.icon, required this.label});
   final String path;
-  final String icon;
+  final MeBeIconType icon;
   final String label;
 }
 
@@ -20,11 +21,11 @@ class ScaffoldWithBottomNav extends StatelessWidget {
   final Widget child;
 
   static const _tabs = [
-    _NavTab(path: '/home', icon: '🏠', label: 'Trang chủ'),
-    _NavTab(path: '/home/feeding', icon: '🍼', label: 'Ăn uống'),
-    _NavTab(path: '/home/sleep', icon: '🌙', label: 'Ngủ'),
-    _NavTab(path: '/home/growth', icon: '📈', label: 'Phát triển'),
-    _NavTab(path: '/home/profile', icon: '👤', label: 'Hồ sơ'),
+    _NavTab(path: '/home', icon: MeBeIconType.home, label: 'Trang chủ'),
+    _NavTab(path: '/home/feeding', icon: MeBeIconType.breastfeed, label: 'Ăn uống'),
+    _NavTab(path: '/home/sleep', icon: MeBeIconType.sleep, label: 'Ngủ'),
+    _NavTab(path: '/home/growth', icon: MeBeIconType.growth, label: 'Phát triển'),
+    _NavTab(path: '/home/profile', icon: MeBeIconType.profile, label: 'Hồ sơ'),
   ];
 
   int _indexForLocation(String location) {
@@ -70,7 +71,7 @@ class ScaffoldWithBottomNav extends StatelessWidget {
                               color: isActive ? AppColors.powder : Colors.transparent,
                               borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
                             ),
-                            child: Text(tab.icon, style: const TextStyle(fontSize: 18)),
+                            child: MeBeIcon(type: tab.icon, size: 22, isActive: isActive),
                           ),
                           const SizedBox(height: 2),
                           Text(

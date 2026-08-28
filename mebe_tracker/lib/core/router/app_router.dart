@@ -53,6 +53,8 @@ import '../../features/wonder_weeks/data/wonder_weeks_data.dart';
 import '../../features/wonder_weeks/presentation/leap_detail_screen.dart';
 import '../../features/wonder_weeks/presentation/wonder_weeks_screen.dart';
 import '../../features/memory/presentation/memory_hub_screen.dart';
+import '../../features/memory/presentation/baby_book/baby_book_frame_editor.dart';
+import '../../features/memory/presentation/story_card/story_card_editor.dart';
 import '../../features/memory/presentation/story_cards_screen.dart';
 import '../../features/memory/presentation/letters_screen.dart';
 import '../../features/memory/presentation/write_letter_screen.dart';
@@ -262,6 +264,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       // ── Memory routes ────────────────────────────────────────────────────────
       GoRoute(path: '/memory', builder: (_, __) => const MemoryHubScreen()),
       GoRoute(path: '/memory/story-cards', builder: (_, __) => const StoryCardsScreen()),
+      GoRoute(path: '/memory/story-card/editor', builder: (_, __) => const StoryCardEditorScreen()),
       GoRoute(path: '/memory/letters', builder: (_, __) => const LettersScreen()),
       GoRoute(path: '/memory/letters/write', builder: (_, __) => const WriteLetterScreen()),
       GoRoute(
@@ -273,6 +276,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/memory/digest', builder: (_, __) => const MonthlyDigestScreen()),
       GoRoute(path: '/memory/growth-poster', builder: (_, __) => const GrowthPosterScreen()),
       GoRoute(path: '/memory/baby-book', builder: (_, __) => const BabyBookScreen()),
+      GoRoute(path: '/memory/baby-book/frame', builder: (_, __) => const BabyBookFrameEditorScreen()),
       GoRoute(path: '/memory/time-capsule', builder: (_, __) => const TimeCapsuleScreen()),
       GoRoute(path: '/memory/time-capsule/create', builder: (_, __) => const CreateCapsuleScreen()),
       GoRoute(path: '/memory/milestone-map', builder: (_, __) => const MilestoneMapScreen()),
