@@ -185,6 +185,9 @@ class PumpRepository {
     WidgetService.triggerNativeRefresh().ignore();
   }
 
+  Future<void> deletePump(String userId, String babyId, String entryId) =>
+      _firestoreService.deletePump(userId, babyId, entryId);
+
   Future<void> addMilkStash(MilkStashEntry entry) => _firestoreService.addMilkStash(entry);
 
   Future<void> markStashUsed(MilkStashEntry entry) =>

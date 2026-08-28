@@ -14,27 +14,69 @@ import 'baby_provider.dart';
 import 'growth_provider.dart';
 import 'home_provider.dart';
 
-enum StatsRangeType { today, week, month, custom }
+enum StatsRangeType { today, week, month, year, custom }
 
 final statsRangeTypeProvider = StateProvider<StatsRangeType>((ref) => StatsRangeType.week);
 final statsCustomRangeProvider = StateProvider<DateTimeRange?>((ref) => null);
 
+/// The day the currently-selected today/week/month/year period is anchored
+/// to — moved by [shiftStatsAnchor] when the user taps ◀ / ▶. Defaults to
+/// today; unused for [StatsRangeType.custom].
+final statsAnchorDateProvider = StateProvider<DateTime>((ref) => startOfDay(DateTime.now()));
+
 final statsDateRangeProvider = Provider<DateTimeRange>((ref) {
   final type = ref.watch(statsRangeTypeProvider);
-  final now = DateTime.now();
-  final today = startOfDay(now);
+  final anchor = startOfDay(ref.watch(statsAnchorDateProvider));
   switch (type) {
     case StatsRangeType.today:
-      return DateTimeRange(start: today, end: today.add(const Duration(days: 1)));
+      return DateTimeRange(start: anchor, end: anchor.add(const Duration(days: 1)));
     case StatsRangeType.week:
-      return DateTimeRange(start: today.subtract(const Duration(days: 6)), end: today.add(const Duration(days: 1)));
+      final monday = anchor.subtract(Duration(days: anchor.weekday - 1));
+      return DateTimeRange(start: monday, end: monday.add(const Duration(days: 7)));
     case StatsRangeType.month:
-      return DateTimeRange(start: DateTime(now.year, now.month, 1), end: today.add(const Duration(days: 1)));
+      final start = DateTime(anchor.year, anchor.month, 1);
+      return DateTimeRange(start: start, end: DateTime(anchor.year, anchor.month + 1, 1));
+    case StatsRangeType.year:
+      return DateTimeRange(start: DateTime(anchor.year, 1, 1), end: DateTime(anchor.year + 1, 1, 1));
     case StatsRangeType.custom:
       return ref.watch(statsCustomRangeProvider) ??
-          DateTimeRange(start: today.subtract(const Duration(days: 6)), end: today.add(const Duration(days: 1)));
+          DateTimeRange(start: anchor.subtract(const Duration(days: 6)), end: anchor.add(const Duration(days: 1)));
   }
 });
+
+/// Moves the stats anchor date one period backward ([direction] = -1) or
+/// forward ([direction] = 1) for whichever [StatsRangeType] is selected.
+void shiftStatsAnchor(WidgetRef ref, int direction) {
+  final type = ref.read(statsRangeTypeProvider);
+  final anchor = ref.read(statsAnchorDateProvider);
+  final next = switch (type) {
+    StatsRangeType.today => anchor.add(Duration(days: direction)),
+    StatsRangeType.week => anchor.add(Duration(days: 7 * direction)),
+    StatsRangeType.month => DateTime(anchor.year, anchor.month + direction, 1),
+    StatsRangeType.year => DateTime(anchor.year + direction, anchor.month, 1),
+    StatsRangeType.custom => anchor,
+  };
+  ref.read(statsAnchorDateProvider.notifier).state = next;
+}
+
+/// Whether [shiftStatsAnchor](ref, 1) would move into the future.
+bool canShiftStatsForward(WidgetRef ref) {
+  final range = ref.read(statsDateRangeProvider);
+  return range.end.isBefore(DateTime.now());
+}
+
+/// Collapses day-granularity [DailyValue]s into one bucket per calendar
+/// month — used for the year period's chart, where a bar per day (365 of
+/// them) would be unreadable.
+List<DailyValue> bucketByMonth(List<DailyValue> daily) {
+  final totals = <DateTime, double>{};
+  for (final d in daily) {
+    final key = DateTime(d.day.year, d.day.month, 1);
+    totals[key] = (totals[key] ?? 0) + d.value;
+  }
+  final keys = totals.keys.toList()..sort();
+  return keys.map((k) => DailyValue(k, totals[k]!)).toList();
+}
 
 bool _inRange(DateTime time, DateTimeRange range) =>
     !time.isBefore(range.start) && time.isBefore(range.end);

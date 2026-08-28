@@ -8,7 +8,7 @@ import '../../../../shared/models/diaper_entry.dart';
 import '../../../../shared/providers/auth_provider.dart';
 import '../../../../shared/providers/baby_provider.dart';
 import '../../../../shared/providers/diaper_provider.dart';
-import 'diaper_detail_dialog.dart';
+import '../diaper_manual_sheet.dart';
 
 class QuickLogSection extends ConsumerWidget {
   const QuickLogSection({super.key});
@@ -39,9 +39,11 @@ class _QuickLogButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () => _quickSave(context, ref),
-      onLongPress: () => showDialog(
+      onLongPress: () => showModalBottomSheet(
         context: context,
-        builder: (context) => DiaperDetailDialog(initialType: type),
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => DiaperManualSheet(initialType: type),
       ),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),

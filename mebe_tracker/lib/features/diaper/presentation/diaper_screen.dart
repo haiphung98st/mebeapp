@@ -7,6 +7,7 @@ import '../../../core/services/notification_service.dart';
 import '../../../core/widgets/bunny_header.dart';
 import '../../../shared/providers/diaper_provider.dart';
 import '../../../shared/providers/home_provider.dart';
+import 'diaper_manual_sheet.dart';
 import 'widgets/daily_count_row.dart';
 import 'widgets/diaper_color_guide.dart';
 import 'widgets/diaper_log_list.dart';
@@ -28,6 +29,17 @@ class DiaperScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.powder,
+      floatingActionButton: FloatingActionButton.extended(
+        icon: const Icon(Icons.edit_outlined),
+        label: const Text('Nhập tay'),
+        backgroundColor: AppColors.mint,
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (context) => const DiaperManualSheet(),
+        ),
+      ),
       body: CustomScrollView(
         slivers: [
           const SliverToBoxAdapter(

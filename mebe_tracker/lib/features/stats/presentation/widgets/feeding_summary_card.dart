@@ -6,6 +6,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../shared/providers/stats_provider.dart';
+import '../../../feeding/presentation/widgets/feeding_log_list.dart';
 import 'stat_metric.dart';
 
 class FeedingSummaryCard extends ConsumerWidget {
@@ -14,6 +15,9 @@ class FeedingSummaryCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final summary = ref.watch(feedingSummaryProvider);
+    final period = ref.watch(statsRangeTypeProvider);
+    final entries = ref.watch(statsFeedingsProvider);
+    final chartData = period == StatsRangeType.year ? bucketByMonth(summary.dailyCounts) : summary.dailyCounts;
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
@@ -86,37 +90,53 @@ class FeedingSummaryCard extends ConsumerWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.lg),
-            Text('Tổng cữ theo ngày', style: AppTextStyles.bodySm),
-            const SizedBox(height: AppSpacing.sm),
-            SizedBox(
-              height: 120,
-              child: BarChart(
-                BarChartData(
-                  gridData: const FlGridData(show: false),
-                  borderData: FlBorderData(show: false),
-                  titlesData: const FlTitlesData(
-                    leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            if (period != StatsRangeType.today) ...[
+              const SizedBox(height: AppSpacing.lg),
+              Text(
+                period == StatsRangeType.year ? 'Tổng cữ theo tháng' : 'Tổng cữ theo ngày',
+                style: AppTextStyles.bodySm,
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              SizedBox(
+                height: 120,
+                child: BarChart(
+                  BarChartData(
+                    gridData: const FlGridData(show: false),
+                    borderData: FlBorderData(show: false),
+                    titlesData: const FlTitlesData(
+                      leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    ),
+                    barGroups: chartData.asMap().entries.map((e) {
+                      return BarChartGroupData(
+                        x: e.key,
+                        barRods: [
+                          BarChartRodData(
+                            toY: e.value.value,
+                            color: AppColors.blossom,
+                            width: 10,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ],
+                      );
+                    }).toList(),
                   ),
-                  barGroups: summary.dailyCounts.asMap().entries.map((e) {
-                    return BarChartGroupData(
-                      x: e.key,
-                      barRods: [
-                        BarChartRodData(
-                          toY: e.value.value,
-                          color: AppColors.blossom,
-                          width: 10,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ],
-                    );
-                  }).toList(),
                 ),
               ),
-            ),
+            ],
+            if (entries.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.lg),
+              const Divider(color: AppColors.divider),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                entries.length > 20 ? 'Nhật ký (20 gần nhất)' : 'Nhật ký',
+                style: AppTextStyles.bodySm,
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              FeedingLogList(entries: entries.take(20).toList(), emptyLabel: ''),
+            ],
           ] else
             Padding(
               padding: const EdgeInsets.only(top: AppSpacing.md),

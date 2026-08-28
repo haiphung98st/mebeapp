@@ -6,6 +6,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../shared/providers/stats_provider.dart';
+import '../../../sleep/presentation/widgets/sleep_history_list.dart';
 import 'stat_metric.dart';
 
 class SleepSummaryCard extends ConsumerWidget {
@@ -14,10 +15,15 @@ class SleepSummaryCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final summary = ref.watch(sleepSummaryProvider);
+    final period = ref.watch(statsRangeTypeProvider);
+    final entries = ref.watch(statsSleepsProvider);
     final hasData = summary.totalHours > 0;
     final trendHours = (summary.trendMinutesVsPrevious.abs() / 60);
     final trendArrow = summary.trendMinutesVsPrevious >= 0 ? '↑' : '↓';
     final trendLabel = summary.trendMinutesVsPrevious >= 0 ? 'nhiều hơn' : 'ít hơn';
+    final napChart = period == StatsRangeType.year ? bucketByMonth(summary.dailyNapHours) : summary.dailyNapHours;
+    final nightChart =
+        period == StatsRangeType.year ? bucketByMonth(summary.dailyNightHours) : summary.dailyNightHours;
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
@@ -42,56 +48,72 @@ class SleepSummaryCard extends ConsumerWidget {
             ],
           ),
           if (hasData) ...[
-            const SizedBox(height: AppSpacing.lg),
-            Text('Giờ ngủ theo ngày', style: AppTextStyles.bodySm),
-            const SizedBox(height: AppSpacing.sm),
-            SizedBox(
-              height: 120,
-              child: BarChart(
-                BarChartData(
-                  gridData: const FlGridData(show: false),
-                  borderData: FlBorderData(show: false),
-                  titlesData: const FlTitlesData(
-                    leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            if (period != StatsRangeType.today) ...[
+              const SizedBox(height: AppSpacing.lg),
+              Text(
+                period == StatsRangeType.year ? 'Giờ ngủ theo tháng' : 'Giờ ngủ theo ngày',
+                style: AppTextStyles.bodySm,
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              SizedBox(
+                height: 120,
+                child: BarChart(
+                  BarChartData(
+                    gridData: const FlGridData(show: false),
+                    borderData: FlBorderData(show: false),
+                    titlesData: const FlTitlesData(
+                      leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    ),
+                    barGroups: List.generate(napChart.length, (i) {
+                      final nap = napChart[i].value;
+                      final night = nightChart[i].value;
+                      return BarChartGroupData(
+                        x: i,
+                        barRods: [
+                          BarChartRodData(
+                            toY: nap + night,
+                            width: 10,
+                            borderRadius: BorderRadius.circular(4),
+                            rodStackItems: [
+                              BarChartRodStackItem(0, nap, AppColors.mint),
+                              BarChartRodStackItem(nap, nap + night, AppColors.lavender),
+                            ],
+                          ),
+                        ],
+                      );
+                    }),
                   ),
-                  barGroups: List.generate(summary.dailyNapHours.length, (i) {
-                    final nap = summary.dailyNapHours[i].value;
-                    final night = summary.dailyNightHours[i].value;
-                    return BarChartGroupData(
-                      x: i,
-                      barRods: [
-                        BarChartRodData(
-                          toY: nap + night,
-                          width: 10,
-                          borderRadius: BorderRadius.circular(4),
-                          rodStackItems: [
-                            BarChartRodStackItem(0, nap, AppColors.mint),
-                            BarChartRodStackItem(nap, nap + night, AppColors.lavender),
-                          ],
-                        ),
-                      ],
-                    );
-                  }),
                 ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Row(
-              children: [
-                _LegendDot(color: AppColors.mint, label: 'Ngủ ngày'),
-                const SizedBox(width: AppSpacing.md),
-                _LegendDot(color: AppColors.lavender, label: 'Ngủ đêm'),
-              ],
-            ),
+              const SizedBox(height: AppSpacing.sm),
+              Row(
+                children: [
+                  _LegendDot(color: AppColors.mint, label: 'Ngủ ngày'),
+                  const SizedBox(width: AppSpacing.md),
+                  _LegendDot(color: AppColors.lavender, label: 'Ngủ đêm'),
+                ],
+              ),
+            ],
             if (summary.trendMinutesVsPrevious != 0) ...[
               const SizedBox(height: AppSpacing.sm),
               Text(
                 '$trendArrow Ngủ $trendLabel ${trendHours.toStringAsFixed(1)} giờ so với kỳ trước',
                 style: AppTextStyles.bodySm.copyWith(color: AppColors.mauve, fontWeight: FontWeight.w700),
               ),
+            ],
+            if (entries.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.lg),
+              const Divider(color: AppColors.divider),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                entries.length > 20 ? 'Nhật ký (20 gần nhất)' : 'Nhật ký',
+                style: AppTextStyles.bodySm,
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              SleepHistoryList(entries: entries.take(20).toList()),
             ],
           ] else
             Padding(

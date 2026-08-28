@@ -7,6 +7,8 @@ import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/date_utils.dart';
 import '../../../../shared/models/feeding_entry.dart';
 import '../../../../shared/providers/feeding_provider.dart';
+import '../bottle_manual_sheet.dart';
+import '../breastfeeding_manual_sheet.dart';
 
 String _titleFor(FeedingType type) {
   switch (type) {
@@ -68,40 +70,65 @@ class FeedingLogList extends ConsumerWidget {
               ),
               confirmDismiss: (_) => _confirmDelete(context),
               onDismissed: (_) => _delete(ref, entry),
-              child: Container(
-                margin: const EdgeInsets.only(bottom: AppSpacing.sm),
-                padding: const EdgeInsets.all(AppSpacing.md),
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.blossom.withValues(alpha: 0.08),
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(_titleFor(entry.type), style: AppTextStyles.bodyLg),
-                          const SizedBox(height: 2),
-                          Text(_subtitleFor(entry), style: AppTextStyles.bodySm),
-                        ],
+              child: GestureDetector(
+                onTap: () => _openEdit(context, entry),
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: AppSpacing.sm),
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.blossom.withValues(alpha: 0.08),
+                        blurRadius: 10,
+                        offset: const Offset(0, 2),
                       ),
-                    ),
-                    Text(formatTime(entry.startTime), style: AppTextStyles.bodySm),
-                  ],
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(_titleFor(entry.type), style: AppTextStyles.bodyLg),
+                            const SizedBox(height: 2),
+                            Text(_subtitleFor(entry), style: AppTextStyles.bodySm),
+                          ],
+                        ),
+                      ),
+                      Text(formatTime(entry.startTime), style: AppTextStyles.bodySm),
+                    ],
+                  ),
                 ),
               ),
             ),
           )
           .toList(),
     );
+  }
+
+  void _openEdit(BuildContext context, FeedingEntry entry) {
+    switch (entry.type) {
+      case FeedingType.breastLeft:
+      case FeedingType.breastRight:
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (context) => BreastfeedingManualSheet(existing: entry),
+        );
+      case FeedingType.bottle:
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (context) => BottleManualSheet(existing: entry),
+        );
+      case FeedingType.solid:
+        break;
+    }
   }
 
   Future<bool> _confirmDelete(BuildContext context) async {

@@ -6,6 +6,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../shared/providers/stats_provider.dart';
+import '../../../diaper/presentation/widgets/diaper_log_list.dart';
 import 'stat_metric.dart';
 
 class DiaperSummaryCard extends ConsumerWidget {
@@ -14,6 +15,9 @@ class DiaperSummaryCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final summary = ref.watch(diaperSummaryProvider);
+    final period = ref.watch(statsRangeTypeProvider);
+    final entries = ref.watch(statsDiapersProvider);
+    final chartData = period == StatsRangeType.year ? bucketByMonth(summary.dailyCounts) : summary.dailyCounts;
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
@@ -36,37 +40,53 @@ class DiaperSummaryCard extends ConsumerWidget {
             ],
           ),
           if (summary.totalCount > 0) ...[
-            const SizedBox(height: AppSpacing.lg),
-            Text('Số lần theo ngày', style: AppTextStyles.bodySm),
-            const SizedBox(height: AppSpacing.sm),
-            SizedBox(
-              height: 120,
-              child: BarChart(
-                BarChartData(
-                  gridData: const FlGridData(show: false),
-                  borderData: FlBorderData(show: false),
-                  titlesData: const FlTitlesData(
-                    leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            if (period != StatsRangeType.today) ...[
+              const SizedBox(height: AppSpacing.lg),
+              Text(
+                period == StatsRangeType.year ? 'Số lần theo tháng' : 'Số lần theo ngày',
+                style: AppTextStyles.bodySm,
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              SizedBox(
+                height: 120,
+                child: BarChart(
+                  BarChartData(
+                    gridData: const FlGridData(show: false),
+                    borderData: FlBorderData(show: false),
+                    titlesData: const FlTitlesData(
+                      leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    ),
+                    barGroups: chartData.asMap().entries.map((e) {
+                      return BarChartGroupData(
+                        x: e.key,
+                        barRods: [
+                          BarChartRodData(
+                            toY: e.value.value,
+                            color: AppColors.mint,
+                            width: 10,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ],
+                      );
+                    }).toList(),
                   ),
-                  barGroups: summary.dailyCounts.asMap().entries.map((e) {
-                    return BarChartGroupData(
-                      x: e.key,
-                      barRods: [
-                        BarChartRodData(
-                          toY: e.value.value,
-                          color: AppColors.mint,
-                          width: 10,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ],
-                    );
-                  }).toList(),
                 ),
               ),
-            ),
+            ],
+            if (entries.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.lg),
+              const Divider(color: AppColors.divider),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                entries.length > 20 ? 'Nhật ký (20 gần nhất)' : 'Nhật ký',
+                style: AppTextStyles.bodySm,
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              DiaperLogList(entries: entries.take(20).toList()),
+            ],
           ] else
             Padding(
               padding: const EdgeInsets.only(top: AppSpacing.md),

@@ -153,15 +153,26 @@ final recentEventsProvider = Provider<List<RecentEvent>>((ref) {
 
 String formatMinutes(int? minutes) => minutes == null ? '—' : '$minutes phút';
 
+/// Fallback interval used when there isn't enough same-session data to
+/// average from (e.g. right after an overnight gap drops out of the window).
+const _defaultFeedingIntervalMinutes = 150;
+
 final nextFeedingTimeProvider = Provider<DateTime?>((ref) {
   final feedings = ref.watch(allFeedingsProvider).value ?? const [];
-  if (feedings.length < 2) return null;
+  if (feedings.isEmpty) return null;
   final recent = feedings.take(5).toList();
+
+  // Only count gaps that look like a normal daytime feeding cadence (30min
+  // to 6h) — a night-sleep gap between two feeds would otherwise skew the
+  // average far past the baby's actual next feeding time.
   final gaps = <int>[];
   for (var i = 0; i < recent.length - 1; i++) {
-    gaps.add(recent[i].startTime.difference(recent[i + 1].startTime).inMinutes);
+    final minutes = recent[i].startTime.difference(recent[i + 1].startTime).inMinutes;
+    if (minutes >= 30 && minutes <= 360) gaps.add(minutes);
   }
-  if (gaps.isEmpty) return null;
-  final avgMinutes = gaps.reduce((a, b) => a + b) / gaps.length;
-  return recent.first.startTime.add(Duration(minutes: avgMinutes.round()));
+
+  final avgMinutes = gaps.isEmpty
+      ? _defaultFeedingIntervalMinutes
+      : (gaps.reduce((a, b) => a + b) / gaps.length).round();
+  return recent.first.startTime.add(Duration(minutes: avgMinutes));
 });

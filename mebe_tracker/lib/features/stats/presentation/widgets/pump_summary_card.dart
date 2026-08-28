@@ -6,6 +6,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../shared/providers/stats_provider.dart';
+import '../../../pumping/presentation/widgets/pump_log_list.dart';
 import 'stat_metric.dart';
 
 class PumpSummaryCard extends ConsumerWidget {
@@ -14,6 +15,9 @@ class PumpSummaryCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final summary = ref.watch(pumpSummaryProvider);
+    final period = ref.watch(statsRangeTypeProvider);
+    final entries = ref.watch(statsPumpsProvider);
+    final chartData = period == StatsRangeType.year ? bucketByMonth(summary.dailyMl) : summary.dailyMl;
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
@@ -35,58 +39,74 @@ class PumpSummaryCard extends ConsumerWidget {
             ],
           ),
           if (summary.sessionCount > 0) ...[
-            const SizedBox(height: AppSpacing.lg),
-            Text('Sản lượng theo ngày', style: AppTextStyles.bodySm),
-            const SizedBox(height: AppSpacing.sm),
-            SizedBox(
-              height: 120,
-              child: LineChart(
-                LineChartData(
-                  gridData: const FlGridData(show: false),
-                  borderData: FlBorderData(show: false),
-                  titlesData: const FlTitlesData(
-                    leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  ),
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: summary.dailyMl
-                          .asMap()
-                          .entries
-                          .map((e) => FlSpot(e.key.toDouble(), e.value.value))
-                          .toList(),
-                      isCurved: true,
-                      color: AppColors.lavender,
-                      barWidth: 2.5,
-                      dotData: const FlDotData(show: true),
-                      belowBarData: BarAreaData(show: true, color: AppColors.lilac.withValues(alpha: 0.4)),
+            if (period != StatsRangeType.today) ...[
+              const SizedBox(height: AppSpacing.lg),
+              Text(
+                period == StatsRangeType.year ? 'Sản lượng theo tháng' : 'Sản lượng theo ngày',
+                style: AppTextStyles.bodySm,
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              SizedBox(
+                height: 120,
+                child: LineChart(
+                  LineChartData(
+                    gridData: const FlGridData(show: false),
+                    borderData: FlBorderData(show: false),
+                    titlesData: const FlTitlesData(
+                      leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
                     ),
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: chartData
+                            .asMap()
+                            .entries
+                            .map((e) => FlSpot(e.key.toDouble(), e.value.value))
+                            .toList(),
+                        isCurved: true,
+                        color: AppColors.lavender,
+                        barWidth: 2.5,
+                        dotData: const FlDotData(show: true),
+                        belowBarData: BarAreaData(show: true, color: AppColors.lilac.withValues(alpha: 0.4)),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              if (summary.peakDay != null || summary.lowestDay != null) ...[
+                const SizedBox(height: AppSpacing.sm),
+                Row(
+                  children: [
+                    if (summary.peakDay != null)
+                      Expanded(
+                        child: Text(
+                          'Cao nhất: ${summary.peakDay!.day.day}/${summary.peakDay!.day.month} '
+                          '(${summary.peakDay!.value.toStringAsFixed(0)}ml)',
+                          style: AppTextStyles.bodySm,
+                        ),
+                      ),
                   ],
                 ),
-              ),
-            ),
-            if (summary.peakDay != null || summary.lowestDay != null) ...[
+                if (summary.lowestDay != null)
+                  Text(
+                    'Thấp nhất: ${summary.lowestDay!.day.day}/${summary.lowestDay!.day.month} '
+                    '(${summary.lowestDay!.value.toStringAsFixed(0)}ml)',
+                    style: AppTextStyles.bodySm,
+                  ),
+              ],
+            ],
+            if (entries.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.lg),
+              const Divider(color: AppColors.divider),
               const SizedBox(height: AppSpacing.sm),
-              Row(
-                children: [
-                  if (summary.peakDay != null)
-                    Expanded(
-                      child: Text(
-                        'Cao nhất: ${summary.peakDay!.day.day}/${summary.peakDay!.day.month} '
-                        '(${summary.peakDay!.value.toStringAsFixed(0)}ml)',
-                        style: AppTextStyles.bodySm,
-                      ),
-                    ),
-                ],
+              Text(
+                entries.length > 20 ? 'Nhật ký (20 gần nhất)' : 'Nhật ký',
+                style: AppTextStyles.bodySm,
               ),
-              if (summary.lowestDay != null)
-                Text(
-                  'Thấp nhất: ${summary.lowestDay!.day.day}/${summary.lowestDay!.day.month} '
-                  '(${summary.lowestDay!.value.toStringAsFixed(0)}ml)',
-                  style: AppTextStyles.bodySm,
-                ),
+              const SizedBox(height: AppSpacing.sm),
+              PumpLogList(entries: entries.take(20).toList()),
             ],
           ] else
             Padding(

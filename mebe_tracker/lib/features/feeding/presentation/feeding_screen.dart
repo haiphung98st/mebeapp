@@ -5,6 +5,8 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/widgets/bunny_header.dart';
+import 'bottle_manual_sheet.dart';
+import 'breastfeeding_manual_sheet.dart';
 import 'widgets/bottlefeeding_tab.dart';
 import 'widgets/breastfeeding_tab.dart';
 
@@ -30,6 +32,19 @@ class _FeedingScreenState extends State<FeedingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.powder,
+      floatingActionButton: FloatingActionButton.extended(
+        icon: const Icon(Icons.edit_outlined),
+        label: const Text('Nhập tay'),
+        backgroundColor: AppColors.blossom,
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (context) => _selectedIndex == 0
+              ? const BreastfeedingManualSheet()
+              : const BottleManualSheet(),
+        ),
+      ),
       body: Column(
         children: [
           BunnyHeader(

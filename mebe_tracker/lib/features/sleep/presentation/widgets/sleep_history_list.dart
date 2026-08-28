@@ -8,6 +8,7 @@ import '../../../../core/utils/date_utils.dart';
 import '../../../../core/utils/duration_utils.dart';
 import '../../../../shared/models/sleep_entry.dart';
 import '../../../../shared/providers/sleep_provider.dart';
+import '../sleep_manual_sheet.dart';
 
 String _dateGroupLabel(DateTime date) {
   final today = DateTime.now();
@@ -86,7 +87,16 @@ class _SleepHistoryItem extends ConsumerWidget {
       confirmDismiss: (_) => _confirmDelete(context),
       onDismissed: (_) =>
           ref.read(sleepRepositoryProvider).deleteSleep(entry.userId, entry.babyId, entry.id),
-      child: Container(
+      child: GestureDetector(
+        onTap: isOngoing
+            ? null
+            : () => showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (context) => SleepManualSheet(existing: entry),
+                ),
+        child: Container(
         margin: const EdgeInsets.only(bottom: AppSpacing.sm),
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
@@ -126,6 +136,7 @@ class _SleepHistoryItem extends ConsumerWidget {
               ),
             ),
           ],
+        ),
         ),
       ),
     );

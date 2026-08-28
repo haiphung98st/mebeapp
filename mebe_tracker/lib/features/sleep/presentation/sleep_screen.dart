@@ -8,6 +8,7 @@ import '../../../core/widgets/bunny_header.dart';
 import '../../../shared/providers/home_provider.dart';
 import '../../../shared/providers/notification_config_provider.dart';
 import '../../../shared/providers/sleep_provider.dart';
+import 'sleep_manual_sheet.dart';
 import 'widgets/active_sleep_card.dart';
 import 'widgets/sleep_daily_summary_card.dart';
 import 'widgets/sleep_history_list.dart';
@@ -39,6 +40,17 @@ class SleepScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.powder,
+      floatingActionButton: FloatingActionButton.extended(
+        icon: const Icon(Icons.edit_outlined),
+        label: const Text('Nhập tay'),
+        backgroundColor: AppColors.lavender,
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (context) => const SleepManualSheet(),
+        ),
+      ),
       body: CustomScrollView(
         slivers: [
           const SliverToBoxAdapter(
