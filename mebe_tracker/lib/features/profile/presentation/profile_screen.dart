@@ -223,6 +223,12 @@ class ProfileScreen extends ConsumerWidget {
                         label: 'Ngôn ngữ',
                         trailing: Text('Tiếng Việt', style: AppTextStyles.bodySm),
                       ),
+                      ProfileTile(
+                        icon: Icons.widgets_outlined,
+                        label: 'Tiện ích màn hình',
+                        subtitle: 'Xem nhanh không cần mở app',
+                        onTap: () => context.push('/home/profile/widget'),
+                      ),
                     ],
                   ),
                 ),

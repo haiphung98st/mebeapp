@@ -26,6 +26,7 @@ import '../../features/legal/presentation/privacy_screen.dart';
 import '../../features/legal/presentation/terms_screen.dart';
 import '../../features/profile/presentation/edit_baby_screen.dart';
 import '../../features/profile/presentation/notification_settings_screen.dart';
+import '../../features/widget/presentation/widget_config_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/pumping/presentation/milk_stash_detail_screen.dart';
 import '../../features/pumping/presentation/pumping_screen.dart';
@@ -166,6 +167,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/home/profile/notifications',
         builder: (context, state) => const NotificationSettingsScreen(),
+      ),
+      GoRoute(
+        path: '/home/profile/widget',
+        builder: (context, state) => const WidgetConfigScreen(),
       ),
       GoRoute(
         path: '/home/subscription',
