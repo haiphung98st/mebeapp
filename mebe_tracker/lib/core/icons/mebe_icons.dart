@@ -16,6 +16,8 @@ enum MeBeIconType {
   quickLog, play, pause, edit, share, sync, add, delete,
   // Status
   done, warning, babyHappy, babySleeping, babyCrying, milestone,
+  // Home activity grid extras
+  milkStorage, solidFood, scanMilk,
 }
 
 enum _GradientFamily { blossom, lavender, mint, gold, blue, coral, green }
@@ -73,6 +75,9 @@ const _familyOf = <MeBeIconType, _GradientFamily>{
   MeBeIconType.pump: _GradientFamily.green,
   MeBeIconType.add: _GradientFamily.green,
   MeBeIconType.pause: _GradientFamily.green,
+  MeBeIconType.milkStorage: _GradientFamily.blue,
+  MeBeIconType.solidFood: _GradientFamily.gold,
+  MeBeIconType.scanMilk: _GradientFamily.coral,
 };
 
 /// A single MeBé icon: a soft circular background plus a gradient-filled
@@ -182,6 +187,12 @@ class _MeBeIconPainter extends CustomPainter {
         _paintDelete(canvas);
       case MeBeIconType.done:
         _paintDone(canvas);
+      case MeBeIconType.milkStorage:
+        _paintMilkStorage(canvas);
+      case MeBeIconType.solidFood:
+        _paintSolidFood(canvas);
+      case MeBeIconType.scanMilk:
+        _paintScanMilk(canvas);
     }
     canvas.restore();
   }
@@ -617,6 +628,73 @@ class _MeBeIconPainter extends CustomPainter {
     for (final x in [20.0, 24.0, 28.0]) {
       canvas.drawLine(Offset(x, 20), Offset(x, 32), Paint()..color = Colors.white.withValues(alpha: 0.7)..strokeWidth = 1.5);
     }
+  }
+
+  // ── Milk storage (fridge box) ──────────────────────────
+  void _paintMilkStorage(Canvas canvas) {
+    _bg(canvas, const Color(0xFFF0F5FF));
+    final box = RRect.fromRectAndRadius(const Rect.fromLTWH(10, 12, 28, 24), const Radius.circular(6));
+    canvas.drawRRect(box, _fill);
+    canvas.drawLine(
+      const Offset(10, 22),
+      const Offset(38, 22),
+      Paint()
+        ..color = Colors.white.withValues(alpha: 0.5)
+        ..strokeWidth = 1.5,
+    );
+    for (final rect in [const Rect.fromLTWH(14, 15, 6, 5), const Rect.fromLTWH(22, 15, 5, 5), const Rect.fromLTWH(29, 15, 5, 5)]) {
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(rect, const Radius.circular(2)),
+        Paint()..color = Colors.white.withValues(alpha: 0.6),
+      );
+    }
+    for (final rect in [const Rect.fromLTWH(14, 26, 5, 6), const Rect.fromLTWH(21, 26, 10, 6)]) {
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(rect, const Radius.circular(2)),
+        Paint()..color = Colors.white.withValues(alpha: 0.3),
+      );
+    }
+  }
+
+  // ── Solid food (bowl + spoon) ──────────────────────────
+  void _paintSolidFood(Canvas canvas) {
+    _bg(canvas, const Color(0xFFFFF8F0));
+    final bowl = Path()
+      ..moveTo(9, 22)
+      ..lineTo(39, 22)
+      ..cubicTo(39, 32, 33, 37, 24, 37)
+      ..cubicTo(15, 37, 9, 32, 9, 22)
+      ..close();
+    canvas.drawPath(bowl, _fill);
+    canvas.drawOval(const Rect.fromLTWH(9, 19, 30, 6), Paint()..color = _colors.first);
+    canvas.drawCircle(const Offset(34, 12), 4.5, Paint()..color = _colors.last);
+    canvas.drawLine(
+      const Offset(31.5, 15.5),
+      const Offset(25, 28),
+      Paint()
+        ..color = _colors.last
+        ..strokeWidth = 2.5
+        ..strokeCap = StrokeCap.round,
+    );
+  }
+
+  // ── Scan milk (camera + scan lines) ────────────────────
+  void _paintScanMilk(Canvas canvas) {
+    _bg(canvas, const Color(0xFFFFF3EC));
+    final body = RRect.fromRectAndRadius(const Rect.fromLTWH(8, 16, 32, 20), const Radius.circular(6));
+    canvas.drawRRect(body, _fill);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(16, 11, 10, 6), const Radius.circular(3)),
+      Paint()..color = _colors.first,
+    );
+    canvas.drawCircle(const Offset(24, 26), 7, Paint()..color = Colors.white.withValues(alpha: 0.25));
+    canvas.drawCircle(const Offset(24, 26), 4.5, Paint()..color = Colors.white.withValues(alpha: 0.45));
+    canvas.drawCircle(const Offset(12, 20.5), 1.6, Paint()..color = _colors.first);
+    final scanPaint = Paint()
+      ..color = _colors.last.withValues(alpha: 0.6)
+      ..strokeWidth = 1.2;
+    canvas.drawLine(const Offset(8, 27), const Offset(13, 27), scanPaint);
+    canvas.drawLine(const Offset(35, 27), const Offset(40, 27), scanPaint);
   }
 
   void _paintDone(Canvas canvas) {

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/icons/mebe_icons.dart';
 import '../../../core/widgets/error_card.dart';
 import '../../../features/admin/data/admin_provider.dart';
 import '../../../features/achievement/data/achievement_provider.dart';
@@ -146,15 +147,60 @@ class HomeScreen extends ConsumerWidget {
                       description: 'Bú · Ngủ · Tã · Hút sữa',
                       badge: '${todayFeedings.length} cữ hôm nay',
                       initiallyExpanded: true,
+                      statsStrip: _DailyStatsStrip(
+                        feedCount: todayFeedings.length,
+                        sleepHours: sleepHours,
+                        diaperCount: todayDiapers.length,
+                      ),
                       features: [
-                        HomeFeature(icon: '🤱', label: 'Bú mẹ', onTap: () => context.go('/home/feeding')),
-                        HomeFeature(icon: '🍼', label: 'Bú bình', onTap: () => context.go('/home/feeding')),
-                        HomeFeature(icon: '🌙', label: 'Ngủ', onTap: () => context.go('/home/sleep')),
-                        HomeFeature(icon: '🌸', label: 'Thay tã', onTap: () => context.go('/home/diaper')),
-                        HomeFeature(icon: '🥛', label: 'Hút sữa', onTap: () => context.go('/home/pumping')),
-                        HomeFeature(icon: '🧊', label: 'Kho sữa', onTap: () => context.go('/home/pumping')),
-                        HomeFeature(icon: '🥣', label: 'Ăn dặm', onTap: () => context.push('/home/solid-food')),
-                        HomeFeature(icon: '📷', label: 'Quét sữa CT', onTap: () => context.push('/formula-scanner')),
+                        HomeFeature(
+                          icon: '🤱',
+                          iconType: MeBeIconType.breastfeed,
+                          label: 'Bú mẹ',
+                          onTap: () => context.go('/home/feeding'),
+                        ),
+                        HomeFeature(
+                          icon: '🍼',
+                          iconType: MeBeIconType.bottle,
+                          label: 'Bú bình',
+                          onTap: () => context.go('/home/feeding'),
+                        ),
+                        HomeFeature(
+                          icon: '🌙',
+                          iconType: MeBeIconType.sleep,
+                          label: 'Ngủ',
+                          onTap: () => context.go('/home/sleep'),
+                        ),
+                        HomeFeature(
+                          icon: '🌸',
+                          iconType: MeBeIconType.diaper,
+                          label: 'Thay tã',
+                          onTap: () => context.go('/home/diaper'),
+                        ),
+                        HomeFeature(
+                          icon: '🥛',
+                          iconType: MeBeIconType.pump,
+                          label: 'Hút sữa',
+                          onTap: () => context.go('/home/pumping'),
+                        ),
+                        HomeFeature(
+                          icon: '🧊',
+                          iconType: MeBeIconType.milkStorage,
+                          label: 'Kho sữa',
+                          onTap: () => context.go('/home/pumping'),
+                        ),
+                        HomeFeature(
+                          icon: '🥣',
+                          iconType: MeBeIconType.solidFood,
+                          label: 'Ăn dặm',
+                          onTap: () => context.push('/home/solid-food'),
+                        ),
+                        HomeFeature(
+                          icon: '📷',
+                          iconType: MeBeIconType.scanMilk,
+                          label: 'Quét sữa CT',
+                          onTap: () => context.push('/formula-scanner'),
+                        ),
                       ],
                     ),
 
@@ -434,6 +480,74 @@ class _NightButton extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Today's feed/sleep/diaper counts shown above the activity icon grid —
+/// fills the space that would otherwise sit empty between the section
+/// header and the grid with something actually useful.
+class _DailyStatsStrip extends StatelessWidget {
+  const _DailyStatsStrip({
+    required this.feedCount,
+    required this.sleepHours,
+    required this.diaperCount,
+  });
+
+  final int feedCount;
+  final double sleepHours;
+  final int diaperCount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 4),
+      child: Row(
+        children: [
+          Expanded(child: _StatChip(value: '$feedCount', label: 'Cữ bú', color: AppColors.blossom)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: _StatChip(
+              value: sleepHours > 0 ? '${sleepHours.toStringAsFixed(1)}h' : '—',
+              label: 'Giờ ngủ',
+              color: AppColors.lavender,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(child: _StatChip(value: '$diaperCount', label: 'Thay tã', color: AppColors.mint)),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatChip extends StatelessWidget {
+  const _StatChip({required this.value, required this.label, required this.color});
+
+  final String value;
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            value,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: color, letterSpacing: -0.5),
+          ),
+          const SizedBox(height: 1),
+          Text(label, style: const TextStyle(fontSize: 9.5, color: AppColors.muted, fontWeight: FontWeight.w600)),
+        ],
       ),
     );
   }

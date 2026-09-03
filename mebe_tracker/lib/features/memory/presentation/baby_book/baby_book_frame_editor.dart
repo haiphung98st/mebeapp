@@ -117,10 +117,14 @@ class _BabyBookFrameEditorScreenState extends ConsumerState<BabyBookFrameEditorS
       await Share.shareXFiles([
         XFile.fromData(bytes, name: 'mebe_baby_book.png', mimeType: 'image/png'),
       ]);
-    } catch (_) {
+    } catch (e, st) {
+      debugPrint('Baby book export error: $e\n$st');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Xuất khung không thành công. Thử lại nhé 🐰')),
+          SnackBar(
+            content: Text('Lỗi: $e'),
+            duration: const Duration(seconds: 10),
+          ),
         );
       }
     } finally {

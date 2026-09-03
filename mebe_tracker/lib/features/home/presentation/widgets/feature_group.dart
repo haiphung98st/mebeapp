@@ -3,20 +3,25 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/icons/mebe_icons.dart';
 
-/// One tappable icon+label entry inside a [HomeFeatureGroup].
+/// One tappable icon+label entry inside a [HomeFeatureGroup]. Pass
+/// [iconType] to render a MeBeIcon gradient illustration instead of the
+/// plain [icon] emoji — used for the higher-visibility activity groups.
 class HomeFeature {
   const HomeFeature({
     required this.icon,
     required this.label,
     required this.onTap,
     this.isPremium = false,
+    this.iconType,
   });
 
   final String icon;
   final String label;
   final VoidCallback onTap;
   final bool isPremium;
+  final MeBeIconType? iconType;
 }
 
 /// Collapsible card grouping a set of related [HomeFeature]s — tap the
@@ -33,6 +38,7 @@ class HomeFeatureGroup extends StatefulWidget {
     this.badge,
     this.isPremium = false,
     this.initiallyExpanded = false,
+    this.statsStrip,
   });
 
   final String icon;
@@ -44,6 +50,10 @@ class HomeFeatureGroup extends StatefulWidget {
   final String? badge;
   final bool isPremium;
   final bool initiallyExpanded;
+
+  /// Optional row shown above the icon grid — fills what would otherwise
+  /// be dead whitespace with today's at-a-glance numbers.
+  final Widget? statsStrip;
 
   @override
   State<HomeFeatureGroup> createState() => _HomeFeatureGroupState();
@@ -142,7 +152,7 @@ class _HomeFeatureGroupState extends State<HomeFeatureGroup> {
             duration: const Duration(milliseconds: 250),
             curve: Curves.easeInOut,
             alignment: Alignment.topCenter,
-            child: _expanded ? _buildGrid() : const SizedBox(width: double.infinity),
+            child: _expanded ? _buildGrid() : const SizedBox.shrink(),
           ),
         ],
       ),
@@ -151,19 +161,21 @@ class _HomeFeatureGroupState extends State<HomeFeatureGroup> {
 
   Widget _buildGrid() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         const Divider(height: 1, color: AppColors.divider),
+        if (widget.statsStrip != null) widget.statsStrip!,
         Padding(
-          padding: const EdgeInsets.fromLTRB(10, AppSpacing.md, 10, AppSpacing.md),
+          padding: const EdgeInsets.fromLTRB(8, 4, 8, 10),
           child: GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: widget.features.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4,
-              mainAxisSpacing: AppSpacing.sm,
-              crossAxisSpacing: 8,
-              childAspectRatio: 0.78,
+              mainAxisSpacing: 0,
+              crossAxisSpacing: 0,
+              childAspectRatio: 0.85,
             ),
             itemBuilder: (context, i) => _FeatureButton(
               feature: widget.features[i],
@@ -192,16 +204,22 @@ class _FeatureButton extends StatelessWidget {
           Stack(
             clipBehavior: Clip.none,
             children: [
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  color: iconBg,
+              if (feature.iconType != null)
+                ClipRRect(
                   borderRadius: BorderRadius.circular(16),
+                  child: MeBeIcon(type: feature.iconType!, size: 54, isActive: true),
+                )
+              else
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: iconBg,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(feature.icon, style: const TextStyle(fontSize: 24)),
                 ),
-                alignment: Alignment.center,
-                child: Text(feature.icon, style: const TextStyle(fontSize: 24)),
-              ),
               if (feature.isPremium)
                 Positioned(
                   top: -4,

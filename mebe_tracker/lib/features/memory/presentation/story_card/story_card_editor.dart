@@ -79,10 +79,14 @@ class _StoryCardEditorScreenState extends ConsumerState<StoryCardEditorScreen> {
       await Share.shareXFiles([
         XFile.fromData(Uint8List.fromList(bytes), name: 'mebe_story_card.png', mimeType: 'image/png'),
       ]);
-    } catch (_) {
+    } catch (e, st) {
+      debugPrint('Story card export error: $e\n$st');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Xuất Story Card không thành công. Thử lại nhé 🐰')),
+          SnackBar(
+            content: Text('Lỗi: $e'),
+            duration: const Duration(seconds: 10),
+          ),
         );
       }
     } finally {
