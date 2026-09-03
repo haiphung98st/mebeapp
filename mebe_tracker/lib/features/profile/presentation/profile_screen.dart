@@ -135,10 +135,23 @@ class ProfileScreen extends ConsumerWidget {
             sliver: SliverList(
               delegate: SliverChildListDelegate([
                 // 1. Hồ sơ bé
-                const _ProfileCard(
+                _ProfileCard(
                   icon: '👶',
                   title: 'Hồ sơ bé',
-                  child: BabyCard(),
+                  child: Column(
+                    children: [
+                      const BabyCard(),
+                      const SizedBox(height: AppSpacing.sm),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextButton.icon(
+                          onPressed: () => context.push('/home/profile/manage-babies'),
+                          icon: const Icon(Icons.people_outline, size: 18),
+                          label: const Text('Quản lý các bé'),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.lg),
 

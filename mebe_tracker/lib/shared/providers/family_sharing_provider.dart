@@ -13,3 +13,10 @@ final familyMembersProvider = StreamProvider<List<FamilyMember>>((ref) {
   if (user == null) return Stream.value(const []);
   return ref.watch(familySharingServiceProvider).watchMembers(user.uid);
 });
+
+/// The invite waiting for the signed-in user's own email, if any.
+final myPendingInviteProvider = StreamProvider<PendingInvite?>((ref) {
+  final user = ref.watch(currentUserProvider);
+  if (user == null || user.email == null) return Stream.value(null);
+  return ref.watch(familySharingServiceProvider).watchMyInvite(user.email!);
+});

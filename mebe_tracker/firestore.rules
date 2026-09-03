@@ -14,6 +14,31 @@ service cloud.firestore {
       );
     }
 
+    // Family sharing: lets an invitee — who has no prior relationship to
+    // the inviter's account and so isn't covered by the users/{userId}
+    // rule above — grant themselves membership, but only by consuming a
+    // pendingInvites doc addressed to their own verified email.
+    match /users/{userId}/familyMembers/{memberId} {
+      allow create: if request.auth != null
+        && memberId == request.auth.uid
+        && request.auth.token.email != null
+        && exists(/databases/$(database)/documents/pendingInvites/$(request.auth.token.email))
+        && get(/databases/$(database)/documents/pendingInvites/$(request.auth.token.email)).data.inviterUserId == userId;
+    }
+
+    // Family sharing invites: parked by email (client can't resolve an
+    // email to a UID before that person signs in) until the invitee's
+    // own auth token — whose email is theirs and only theirs — accepts
+    // or declines it.
+    match /pendingInvites/{email} {
+      allow read, delete: if request.auth != null && (
+        request.auth.token.email == email ||
+        request.auth.uid == resource.data.inviterUserId
+      );
+      allow create: if request.auth != null
+        && request.auth.uid == request.resource.data.inviterUserId;
+    }
+
     // Audit logs: admin read only, Cloud Functions write only.
     match /adminLogs/{logId} {
       allow read: if request.auth != null && request.auth.token.isAdmin == true;

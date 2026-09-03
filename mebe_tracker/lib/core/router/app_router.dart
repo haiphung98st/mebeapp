@@ -25,6 +25,7 @@ import '../../features/legal/presentation/faq_screen.dart';
 import '../../features/legal/presentation/privacy_screen.dart';
 import '../../features/legal/presentation/terms_screen.dart';
 import '../../features/profile/presentation/edit_baby_screen.dart';
+import '../../features/profile/presentation/manage_babies_screen.dart';
 import '../../features/profile/presentation/notification_settings_screen.dart';
 import '../../features/widget/presentation/widget_config_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
@@ -260,6 +261,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/home/profile/edit-baby',
         builder: (context, state) => EditBabyScreen(baby: state.extra as BabyProfile),
+      ),
+      GoRoute(
+        path: '/home/profile/manage-babies',
+        builder: (context, state) => const ManageBabiesScreen(),
       ),
       // ── Memory routes ────────────────────────────────────────────────────────
       GoRoute(path: '/memory', builder: (_, __) => const MemoryHubScreen()),
