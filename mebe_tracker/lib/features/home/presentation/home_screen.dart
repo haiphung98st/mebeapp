@@ -259,6 +259,19 @@ class HomeScreen extends ConsumerWidget {
                       ],
                     ),
 
+                    // ── Thỏ kể chuyện ────────────────────────────────────
+                    HomeFeatureGroup(
+                      icon: '🐰',
+                      iconBg: const Color(0xFFE8F4FF),
+                      featureIconBg: const Color(0xFFF0F8FF),
+                      name: 'Thỏ kể chuyện',
+                      description: 'Truyện ngủ · Âm thanh · Nhạc ru',
+                      features: [
+                        HomeFeature(icon: '📖', label: 'Kể chuyện', onTap: () => context.push('/bedtime')),
+                        HomeFeature(icon: '🌙', label: 'Ru ngủ', onTap: () => context.push('/bedtime')),
+                      ],
+                    ),
+
                     // ── Mẹ khoẻ ──────────────────────────────────────────
                     HomeFeatureGroup(
                       icon: '🌸',

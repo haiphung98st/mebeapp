@@ -1,0 +1,148 @@
+{
+  "categories": [
+    {
+      "id": "nature",
+      "name": "Thiên nhiên",
+      "slug": "thien-nhien",
+      "iconKey": "nature",
+      "sortOrder": 1,
+      "isActive": true
+    },
+    {
+      "id": "animals",
+      "name": "Động vật",
+      "slug": "dong-vat",
+      "iconKey": "animals",
+      "sortOrder": 2,
+      "isActive": true
+    },
+    {
+      "id": "fairy_tales",
+      "name": "Cổ tích",
+      "slug": "co-tich",
+      "iconKey": "fairy_tales",
+      "sortOrder": 3,
+      "isActive": true
+    },
+    {
+      "id": "lullaby",
+      "name": "Ru ngủ",
+      "slug": "ru-ngu",
+      "iconKey": "lullaby",
+      "sortOrder": 4,
+      "isActive": true
+    },
+    {
+      "id": "adventures",
+      "name": "Phiêu lưu",
+      "slug": "phieu-luu",
+      "iconKey": "adventures",
+      "sortOrder": 5,
+      "isActive": true
+    }
+  ],
+  "stories": [
+    {
+      "id": "story_little_bunny",
+      "title": "Chú thỏ nhỏ và ánh trăng",
+      "slug": "chu-tho-nho-va-anh-trang",
+      "summary": "Chú thỏ nhỏ không ngủ được vì ánh trăng quá sáng. Cùng xem thỏ làm gì để tìm giấc ngủ ngoan nhé.",
+      "categoryId": "animals",
+      "ageGroups": ["0_12m", "1_3y"],
+      "tags": ["thỏ", "trăng", "ngủ"],
+      "coverPath": null,
+      "durationSec": 180,
+      "paragraphCount": 5,
+      "isPremium": false,
+      "status": "published",
+      "version": 1,
+      "voiceId": null,
+      "ttsProvider": null,
+      "charCount": 420,
+      "sortOrder": 1,
+      "publishedAt": "2024-01-01T00:00:00Z",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z",
+      "updatedBy": null,
+      "content": {
+        "paragraphs": [
+          { "index": 0, "text": "Đêm nay, ánh trăng tròn chiếu sáng cả khu rừng nhỏ." },
+          { "index": 1, "text": "Chú thỏ con nằm trong ổ nhưng mắt cứ mở to, không chịu nhắm lại." },
+          { "index": 2, "text": "Mẹ thỏ đến bên, nhẹ nhàng hát một bài ru quen thuộc." },
+          { "index": 3, "text": "Tiếng hát của mẹ như dòng suối mát, chảy vào giấc mơ êm đềm." },
+          { "index": 4, "text": "Và chú thỏ con chìm vào giấc ngủ sâu, nụ cười nhỏ trên môi." }
+        ],
+        "fullAudioPath": null
+      }
+    },
+    {
+      "id": "story_cloud_friends",
+      "title": "Những đám mây bạn bè",
+      "slug": "nhung-dam-may-ban-be",
+      "summary": "Trên bầu trời cao, những đám mây kết bạn với nhau và cùng nhau tạo ra những hình thù thú vị.",
+      "categoryId": "nature",
+      "ageGroups": ["1_3y", "3_6y"],
+      "tags": ["mây", "bầu trời", "bạn bè"],
+      "coverPath": null,
+      "durationSec": 240,
+      "paragraphCount": 6,
+      "isPremium": false,
+      "status": "published",
+      "version": 1,
+      "voiceId": null,
+      "ttsProvider": null,
+      "charCount": 560,
+      "sortOrder": 2,
+      "publishedAt": "2024-01-02T00:00:00Z",
+      "createdAt": "2024-01-02T00:00:00Z",
+      "updatedAt": "2024-01-02T00:00:00Z",
+      "updatedBy": null,
+      "content": {
+        "paragraphs": [
+          { "index": 0, "text": "Trên bầu trời xanh thẳm, có những đám mây trắng bồng bềnh." },
+          { "index": 1, "text": "Đám mây Bông gặp đám mây Xốp và cùng nhau chơi trò biến hình." },
+          { "index": 2, "text": "Bông biến thành con voi, Xốp biến thành con thuyền." },
+          { "index": 3, "text": "Gió nhẹ thổi qua, hai bạn mây cười khúc khích với nhau." },
+          { "index": 4, "text": "Khi hoàng hôn xuống, các đám mây nhuộm màu hồng rực rỡ." },
+          { "index": 5, "text": "Và tất cả chìm vào giấc ngủ, chờ một ngày mới tươi sáng hơn." }
+        ],
+        "fullAudioPath": null
+      }
+    },
+    {
+      "id": "story_star_lullaby",
+      "title": "Bài ca của những ngôi sao",
+      "slug": "bai-ca-cua-nhung-ngoi-sao",
+      "summary": "Mỗi đêm, những ngôi sao nhỏ hát ru cho các bé ngủ ngoan. Hãy lắng nghe bài ca kỳ diệu ấy.",
+      "categoryId": "lullaby",
+      "ageGroups": ["0_12m", "1_3y", "pregnancy"],
+      "tags": ["sao", "ru ngủ", "đêm"],
+      "coverPath": null,
+      "durationSec": 300,
+      "paragraphCount": 7,
+      "isPremium": true,
+      "status": "published",
+      "version": 1,
+      "voiceId": null,
+      "ttsProvider": null,
+      "charCount": 680,
+      "sortOrder": 3,
+      "publishedAt": "2024-01-03T00:00:00Z",
+      "createdAt": "2024-01-03T00:00:00Z",
+      "updatedAt": "2024-01-03T00:00:00Z",
+      "updatedBy": null,
+      "content": {
+        "paragraphs": [
+          { "index": 0, "text": "Khi màn đêm buông xuống, những ngôi sao nhỏ bắt đầu thức dậy." },
+          { "index": 1, "text": "Sao Bắc cất giọng trước, nhẹ nhàng và trong trẻo." },
+          { "index": 2, "text": "Sao Hôm tiếp nối, thêm vào những nốt nhạc dịu dàng." },
+          { "index": 3, "text": "Cả bầu trời như một dàn đồng ca khổng lồ, hát ru cho trái đất." },
+          { "index": 4, "text": "Những chú bé nghe tiếng hát, mắt từ từ khép lại." },
+          { "index": 5, "text": "Giấc mơ đẹp ùa về, đầy màu sắc và tiếng cười." },
+          { "index": 6, "text": "Đêm nay và mọi đêm, những ngôi sao vẫn hát, bảo vệ giấc ngủ của bé." }
+        ],
+        "fullAudioPath": null
+      }
+    }
+  ]
+}

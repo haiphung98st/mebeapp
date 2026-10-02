@@ -69,6 +69,7 @@ import '../../features/memory/presentation/time_capsule_screen.dart';
 import '../../features/memory/presentation/create_capsule_screen.dart';
 import '../../features/memory/presentation/milestone_map_screen.dart';
 import '../../features/memory/presentation/soundscape_screen.dart';
+import '../../features/bedtime/presentation/bedtime_home_screen.dart';
 import '../../shared/models/baby_profile.dart';
 import '../../shared/models/future_letter.dart';
 import '../../shared/models/milk_stash_entry.dart';
@@ -286,6 +287,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/memory/time-capsule/create', builder: (_, __) => const CreateCapsuleScreen()),
       GoRoute(path: '/memory/milestone-map', builder: (_, __) => const MilestoneMapScreen()),
       GoRoute(path: '/memory/soundscape', builder: (_, __) => const SoundscapeScreen()),
+      // ── Bedtime routes ───────────────────────────────────────────────────────
+      GoRoute(path: '/bedtime', builder: (_, __) => const BedtimeHomeScreen()),
       // ── Legal / support routes ───────────────────────────────────────────────
       GoRoute(path: '/legal/terms', builder: (_, __) => const TermsScreen()),
       GoRoute(path: '/legal/privacy', builder: (_, __) => const PrivacyScreen()),

@@ -50,5 +50,30 @@ service cloud.firestore {
       allow read: if true;
       allow write: if false;
     }
+
+    // Bedtime story categories: public read, admin write only.
+    match /bedtime_categories/{catId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.isAdmin == true;
+    }
+
+    // Bedtime stories: authenticated read (published only enforced by query),
+    // admin write only.
+    match /bedtime_stories/{storyId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.token.isAdmin == true;
+
+      // Story content subcollection.
+      match /content/{docId} {
+        allow read: if request.auth != null;
+        allow write: if request.auth != null && request.auth.token.isAdmin == true;
+      }
+    }
+
+    // Bedtime global config (e.g. free-tier limits): public read, admin write.
+    match /bedtime_config/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.isAdmin == true;
+    }
   }
 }
