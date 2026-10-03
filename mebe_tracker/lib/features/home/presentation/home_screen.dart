@@ -268,7 +268,8 @@ class HomeScreen extends ConsumerWidget {
                       description: 'Truyện ngủ · Âm thanh · Nhạc ru',
                       features: [
                         HomeFeature(icon: '📖', label: 'Kể chuyện', onTap: () => context.push('/bedtime')),
-                        HomeFeature(icon: '🌙', label: 'Ru ngủ', onTap: () => context.push('/bedtime')),
+                        HomeFeature(icon: '🎵', label: 'Nhạc ru', onTap: () => context.push('/bedtime/lullaby')),
+                        HomeFeature(icon: '🌊', label: 'Âm thanh', onTap: () => context.push('/bedtime/sounds')),
                       ],
                     ),
 
