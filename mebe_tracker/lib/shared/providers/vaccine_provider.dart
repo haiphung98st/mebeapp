@@ -39,11 +39,12 @@ final vaccineViewListProvider = Provider<List<VaccineViewItem>>((ref) {
   final entries = ref.watch(allVaccinesProvider).value ?? const [];
   final byKey = {for (final e in entries) e.vaccineKey: e};
   return vaccineDefs.map((def) {
-    return VaccineViewItem(
-      def: def,
-      scheduledDate: baby.dateOfBirth.add(Duration(days: def.offsetDays)),
-      entry: byKey[def.key],
-    );
+    final entry = byKey[def.key];
+    final defaultDate = baby.dateOfBirth.add(Duration(days: def.offsetDays));
+    // Use stored scheduledDate (rescheduled) for pending entries; default otherwise.
+    final scheduledDate =
+        (entry != null && !entry.isCompleted) ? entry.scheduledDate : defaultDate;
+    return VaccineViewItem(def: def, scheduledDate: scheduledDate, entry: entry);
   }).toList();
 });
 
@@ -76,6 +77,27 @@ class VaccineRepository {
       isCompleted: false,
       createdAt: DateTime.now(),
     )).copyWith(administeredDate: administeredDate, isCompleted: true, clinicName: clinicName);
+
+    return item.entry == null
+        ? _firestoreService.addVaccine(userId, entry)
+        : _firestoreService.updateVaccine(userId, entry);
+  }
+
+  Future<void> reschedule(
+    VaccineViewItem item, {
+    required String userId,
+    required String babyId,
+    required DateTime newDate,
+  }) {
+    final entry = (item.entry ?? VaccineEntry(
+      id: _firestoreService.newId(),
+      babyId: babyId,
+      vaccineKey: item.def.key,
+      nameVi: item.def.nameVi,
+      scheduledDate: newDate,
+      isCompleted: false,
+      createdAt: DateTime.now(),
+    )).copyWith(scheduledDate: newDate);
 
     return item.entry == null
         ? _firestoreService.addVaccine(userId, entry)
