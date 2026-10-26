@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/router/app_router.dart';
 import '../data/achievement_data.dart';
 import '../data/achievement_provider.dart';
 
@@ -56,7 +57,12 @@ class _AchievementListenerState extends ConsumerState<AchievementListener> {
   }
 
   Future<void> _showToast(AchievementDef ach) async {
-    final overlay = Overlay.of(context);
+    // This widget sits in MaterialApp.router's `builder`, above the
+    // Navigator — so its own `context` has no Overlay ancestor. Go through
+    // the router's navigator context instead, which does.
+    final navContext = ref.read(goRouterProvider).routerDelegate.navigatorKey.currentContext;
+    if (navContext == null || !navContext.mounted) return;
+    final overlay = Overlay.of(navContext);
     late OverlayEntry entry;
     entry = OverlayEntry(
       builder: (_) => _AchievementToast(
