@@ -20,5 +20,18 @@ service firebase.storage {
     match /soundscape/{uid}/{babyId}/{fileName} {
       allow read, write: if request.auth != null && request.auth.uid == uid;
     }
+
+    // Bedtime ambient sounds — static app content, publicly readable.
+    // Managed by admins only (no client writes).
+    match /bedtime_sounds/{fileName} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Bedtime lullaby tracks — static app content, publicly readable.
+    match /bedtime_lullaby/{fileName} {
+      allow read: if true;
+      allow write: if false;
+    }
   }
 }

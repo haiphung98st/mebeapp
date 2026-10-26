@@ -6,6 +6,32 @@ import '../constants/app_spacing.dart';
 class AppTheme {
   AppTheme._();
 
+  static TextStyle? _scaleFontSize(TextStyle? style, double factor) {
+    final fontSize = style?.fontSize;
+    if (style == null || fontSize == null) return style;
+    return style.copyWith(fontSize: fontSize * factor);
+  }
+
+  static TextTheme _scaleTextTheme(TextTheme theme, double factor) {
+    return TextTheme(
+      displayLarge: _scaleFontSize(theme.displayLarge, factor),
+      displayMedium: _scaleFontSize(theme.displayMedium, factor),
+      displaySmall: _scaleFontSize(theme.displaySmall, factor),
+      headlineLarge: _scaleFontSize(theme.headlineLarge, factor),
+      headlineMedium: _scaleFontSize(theme.headlineMedium, factor),
+      headlineSmall: _scaleFontSize(theme.headlineSmall, factor),
+      titleLarge: _scaleFontSize(theme.titleLarge, factor),
+      titleMedium: _scaleFontSize(theme.titleMedium, factor),
+      titleSmall: _scaleFontSize(theme.titleSmall, factor),
+      bodyLarge: _scaleFontSize(theme.bodyLarge, factor),
+      bodyMedium: _scaleFontSize(theme.bodyMedium, factor),
+      bodySmall: _scaleFontSize(theme.bodySmall, factor),
+      labelLarge: _scaleFontSize(theme.labelLarge, factor),
+      labelMedium: _scaleFontSize(theme.labelMedium, factor),
+      labelSmall: _scaleFontSize(theme.labelSmall, factor),
+    );
+  }
+
   static ThemeData get light {
     final base = ThemeData(
       useMaterial3: true,
@@ -150,11 +176,11 @@ class AppTheme {
       ),
     );
 
-    // Scale font sizes on the Material3 base theme first, where every style
-    // is guaranteed a non-null fontSize — GoogleFonts.nunitoTextTheme() can
-    // hand back styles with a null fontSize for some weights, and applying
-    // fontSizeFactor to those trips TextStyle.apply's assertion.
-    final scaledBase = ThemeData.dark().textTheme.apply(fontSizeFactor: 1.15);
+    // Scale font sizes on the Material3 base theme first, skipping any style
+    // with a null fontSize — GoogleFonts.nunitoTextTheme() can hand back
+    // styles with a null fontSize for some weights, and TextStyle.apply's
+    // fontSizeFactor assertion requires fontSize to be non-null.
+    final scaledBase = _scaleTextTheme(ThemeData.dark().textTheme, 1.15);
     final textTheme = GoogleFonts.nunitoTextTheme(scaledBase).apply(
       bodyColor: const Color(0xFFE8D5F5),
       displayColor: Colors.white,

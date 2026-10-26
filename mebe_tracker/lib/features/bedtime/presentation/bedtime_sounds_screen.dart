@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:just_audio/just_audio.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
@@ -14,10 +15,58 @@ class BedtimeSoundsScreen extends StatefulWidget {
 
 class _BedtimeSoundsScreenState extends State<BedtimeSoundsScreen> {
   String _selectedCategory = '';
+  String? _playingTitle;
+  final _players = <String, AudioPlayer>{};
 
   List<_Sound> get _filtered => _selectedCategory.isEmpty
       ? _sounds
       : _sounds.where((s) => s.category == _selectedCategory).toList();
+
+  @override
+  void dispose() {
+    for (final p in _players.values) {
+      p.dispose();
+    }
+    super.dispose();
+  }
+
+  Future<void> _togglePlay(_Sound sound) async {
+    // Stop whatever is currently playing — only one sound at a time.
+    if (_playingTitle != null && _playingTitle != sound.title) {
+      await _players[_playingTitle]?.stop();
+    }
+
+    if (_playingTitle == sound.title) {
+      await _players[sound.title]?.stop();
+      setState(() => _playingTitle = null);
+      return;
+    }
+
+    if (sound.audioUrl.isEmpty) {
+      setState(() => _playingTitle = null);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Chưa có file âm thanh cho "${sound.title}"')),
+        );
+      }
+      return;
+    }
+
+    try {
+      final player = _players[sound.title] ??= AudioPlayer();
+      await player.setUrl(sound.audioUrl);
+      await player.setLoopMode(LoopMode.one);
+      await player.play();
+      setState(() => _playingTitle = sound.title);
+    } catch (e) {
+      setState(() => _playingTitle = null);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Không thể phát âm thanh: $e')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +232,14 @@ class _BedtimeSoundsScreenState extends State<BedtimeSoundsScreen> {
                 childAspectRatio: 0.85,
               ),
               delegate: SliverChildBuilderDelegate(
-                (context, i) => _SoundCard(sound: _filtered[i]),
+                (context, i) {
+                  final sound = _filtered[i];
+                  return _SoundCard(
+                    sound: sound,
+                    isPlaying: _playingTitle == sound.title,
+                    onTap: () => _togglePlay(sound),
+                  );
+                },
                 childCount: _filtered.length,
               ),
             ),
@@ -215,44 +271,62 @@ const _categories = [
 ];
 
 class _Sound {
-  const _Sound(this.title, this.emoji, this.bgGradient, this.category);
+  const _Sound(this.title, this.emoji, this.bgGradient, this.category,
+      {this.audioUrl = ''});
   final String title;
   final String emoji;
   final List<Color> bgGradient;
   final String category;
+  final String audioUrl;
 }
 
+const _storageBase =
+    'https://firebasestorage.googleapis.com/v0/b/mebe-tracker.firebasestorage.app/o/bedtime_sounds%2F';
+
 const _sounds = [
-  _Sound('Gió lộng', '🌾', [Color(0xFFB3D9FF), Color(0xFF6FA8DC)], 'wind'),
+  _Sound('Gió lộng', '🌾', [Color(0xFFB3D9FF), Color(0xFF6FA8DC)], 'wind',
+      audioUrl: '${_storageBase}wind.mp3?alt=media'),
   _Sound('Lửa lò sưởi tí tách', '🔥',
-      [Color(0xFFFFB347), Color(0xFFCC5500)], 'fire'),
-  _Sound('Mưa rơi', '🌧️', [Color(0xFF8EC5FC), Color(0xFFE0C3FC)], 'rain'),
-  _Sound('Sóng biển', '🌊', [Color(0xFF4FC3F7), Color(0xFF0288D1)], 'ocean'),
-  _Sound('White noise', '📺', [Color(0xFFB0BEC5), Color(0xFF607D8B)], 'white'),
-  _Sound('Tiếng chim', '🐦', [Color(0xFFA8E6CF), Color(0xFF3D9970)], 'wind'),
+      [Color(0xFFFFB347), Color(0xFFCC5500)], 'fire',
+      audioUrl: '${_storageBase}fire.mp3?alt=media'),
+  _Sound('Mưa rơi', '🌧️', [Color(0xFF8EC5FC), Color(0xFFE0C3FC)], 'rain',
+      audioUrl: '${_storageBase}rain.mp3?alt=media'),
+  _Sound('Sóng biển', '🌊', [Color(0xFF4FC3F7), Color(0xFF0288D1)], 'ocean',
+      audioUrl: '${_storageBase}ocean.mp3?alt=media'),
+  _Sound('White noise', '📺', [Color(0xFFB0BEC5), Color(0xFF607D8B)], 'white',
+      audioUrl: '${_storageBase}white.mp3?alt=media'),
+  _Sound('Tiếng chim', '🐦', [Color(0xFFA8E6CF), Color(0xFF3D9970)], 'wind',
+      audioUrl: '${_storageBase}birds.mp3?alt=media'),
   _Sound('Máy hút bụi', '🌀',
-      [Color(0xFFCFD8DC), Color(0xFF90A4AE)], 'white'),
-  _Sound('Máy sấy tóc', '💨', [Color(0xFFFFD3B6), Color(0xFFFF9A3C)], 'wind'),
+      [Color(0xFFCFD8DC), Color(0xFF90A4AE)], 'white',
+      audioUrl: '${_storageBase}vacuum.mp3?alt=media'),
+  _Sound('Máy sấy tóc', '💨', [Color(0xFFFFD3B6), Color(0xFFFF9A3C)], 'wind',
+      audioUrl: '${_storageBase}hairdryer.mp3?alt=media'),
 ];
 
 // ── Sound Card ────────────────────────────────────────────────────────────────
 
 class _SoundCard extends StatefulWidget {
-  const _SoundCard({required this.sound});
+  const _SoundCard({
+    required this.sound,
+    required this.isPlaying,
+    required this.onTap,
+  });
   final _Sound sound;
+  final bool isPlaying;
+  final VoidCallback onTap;
 
   @override
   State<_SoundCard> createState() => _SoundCardState();
 }
 
 class _SoundCardState extends State<_SoundCard> {
-  bool _isPlaying = false;
   bool _isFav = false;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => setState(() => _isPlaying = !_isPlaying),
+      onTap: widget.onTap,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
@@ -304,7 +378,7 @@ class _SoundCardState extends State<_SoundCard> {
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  _isPlaying ? Icons.pause : Icons.play_arrow,
+                  widget.isPlaying ? Icons.pause : Icons.play_arrow,
                   color: AppColors.white,
                   size: 28,
                 ),
