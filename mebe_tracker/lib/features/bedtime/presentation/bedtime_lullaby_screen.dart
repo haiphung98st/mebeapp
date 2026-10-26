@@ -33,13 +33,13 @@ class _BedtimeLullabyScreenState extends State<BedtimeLullabyScreen> {
 
     if (_playingTitle == lullaby.title) {
       await _players[lullaby.title]?.stop();
-      setState(() => _playingTitle = null);
+      if (mounted) setState(() => _playingTitle = null);
       return;
     }
 
     if (lullaby.audioUrl.isEmpty) {
-      setState(() => _playingTitle = null);
       if (mounted) {
+        setState(() => _playingTitle = null);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Chưa có file nhạc cho "${lullaby.title}"')),
         );
@@ -51,6 +51,7 @@ class _BedtimeLullabyScreenState extends State<BedtimeLullabyScreen> {
       final player = _players[lullaby.title] ??= AudioPlayer();
       await player.setUrl(lullaby.audioUrl);
       await player.play();
+      if (!mounted) return;
       setState(() => _playingTitle = lullaby.title);
       player.playerStateStream.listen((state) {
         if (state.processingState == ProcessingState.completed) {
@@ -60,8 +61,8 @@ class _BedtimeLullabyScreenState extends State<BedtimeLullabyScreen> {
         }
       });
     } catch (e) {
-      setState(() => _playingTitle = null);
       if (mounted) {
+        setState(() => _playingTitle = null);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Không thể phát nhạc: $e')),
         );

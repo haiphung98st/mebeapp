@@ -68,10 +68,17 @@ class _MeBeAppState extends ConsumerState<MeBeApp> with WidgetsBindingObserver {
 
   void _maybeShowConsentDialog(GoRouter router, ConsentStatus? status) {
     if (status == null || !status.isStale || _consentDialogShowing) return;
-    final navContext = router.routerDelegate.navigatorKey.currentContext;
-    if (navContext == null) return;
     _consentDialogShowing = true;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Re-read the context here rather than capturing it above — by the
+      // time this callback fires, the navigator may have already rebuilt
+      // (e.g. mid-redirect at startup), making an earlier-captured context
+      // stale.
+      final navContext = router.routerDelegate.navigatorKey.currentContext;
+      if (navContext == null || !navContext.mounted) {
+        _consentDialogShowing = false;
+        return;
+      }
       await showDialog<void>(
         context: navContext,
         barrierDismissible: false,

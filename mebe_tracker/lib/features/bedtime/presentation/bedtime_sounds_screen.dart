@@ -38,13 +38,13 @@ class _BedtimeSoundsScreenState extends State<BedtimeSoundsScreen> {
 
     if (_playingTitle == sound.title) {
       await _players[sound.title]?.stop();
-      setState(() => _playingTitle = null);
+      if (mounted) setState(() => _playingTitle = null);
       return;
     }
 
     if (sound.audioUrl.isEmpty) {
-      setState(() => _playingTitle = null);
       if (mounted) {
+        setState(() => _playingTitle = null);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Chưa có file âm thanh cho "${sound.title}"')),
         );
@@ -57,10 +57,11 @@ class _BedtimeSoundsScreenState extends State<BedtimeSoundsScreen> {
       await player.setUrl(sound.audioUrl);
       await player.setLoopMode(LoopMode.one);
       await player.play();
+      if (!mounted) return;
       setState(() => _playingTitle = sound.title);
     } catch (e) {
-      setState(() => _playingTitle = null);
       if (mounted) {
+        setState(() => _playingTitle = null);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Không thể phát âm thanh: $e')),
         );

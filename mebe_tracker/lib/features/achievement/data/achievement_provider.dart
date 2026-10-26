@@ -94,5 +94,10 @@ final achievementEvaluatorProvider = Provider<void>((ref) {
     babyWeekFromEdd: wwWeek,
   );
 
-  ref.read(achievementNotifierProvider.notifier).evaluate(input).ignore();
+  // Deferred to a microtask: evaluate() mutates AchievementNotifier's state
+  // synchronously (before its first await), which Riverpod disallows while
+  // this provider is still being built.
+  Future.microtask(
+    () => ref.read(achievementNotifierProvider.notifier).evaluate(input),
+  );
 });
