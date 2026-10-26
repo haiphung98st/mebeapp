@@ -80,7 +80,7 @@ class StoryFramePainter extends CustomPainter {
     }
 
     _drawStars(canvas, [const Offset(540, 1560), const Offset(440, 1580), const Offset(640, 1580)], const Color(0xFFFFD580), 24);
-    _drawText(canvas, 'MeBé Tracker 🌸', const Offset(540, 1840), fontSize: 36, color: const Color(0xFFF472A0).withValues(alpha: 0.5));
+    _drawText(canvas, 'MeBé Tracker', const Offset(540, 1840), fontSize: 36, color: const Color(0xFFF472A0).withValues(alpha: 0.5));
   }
 
   // ── Bunny Cute (free) ─────────────────────────────────────
@@ -131,7 +131,7 @@ class StoryFramePainter extends CustomPainter {
       _drawText(canvas, tagline!, const Offset(540, 1460), fontSize: 50, fontWeight: FontWeight.w700, color: const Color(0xFFF472A0));
     }
 
-    _drawText(canvas, '🐰 MeBé Tracker', const Offset(540, 1850), fontSize: 36, color: const Color(0xFFC9A8F5).withValues(alpha: 0.6));
+    _drawText(canvas, 'MeBé Tracker', const Offset(540, 1850), fontSize: 36, color: const Color(0xFFC9A8F5).withValues(alpha: 0.6));
   }
 
   // ── Starry Night (premium) ────────────────────────────────
@@ -171,7 +171,7 @@ class StoryFramePainter extends CustomPainter {
 
     _drawCloud(canvas, const Offset(150, 1720), 120, 60);
     _drawCloud(canvas, const Offset(920, 1750), 100, 50);
-    _drawText(canvas, 'MeBé Tracker 🌙', const Offset(540, 1860), fontSize: 36, color: const Color(0xFFC9A8F5).withValues(alpha: 0.5));
+    _drawText(canvas, 'MeBé Tracker', const Offset(540, 1860), fontSize: 36, color: const Color(0xFFC9A8F5).withValues(alpha: 0.5));
   }
 
   // ── Vintage Polaroid (premium) ────────────────────────────
@@ -209,7 +209,7 @@ class StoryFramePainter extends CustomPainter {
     _drawStamp(canvas, const Offset(540, 1560), 'LOVE', const Color(0xFF3ABFA0));
     _drawStamp(canvas, const Offset(810, 1560), '2026', const Color(0xFFF59E0B));
 
-    _drawText(canvas, 'MeBé Tracker 📷', const Offset(540, 1850), fontSize: 36, color: const Color(0xFFB8A07A).withValues(alpha: 0.6));
+    _drawText(canvas, 'MeBé Tracker', const Offset(540, 1850), fontSize: 36, color: const Color(0xFFB8A07A).withValues(alpha: 0.6));
   }
 
   // ── Shared drawing helpers ────────────────────────────────

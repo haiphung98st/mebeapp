@@ -11,6 +11,7 @@ import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/services/firestore_service.dart';
 import '../data/baby_food_database.dart';
 import '../data/solid_food_entry.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../data/solid_food_provider.dart';
 
 class SolidFoodScreen extends ConsumerStatefulWidget {
@@ -166,7 +167,7 @@ class _AddFoodEntryState extends ConsumerState<_AddFoodEntry> {
               onTap: () => setState(() => _expanded = !_expanded),
               child: Row(
                 children: [
-                  const Icon(Icons.add_circle_outline,
+                  const MeBeGlyph(MeBeGlyphType.addCircleOutline,
                       color: AppColors.blossom),
                   const SizedBox(width: AppSpacing.sm),
                   Text('Ghi nhận bữa ăn',
@@ -227,7 +228,15 @@ class _AddFoodEntryState extends ConsumerState<_AddFoodEntry> {
                             child: Text('Nhẹ')),
                         DropdownMenuItem(
                             value: FoodReaction.severe,
-                            child: Text('Nặng ⚠️')),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text('Nặng'),
+                                SizedBox(width: 4),
+                                MeBeGlyph(MeBeGlyphType.warningAmber,
+                                    color: AppColors.warning, size: 14),
+                              ],
+                            )),
                       ],
                       onChanged: (v) =>
                           setState(() => _reaction = v ?? FoodReaction.none),
@@ -547,7 +556,7 @@ class _DayMealCard extends StatelessWidget {
                         if (f.prepNote != null)
                           Tooltip(
                             message: f.prepNote!,
-                            child: const Icon(Icons.info_outline,
+                            child: const MeBeGlyph(MeBeGlyphType.infoOutline,
                                 size: 14, color: AppColors.muted),
                           ),
                       ],

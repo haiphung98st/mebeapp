@@ -9,6 +9,8 @@ import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../data/prenatal_data.dart';
 import '../data/prenatal_entry.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../data/prenatal_provider.dart';
 
 class PrenatalScreen extends ConsumerWidget {
@@ -32,7 +34,7 @@ class PrenatalScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.blossom,
         onPressed: () => _showAddEntry(context, ref, currentWeek ?? 20),
-        child: const Icon(Icons.add),
+        child: const MeBeGlyph(MeBeGlyphType.add),
       ),
       body: Column(
         children: [
@@ -47,7 +49,7 @@ class PrenatalScreen extends ConsumerWidget {
             title: 'Nhật ký thai kỳ',
             subtitle: currentWeek != null ? 'Tuần $currentWeek' : 'Nhập ngày dự sinh để xem',
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              icon: const MeBeGlyph(MeBeGlyphType.arrowBack, color: Colors.white),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
@@ -162,15 +164,34 @@ class _BabyWeekCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           Row(
             children: [
-              _Stat('📏', '${info.lengthCm} cm'),
+              _Stat(
+                const MeBeGlyph(MeBeGlyphType.rulerLength,
+                    color: AppColors.ink, size: 14),
+                '${info.lengthCm} cm',
+              ),
               const SizedBox(width: AppSpacing.lg),
-              if (info.weightG > 0) _Stat('⚖️', '${info.weightG} g'),
+              if (info.weightG > 0)
+                _Stat(
+                  const MeBeGlyph(MeBeGlyphType.scaleWeight,
+                      color: AppColors.ink, size: 14),
+                  '${info.weightG} g',
+                ),
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
-          Text(
-            '✨ ${info.highlight}',
-            style: AppTextStyles.bodySm.copyWith(color: const Color(0xFF5B3A8A)),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const MeBeIcon(type: MeBeIconType.premium, size: 16),
+              const SizedBox(width: 4),
+              Expanded(
+                child: Text(
+                  info.highlight,
+                  style: AppTextStyles.bodySm
+                      .copyWith(color: const Color(0xFF5B3A8A)),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -180,7 +201,7 @@ class _BabyWeekCard extends StatelessWidget {
 
 class _Stat extends StatelessWidget {
   const _Stat(this.icon, this.label);
-  final String icon;
+  final Widget icon;
   final String label;
 
   @override
@@ -188,7 +209,7 @@ class _Stat extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(icon, style: const TextStyle(fontSize: 14)),
+        icon,
         const SizedBox(width: 4),
         Text(label,
             style: AppTextStyles.bodySm.copyWith(color: AppColors.ink)),
@@ -211,7 +232,7 @@ class _NoEddBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Text('📅', style: TextStyle(fontSize: 20)),
+          const MeBeIcon(type: MeBeIconType.calendar, size: 20),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Text(
@@ -352,7 +373,7 @@ class _EntryCard extends StatelessWidget {
               const SizedBox(width: AppSpacing.xs),
               GestureDetector(
                 onTap: onDelete,
-                child: const Icon(Icons.delete_outline,
+                child: const MeBeGlyph(MeBeGlyphType.deleteOutline,
                     size: 18, color: AppColors.muted),
               ),
             ],
@@ -364,18 +385,33 @@ class _EntryCard extends StatelessWidget {
           ],
           if (entry.weightKg != null) ...[
             const SizedBox(height: AppSpacing.xs),
-            Text(
-              '⚖️ Cân nặng mẹ: ${entry.weightKg!.toStringAsFixed(1)} kg',
-              style:
-                  AppTextStyles.bodySm.copyWith(color: AppColors.body),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                MeBeGlyph(MeBeGlyphType.scaleWeight,
+                    color: AppColors.body, size: 14),
+                const SizedBox(width: 4),
+                Text(
+                  'Cân nặng mẹ: ${entry.weightKg!.toStringAsFixed(1)} kg',
+                  style:
+                      AppTextStyles.bodySm.copyWith(color: AppColors.body),
+                ),
+              ],
             ),
           ],
           if (entry.bloodPressureSystolic != null) ...[
             const SizedBox(height: AppSpacing.xs),
-            Text(
-              '💊 Huyết áp: ${entry.bloodPressureSystolic}/${entry.bloodPressureDiastolic} mmHg',
-              style:
-                  AppTextStyles.bodySm.copyWith(color: AppColors.body),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const MeBeIcon(type: MeBeIconType.vitamin, size: 16),
+                const SizedBox(width: 4),
+                Text(
+                  'Huyết áp: ${entry.bloodPressureSystolic}/${entry.bloodPressureDiastolic} mmHg',
+                  style:
+                      AppTextStyles.bodySm.copyWith(color: AppColors.body),
+                ),
+              ],
             ),
           ],
           if (entry.symptoms.isNotEmpty) ...[
@@ -497,7 +533,7 @@ class _AddEntrySheetState extends State<_AddEntrySheet> {
                 const SizedBox(width: AppSpacing.sm),
                 IconButton(
                   onPressed: _week > 1 ? () => setState(() => _week--) : null,
-                  icon: const Icon(Icons.remove_circle_outline),
+                  icon: const MeBeGlyph(MeBeGlyphType.removeCircleOutline),
                   color: AppColors.blossom,
                 ),
                 Text(
@@ -507,7 +543,7 @@ class _AddEntrySheetState extends State<_AddEntrySheet> {
                 IconButton(
                   onPressed:
                       _week < 42 ? () => setState(() => _week++) : null,
-                  icon: const Icon(Icons.add_circle_outline),
+                  icon: const MeBeGlyph(MeBeGlyphType.addCircleOutline),
                   color: AppColors.blossom,
                 ),
               ],

@@ -5,6 +5,7 @@ import '../../../../core/utils/app_toast.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
 import '../../../../shared/providers/auth_provider.dart';
 import '../../data/admin_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../admin_shell.dart';
 
 class AdminRolesScreen extends ConsumerStatefulWidget {
@@ -108,7 +109,7 @@ class _AdminRolesScreenState extends ConsumerState<AdminRolesScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.lock_outline, size: 64, color: AdminColors.textSecondary),
+            MeBeGlyph(MeBeGlyphType.lockOutline, size: 64, color: AdminColors.textSecondary),
             SizedBox(height: 12),
             Text('Chỉ Superadmin mới có quyền truy cập',
                 style: TextStyle(color: AdminColors.textSecondary)),

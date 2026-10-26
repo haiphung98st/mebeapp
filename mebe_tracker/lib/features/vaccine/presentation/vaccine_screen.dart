@@ -9,6 +9,8 @@ import '../../../core/constants/vaccine_schedule_data.dart';
 import '../../../core/widgets/disclaimer_banner.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../../../shared/providers/vaccine_provider.dart';
 
 class VaccineScreen extends ConsumerStatefulWidget {
@@ -132,7 +134,7 @@ class _ProgressBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Text('💉', style: TextStyle(fontSize: 28)),
+          const MeBeIcon(type: MeBeIconType.vaccine, size: 28),
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
@@ -200,25 +202,36 @@ class _ScheduleTab extends ConsumerWidget {
       ),
       children: [
         if (overdueItems.isNotEmpty) ...[
-          _SectionLabel(label: 'Quá hạn', count: overdueItems.length,
+          _SectionHeader(
+              icon: const MeBeGlyph(MeBeGlyphType.warningAmber,
+                  color: AppColors.error, size: 14),
+              label: 'Quá hạn (${overdueItems.length})',
               color: AppColors.error),
           ...overdueItems.map((i) => _VaccineCard(item: i, onDone: onDone)),
           const SizedBox(height: AppSpacing.sm),
         ],
         if (upcomingItems.isNotEmpty) ...[
-          _SectionLabel(label: 'Sắp đến hạn', count: upcomingItems.length,
-              color: const Color(0xFFE07800)),
+          _SectionHeader(
+              icon: const MeBeIcon(type: MeBeIconType.timer, size: 16),
+              label: 'Sắp tới (${upcomingItems.length})',
+              color: AppColors.warning),
           ...upcomingItems.map((i) => _VaccineCard(item: i, onDone: onDone)),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: AppSpacing.md),
         ],
         if (notYet.isNotEmpty) ...[
-          _SectionLabel(label: 'Chưa đến hạn', count: notYet.length,
+          _SectionHeader(
+              icon: const MeBeGlyph(MeBeGlyphType.calendarToday,
+                  color: AppColors.muted, size: 14),
+              label: 'Chưa tới (${notYet.length})',
               color: AppColors.muted),
           ...notYet.map((i) => _VaccineCard(item: i, onDone: onDone)),
           const SizedBox(height: AppSpacing.sm),
         ],
         if (done.isNotEmpty) ...[
-          _SectionLabel(label: 'Đã tiêm', count: done.length,
+          _SectionHeader(
+              icon: const MeBeGlyph(MeBeGlyphType.checkCircle,
+                  color: AppColors.success, size: 14),
+              label: 'Đã tiêm (${done.length})',
               color: AppColors.success),
           ...done.map((i) => _VaccineCard(item: i, onDone: onDone)),
         ],
@@ -227,12 +240,11 @@ class _ScheduleTab extends ConsumerWidget {
   }
 }
 
-class _SectionLabel extends StatelessWidget {
-  const _SectionLabel(
-      {required this.label, required this.count, required this.color});
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader({required this.icon, required this.label, required this.color});
 
+  final Widget icon;
   final String label;
-  final int count;
   final Color color;
 
   @override
@@ -240,18 +252,13 @@ class _SectionLabel extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.xs, top: AppSpacing.xs),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: 4, height: 14,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
-            ),
-          ),
-          const SizedBox(width: AppSpacing.sm),
+          icon,
+          const SizedBox(width: 4),
           Text(
-            '$label  •  $count',
-            style: AppTextStyles.label.copyWith(color: color, fontSize: 12),
+            label,
+            style: AppTextStyles.label.copyWith(color: color),
           ),
         ],
       ),

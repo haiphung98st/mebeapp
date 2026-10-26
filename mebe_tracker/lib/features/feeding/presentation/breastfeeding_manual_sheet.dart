@@ -12,6 +12,7 @@ import '../../../core/widgets/sheet_handle.dart';
 import '../../../shared/models/feeding_entry.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../../../shared/providers/feeding_provider.dart';
 
 /// Manual create/edit form for a breastfeeding session, opened as a
@@ -89,7 +90,7 @@ class _BreastfeedingManualSheetState extends ConsumerState<BreastfeedingManualSh
                   const Spacer(),
                   if (widget.existing != null)
                     IconButton(
-                      icon: const Icon(Icons.delete_outline, color: AppColors.error),
+                      icon: const MeBeGlyph(MeBeGlyphType.deleteOutline, color: AppColors.error),
                       onPressed: _confirmDelete,
                     ),
                 ],

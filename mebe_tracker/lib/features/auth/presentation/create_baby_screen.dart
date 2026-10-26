@@ -11,6 +11,7 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../core/widgets/bunny_avatar.dart';
 import '../../../shared/models/baby_profile.dart';
 import '../../../shared/providers/auth_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../../../shared/providers/baby_provider.dart';
 
 class CreateBabyScreen extends ConsumerStatefulWidget {
@@ -130,7 +131,7 @@ class _CreateBabyScreenState extends ConsumerState<CreateBabyScreen> {
                             color: AppColors.blossom,
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(Icons.camera_alt, size: 16, color: AppColors.white),
+                          child: const MeBeGlyph(MeBeGlyphType.cameraAlt, size: 16, color: AppColors.white),
                         ),
                       ],
                     ),
@@ -167,7 +168,7 @@ class _CreateBabyScreenState extends ConsumerState<CreateBabyScreen> {
                   child: InputDecorator(
                     decoration: const InputDecoration(
                       hintText: 'Ngày dự sinh (tùy chọn)',
-                      prefixIcon: Icon(Icons.calendar_today_outlined),
+                      prefixIcon: MeBeGlyph(MeBeGlyphType.calendarToday),
                       helperText: 'Dùng để tính Wonder Weeks chính xác hơn',
                     ),
                     child: Text(

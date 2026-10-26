@@ -12,6 +12,8 @@ import '../../../core/widgets/sheet_handle.dart';
 import '../../../shared/models/pump_entry.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../../../shared/providers/pump_provider.dart';
 
 const _mlPerOz = 29.5735;
@@ -21,9 +23,19 @@ String _storageLabel(PumpStorage storage) {
     case PumpStorage.fresh:
       return '🌡 Dùng ngay';
     case PumpStorage.fridge:
-      return '❄️ Tủ mát';
+      return 'Tủ mát';
     case PumpStorage.frozen:
-      return '🧊 Tủ đông';
+      return 'Tủ đông';
+  }
+}
+
+Widget? _storageIcon(PumpStorage storage) {
+  switch (storage) {
+    case PumpStorage.fresh:
+      return null;
+    case PumpStorage.fridge:
+    case PumpStorage.frozen:
+      return const MeBeIcon(type: MeBeIconType.milkStorage, size: 16);
   }
 }
 
@@ -87,11 +99,13 @@ class _PumpManualSheetState extends ConsumerState<PumpManualSheet> {
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
               child: Row(
                 children: [
-                  Text('🥛 Ghi phiên hút sữa', style: AppTextStyles.headingLg),
+                  const MeBeIcon(type: MeBeIconType.pump, size: 24),
+                  const SizedBox(width: 8),
+                  Text('Ghi phiên hút sữa', style: AppTextStyles.headingLg),
                   const Spacer(),
                   if (widget.existing != null)
                     IconButton(
-                      icon: const Icon(Icons.delete_outline, color: AppColors.error),
+                      icon: const MeBeGlyph(MeBeGlyphType.deleteOutline, color: AppColors.error),
                       onPressed: _confirmDelete,
                     ),
                   SegmentedButton<bool>(
@@ -192,7 +206,16 @@ class _PumpManualSheetState extends ConsumerState<PumpManualSheet> {
                       spacing: 8,
                       children: PumpStorage.values
                           .map((storage) => ChoiceChip(
-                                label: Text(_storageLabel(storage)),
+                                label: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (_storageIcon(storage) != null) ...[
+                                      _storageIcon(storage)!,
+                                      const SizedBox(width: 4),
+                                    ],
+                                    Text(_storageLabel(storage)),
+                                  ],
+                                ),
                                 selected: _storage == storage,
                                 onSelected: (_) => setState(() => _storage = storage),
                                 selectedColor: AppColors.lilac,

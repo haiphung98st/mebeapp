@@ -8,6 +8,7 @@ import '../../../../shared/models/family_member.dart';
 import '../../../../shared/providers/auth_provider.dart';
 import '../../../../shared/providers/family_sharing_provider.dart';
 import '../../../../shared/services/family_sharing_service.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../../../subscription/presentation/premium_gate.dart';
 
 class FamilySharingSection extends ConsumerWidget {
@@ -208,7 +209,7 @@ class _MemberRow extends ConsumerWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.close, size: 18, color: AppColors.muted),
+            icon: const MeBeGlyph(MeBeGlyphType.close, size: 18, color: AppColors.muted),
             tooltip: 'Xóa thành viên',
             onPressed: () {
               final user = ref.read(currentUserProvider);

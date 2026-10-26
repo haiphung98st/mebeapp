@@ -16,6 +16,7 @@ import '../../../subscription/presentation/subscription_screen.dart';
 import '../photo_filter.dart';
 import 'story_card_export.dart';
 import 'story_frame.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import 'story_frame_painter.dart';
 
 class StoryCardEditorScreen extends ConsumerStatefulWidget {
@@ -222,7 +223,7 @@ class _StoryCardEditorScreenState extends ConsumerState<StoryCardEditorScreen> {
                           const Positioned(
                             top: 4,
                             right: 4,
-                            child: Icon(Icons.lock, size: 12, color: AppColors.muted),
+                            child: MeBeGlyph(MeBeGlyphType.lockOutline, size: 12, color: AppColors.muted),
                           ),
                       ],
                     ),

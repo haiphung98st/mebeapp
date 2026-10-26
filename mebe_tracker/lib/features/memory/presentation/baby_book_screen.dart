@@ -11,6 +11,8 @@ import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/growth_provider.dart';
 import '../../../shared/providers/subscription_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../data/story_card_provider.dart';
 
 class BabyBookScreen extends ConsumerStatefulWidget {
@@ -214,15 +216,22 @@ class _BabyBookScreenState extends ConsumerState<BabyBookScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.mauve,
         leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.white),
+          icon: const MeBeGlyph(MeBeGlyphType.close, color: Colors.white),
           onPressed: () => context.pop(),
         ),
-        title: const Text(
-          'Baby Book PDF 📚',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w800,
-          ),
+        title: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            MeBeIcon(type: MeBeIconType.journal, size: 22),
+            SizedBox(width: 8),
+            Text(
+              'Baby Book PDF',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ],
         ),
       ),
       body: !isPremium
@@ -246,7 +255,7 @@ class _BabyBookScreenState extends ConsumerState<BabyBookScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text('📚', style: TextStyle(fontSize: 56)),
+                        const MeBeIcon(type: MeBeIconType.journal, size: 56),
                         const SizedBox(height: AppSpacing.md),
                         Text(
                           baby?.name ?? 'Baby Book',
@@ -288,17 +297,17 @@ class _BabyBookScreenState extends ConsumerState<BabyBookScreen> {
                         ),
                         const SizedBox(height: AppSpacing.md),
                         _ContentRow(
-                          emoji: '📖',
+                          icon: const MeBeIcon(type: MeBeIconType.journal, size: 16),
                           label: 'Trang bìa',
                           count: '1 trang',
                         ),
                         _ContentRow(
-                          emoji: '📏',
+                          icon: const MeBeGlyph(MeBeGlyphType.rulerLength, color: AppColors.muted, size: 16),
                           label: 'Bảng tăng trưởng',
                           count: '${growths.length} lần đo',
                         ),
                         _ContentRow(
-                          emoji: '🎴',
+                          icon: const Text('🎴', style: TextStyle(fontSize: 16)),
                           label: 'Thẻ kỷ niệm',
                           count: '${cards.take(10).length} thẻ',
                         ),
@@ -336,12 +345,12 @@ class _BabyBookScreenState extends ConsumerState<BabyBookScreen> {
 
 class _ContentRow extends StatelessWidget {
   const _ContentRow({
-    required this.emoji,
+    required this.icon,
     required this.label,
     required this.count,
   });
 
-  final String emoji;
+  final Widget icon;
   final String label;
   final String count;
 
@@ -351,7 +360,7 @@ class _ContentRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 16)),
+          icon,
           const SizedBox(width: 8),
           Expanded(
             child: Text(
@@ -386,7 +395,7 @@ class _PremiumGate extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('📚', style: TextStyle(fontSize: 56)),
+            const MeBeIcon(type: MeBeIconType.journal, size: 56),
             const SizedBox(height: AppSpacing.md),
             const Text(
               'Baby Book PDF',
@@ -405,7 +414,14 @@ class _PremiumGate extends StatelessWidget {
             const SizedBox(height: AppSpacing.xl),
             ElevatedButton(
               onPressed: onUpgrade,
-              child: const Text('Nâng cấp Premium ✨'),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Nâng cấp Premium'),
+                  SizedBox(width: 6),
+                  MeBeIcon(type: MeBeIconType.premium, size: 18),
+                ],
+              ),
             ),
           ],
         ),

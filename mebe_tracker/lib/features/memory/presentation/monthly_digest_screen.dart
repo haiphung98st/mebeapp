@@ -17,6 +17,8 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/subscription_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../data/monthly_digest_generator.dart';
 
 final _digestYearProvider = StateProvider<int>((ref) => DateTime.now().year);
@@ -138,12 +140,22 @@ MeBé ✨''';
       appBar: AppBar(
         backgroundColor: AppColors.peach,
         leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.white),
+          icon: const MeBeGlyph(MeBeGlyphType.close, color: Colors.white),
           onPressed: () => context.pop(),
         ),
-        title: const Text(
-          'Tổng kết tháng 📊',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+        title: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            MeBeIcon(type: MeBeIconType.stats, size: 22),
+            SizedBox(width: 8),
+            Text(
+              'Tổng kết tháng',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ],
         ),
       ),
       body: !isPremium
@@ -216,7 +228,7 @@ class _MonthSelector extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconButton(
-            icon: const Icon(Icons.chevron_left),
+            icon: const MeBeGlyph(MeBeGlyphType.chevronLeft),
             onPressed: () {
               if (month == 1) {
                 onChangeYear(year - 1);
@@ -231,7 +243,7 @@ class _MonthSelector extends StatelessWidget {
             style: AppTextStyles.headingMd,
           ),
           IconButton(
-            icon: const Icon(Icons.chevron_right),
+            icon: const MeBeGlyph(MeBeGlyphType.chevronRight),
             onPressed: () {
               final now = DateTime.now();
               if (year == now.year && month == now.month) return;
@@ -392,7 +404,7 @@ class _ShareCard extends StatelessWidget {
             ),
             child: Column(
               children: [
-                const Text('📊', style: TextStyle(fontSize: 48)),
+                const MeBeIcon(type: MeBeIconType.stats, size: 48),
                 const SizedBox(height: AppSpacing.md),
                 Text(
                   '${digest.monthLabel} ${digest.year}',
@@ -437,20 +449,20 @@ class _ShareCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         _StatBox(
-                          emoji: '🍼',
+                          icon: const Text('🍼', style: TextStyle(fontSize: 24)),
                           label: 'Cữ bú',
                           value: '${digest.totalFeedings}',
                         ),
                         _VSep(),
                         _StatBox(
-                          emoji: '😴',
+                          icon: const Text('😴', style: TextStyle(fontSize: 24)),
                           label: 'Ngủ/ngày',
                           value:
                               '${digest.avgSleepHours.toStringAsFixed(1)}h',
                         ),
                         _VSep(),
                         _StatBox(
-                          emoji: '🌸',
+                          icon: const Text('🌸', style: TextStyle(fontSize: 24)),
                           label: 'Thay tã',
                           value: '${digest.totalDiapers}',
                         ),
@@ -472,14 +484,14 @@ class _ShareCard extends StatelessWidget {
                         children: [
                           if (digest.weightKg != null)
                             _StatBox(
-                              emoji: '⚖️',
+                              icon: const MeBeGlyph(MeBeGlyphType.scaleWeight, color: AppColors.peach, size: 24),
                               label: 'Cân nặng',
                               value:
                                   '${digest.weightKg!.toStringAsFixed(2)} kg',
                             ),
                           if (digest.heightCm != null)
                             _StatBox(
-                              emoji: '📏',
+                              icon: const MeBeGlyph(MeBeGlyphType.rulerLength, color: AppColors.peach, size: 24),
                               label: 'Chiều cao',
                               value:
                                   '${digest.heightCm!.toStringAsFixed(1)} cm',
@@ -499,7 +511,8 @@ class _ShareCard extends StatelessWidget {
                   // Achievements
                   if (digest.newAchievementNames.isNotEmpty) ...[
                     _SectionCard(
-                      title: 'Thành tích tháng này 🏆',
+                      icon: const MeBeIcon(type: MeBeIconType.trophy, size: 18),
+                      title: 'Thành tích tháng này',
                       children: digest.newAchievementNames
                           .map((a) => _BulletItem(text: a))
                           .toList(),
@@ -510,7 +523,8 @@ class _ShareCard extends StatelessWidget {
                   // Highlights
                   if (digest.highlights.isNotEmpty) ...[
                     _SectionCard(
-                      title: 'Điểm nổi bật ✨',
+                      icon: const MeBeIcon(type: MeBeIconType.premium, size: 18),
+                      title: 'Điểm nổi bật',
                       children: digest.highlights
                           .map((h) => _BulletItem(text: h))
                           .toList(),
@@ -710,12 +724,12 @@ class _PhotoSection extends StatelessWidget {
 
 class _StatBox extends StatelessWidget {
   const _StatBox({
-    required this.emoji,
+    required this.icon,
     required this.label,
     required this.value,
   });
 
-  final String emoji;
+  final Widget icon;
   final String label;
   final String value;
 
@@ -723,7 +737,7 @@ class _StatBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(emoji, style: const TextStyle(fontSize: 24)),
+        icon,
         const SizedBox(height: 4),
         Text(
           value,
@@ -747,9 +761,11 @@ class _VSep extends StatelessWidget {
 }
 
 class _SectionCard extends StatelessWidget {
-  const _SectionCard({required this.title, required this.children});
+  const _SectionCard({required this.title, required this.children, this.icon});
+
   final String title;
   final List<Widget> children;
+  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -763,7 +779,23 @@ class _SectionCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: AppTextStyles.headingSm),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (icon != null) ...[
+                icon!,
+                const SizedBox(width: 6),
+              ],
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w900,
+                  color: AppColors.ink,
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: AppSpacing.sm),
           ...children,
         ],
@@ -797,7 +829,7 @@ class _PremiumGate extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('📊', style: TextStyle(fontSize: 56)),
+            const MeBeIcon(type: MeBeIconType.stats, size: 56),
             const SizedBox(height: AppSpacing.md),
             Text('Tổng kết hàng tháng', style: AppTextStyles.headingLg),
             const SizedBox(height: AppSpacing.sm),
@@ -809,7 +841,14 @@ class _PremiumGate extends StatelessWidget {
             const SizedBox(height: AppSpacing.xl),
             ElevatedButton(
               onPressed: onUpgrade,
-              child: const Text('Nâng cấp Premium ✨'),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Nâng cấp Premium'),
+                  SizedBox(width: 6),
+                  MeBeIcon(type: MeBeIconType.premium, size: 18),
+                ],
+              ),
             ),
           ],
         ),

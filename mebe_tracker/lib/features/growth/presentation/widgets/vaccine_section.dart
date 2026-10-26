@@ -7,6 +7,8 @@ import '../../../../core/constants/app_text_styles.dart';
 import '../../../../shared/providers/auth_provider.dart';
 import '../../../../shared/providers/baby_provider.dart';
 import '../../../../shared/providers/vaccine_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 
 class VaccineSection extends ConsumerWidget {
   const VaccineSection({super.key});
@@ -44,13 +46,26 @@ Color _statusColor(VaccineStatus status) {
 String _statusLabel(VaccineStatus status) {
   switch (status) {
     case VaccineStatus.done:
-      return '✓ Xong';
+      return 'Xong';
     case VaccineStatus.upcoming:
-      return '⏰ Sắp tới';
+      return 'Sắp tới';
     case VaccineStatus.notYet:
-      return '📅 Chưa tới';
+      return 'Chưa tới';
     case VaccineStatus.overdue:
-      return '⚠️ Quá hạn';
+      return 'Quá hạn';
+  }
+}
+
+Widget _statusIcon(VaccineStatus status, Color color) {
+  switch (status) {
+    case VaccineStatus.done:
+      return MeBeGlyph(MeBeGlyphType.check, color: color, size: 14);
+    case VaccineStatus.upcoming:
+      return MeBeIcon(type: MeBeIconType.timer, size: 16, overrideColor: color);
+    case VaccineStatus.notYet:
+      return MeBeGlyph(MeBeGlyphType.calendarToday, color: color, size: 14);
+    case VaccineStatus.overdue:
+      return MeBeGlyph(MeBeGlyphType.warningAmber, color: color, size: 14);
   }
 }
 
@@ -112,9 +127,16 @@ class _VaccineItem extends ConsumerWidget {
                 color: color.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
               ),
-              child: Text(
-                _statusLabel(status),
-                style: AppTextStyles.bodySm.copyWith(color: color, fontWeight: FontWeight.w700),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _statusIcon(status, color),
+                  const SizedBox(width: 4),
+                  Text(
+                    _statusLabel(status),
+                    style: AppTextStyles.bodySm.copyWith(color: color, fontWeight: FontWeight.w700),
+                  ),
+                ],
               ),
             ),
           ],

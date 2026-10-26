@@ -5,6 +5,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/widgets/bunny_avatar.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 
 class _OnboardingPage {
   const _OnboardingPage({required this.icon, required this.title, required this.body});
@@ -31,7 +32,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: 'Người bạn đồng hành của mẹ và bé',
     ),
     const _OnboardingPage(
-      icon: Text('🍼', style: TextStyle(fontSize: 96)),
+      icon: MeBeIcon(type: MeBeIconType.bottle, size: 96),
       title: 'Theo dõi mọi khoảnh khắc',
       body: 'Cữ bú, giấc ngủ, hút sữa, phát triển',
     ),

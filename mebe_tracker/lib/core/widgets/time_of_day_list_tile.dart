@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_spacing.dart';
 import '../constants/app_text_styles.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../../shared/models/notification_config.dart';
 
 class TimeOfDayListTile extends StatefulWidget {
@@ -137,7 +138,7 @@ class _TimeOfDayListTileState extends State<TimeOfDayListTile>
             ),
             const SizedBox(width: AppSpacing.sm),
             IconButton(
-              icon: const Icon(Icons.remove_circle_outline,
+              icon: const MeBeGlyph(MeBeGlyphType.removeCircleOutline,
                   color: AppColors.muted, size: 20),
               onPressed: _delete,
               tooltip: 'Xóa',

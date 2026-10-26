@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/utils/app_toast.dart';
 import '../../data/admin_provider.dart';
 import '../admin_utils.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../widgets/grant_bottom_sheet.dart';
 
 class AdminGrantScreen extends ConsumerStatefulWidget {
@@ -250,7 +251,7 @@ class _AdminGrantScreenState extends ConsumerState<AdminGrantScreen>
                       height: 18,
                       child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                     )
-                  : const Icon(Icons.star_outline, size: 18),
+                  : const MeBeGlyph(MeBeGlyphType.starOutline, size: 18),
               label: Text(_isBulkGranting ? 'Đang cấp...' : 'Cấp Premium hàng loạt'),
             ),
           ),

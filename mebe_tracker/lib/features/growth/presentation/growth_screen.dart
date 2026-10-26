@@ -24,6 +24,8 @@ import 'widgets/growth_chart_card.dart';
 import 'widgets/growth_stats_row.dart';
 import 'widgets/milestones_section.dart';
 import 'widgets/vaccine_section.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import 'widgets/who_arc_chart.dart';
 
 class GrowthScreen extends ConsumerStatefulWidget {
@@ -76,7 +78,7 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
                 context: context,
                 builder: (context) => const AddGrowthDialog(),
               ),
-              child: const Icon(Icons.add),
+              child: const MeBeGlyph(MeBeGlyphType.add),
             )
           : null,
       body: Column(
@@ -246,7 +248,7 @@ class _WwSummaryCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Text('🧠', style: TextStyle(fontSize: 28)),
+              const MeBeIcon(type: MeBeIconType.wonderWeeks, size: 28),
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Column(
@@ -256,12 +258,22 @@ class _WwSummaryCard extends StatelessWidget {
                       'Wonder Weeks · Tuần $currentWeek',
                       style: AppTextStyles.bodyMd.copyWith(color: const Color(0xFFEEE0FF)),
                     ),
-                    Text(
-                      currentLeap != null
-                          ? 'Đang ở Leap ${currentLeap!.number}: ${currentLeap!.name}'
-                          : 'Giai đoạn bình yên ☀️',
-                      style: AppTextStyles.headingSm.copyWith(color: Colors.white),
-                    ),
+                    currentLeap != null
+                        ? Text(
+                            'Đang ở Leap ${currentLeap!.number}: ${currentLeap!.name}',
+                            style: AppTextStyles.headingSm.copyWith(color: Colors.white),
+                          )
+                        : Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Giai đoạn bình yên',
+                                style: AppTextStyles.headingSm.copyWith(color: Colors.white),
+                              ),
+                              const SizedBox(width: 6),
+                              const MeBeIcon(type: MeBeIconType.wonderWeeksCalm, size: 20),
+                            ],
+                          ),
                   ],
                 ),
               ),
@@ -290,6 +302,7 @@ class _WwMiniCard extends StatelessWidget {
     final leap = state.leap;
     final isActive = state.status == LeapStatus.stormy || state.status == LeapStatus.sunny;
     final isDone = state.status == LeapStatus.done;
+    final statusColor = state.status == LeapStatus.stormy ? AppColors.warning : AppColors.success;
 
     return Material(
       color: Colors.transparent,
@@ -314,14 +327,16 @@ class _WwMiniCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Text(
-                isDone ? '✓' : '${leap.number}',
-                style: TextStyle(
-                  color: isDone ? AppColors.success : const Color(0xFF5B3A8A),
-                  fontWeight: FontWeight.w800,
-                  fontSize: 14,
-                ),
-              ),
+              isDone
+                  ? const MeBeGlyph(MeBeGlyphType.check, color: AppColors.success, size: 14)
+                  : Text(
+                      '${leap.number}',
+                      style: const TextStyle(
+                        color: Color(0xFF5B3A8A),
+                        fontWeight: FontWeight.w800,
+                        fontSize: 14,
+                      ),
+                    ),
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Text(
@@ -338,17 +353,18 @@ class _WwMiniCard extends StatelessWidget {
                     vertical: 2,
                   ),
                   decoration: BoxDecoration(
-                    color: state.status == LeapStatus.stormy
-                        ? AppColors.warning.withOpacity(0.15)
-                        : AppColors.mint.withOpacity(0.15),
+                    color: statusColor.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
                   ),
-                  child: Text(
-                    state.status == LeapStatus.stormy ? '⛈️' : '☀️',
-                    style: const TextStyle(fontSize: 12),
+                  child: MeBeIcon(
+                    type: state.status == LeapStatus.stormy
+                        ? MeBeIconType.wonderWeeksStormy
+                        : MeBeIconType.wonderWeeksCalm,
+                    size: 12,
+                    overrideColor: statusColor,
                   ),
                 ),
-              const Icon(Icons.chevron_right, size: 16, color: AppColors.muted),
+              const MeBeGlyph(MeBeGlyphType.chevronRight, size: 16, color: AppColors.muted),
             ],
           ),
         ),
@@ -382,16 +398,9 @@ class _TeethQuickCard extends ConsumerWidget {
         ),
         child: Row(
           children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: AppColors.mintLight,
-                borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-              ),
-              child: const Center(
-                child: Text('🦷', style: TextStyle(fontSize: 22)),
-              ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+              child: const MeBeIcon(type: MeBeIconType.teeth, size: 44),
             ),
             const SizedBox(width: AppSpacing.md),
             Expanded(
@@ -409,7 +418,7 @@ class _TeethQuickCard extends ConsumerWidget {
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: AppColors.muted),
+            const MeBeGlyph(MeBeGlyphType.chevronRight, color: AppColors.muted),
           ],
         ),
       ),
@@ -444,16 +453,9 @@ class _MotorQuickCard extends ConsumerWidget {
         ),
         child: Row(
           children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: AppColors.mintLight,
-                borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-              ),
-              child: const Center(
-                child: Text('🐢', style: TextStyle(fontSize: 22)),
-              ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+              child: const MeBeIcon(type: MeBeIconType.motorSkill, size: 44),
             ),
             const SizedBox(width: AppSpacing.md),
             Expanded(
@@ -471,7 +473,7 @@ class _MotorQuickCard extends ConsumerWidget {
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: AppColors.muted),
+            const MeBeGlyph(MeBeGlyphType.chevronRight, color: AppColors.muted),
           ],
         ),
       ),
@@ -502,16 +504,9 @@ class _PrenatalQuickCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: AppColors.blush,
-                borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-              ),
-              child: const Center(
-                child: Text('🤰', style: TextStyle(fontSize: 22)),
-              ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+              child: const MeBeIcon(type: MeBeIconType.pregnancy, size: 44),
             ),
             const SizedBox(width: AppSpacing.md),
             Expanded(
@@ -529,7 +524,7 @@ class _PrenatalQuickCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: AppColors.muted),
+            const MeBeGlyph(MeBeGlyphType.chevronRight, color: AppColors.muted),
           ],
         ),
       ),
@@ -544,10 +539,10 @@ class _GrowthSegmentedTabs extends StatelessWidget {
   final void Function(int) onTap;
 
   static const _segments = [
-    (icon: '📈', label: 'Phát triển'),
-    (icon: '🎯', label: 'Mốc phát triển'),
-    (icon: '💉', label: 'Tiêm chủng'),
-    (icon: '🧠', label: 'Wonder Weeks'),
+    (icon: MeBeIcon(type: MeBeIconType.growth, size: 18), label: 'Phát triển'),
+    (icon: Text('🎯', style: TextStyle(fontSize: 18)), label: 'Mốc phát triển'),
+    (icon: MeBeIcon(type: MeBeIconType.vaccine, size: 18), label: 'Tiêm chủng'),
+    (icon: MeBeIcon(type: MeBeIconType.wonderWeeks, size: 18), label: 'Wonder Weeks'),
   ];
 
   @override
@@ -571,7 +566,7 @@ class _GrowthSegmentedTabs extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(segment.icon, style: const TextStyle(fontSize: 18)),
+                    segment.icon,
                     const SizedBox(height: 2),
                     Text(
                       segment.label,

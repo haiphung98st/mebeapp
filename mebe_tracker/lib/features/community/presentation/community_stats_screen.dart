@@ -5,6 +5,8 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/widgets/bunny_header.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../data/community_stats_provider.dart';
 
 class CommunityStatsScreen extends ConsumerStatefulWidget {
@@ -56,7 +58,7 @@ class _CommunityStatsScreenState extends ConsumerState<CommunityStatsScreen> {
             title: 'Thống kê nhóm',
             subtitle: 'So sánh ẩn danh cùng tuần sinh',
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              icon: const MeBeGlyph(MeBeGlyphType.arrowBack, color: Colors.white),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
@@ -67,10 +69,19 @@ class _CommunityStatsScreenState extends ConsumerState<CommunityStatsScreen> {
             padding: const EdgeInsets.symmetric(
                 horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
             color: AppColors.lavender.withOpacity(0.12),
-            child: Text(
-              '🔒 Dữ liệu ẩn danh · Không ai biết số liệu là của bạn',
-              style: AppTextStyles.bodySm.copyWith(color: AppColors.muted),
-              textAlign: TextAlign.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const MeBeGlyph(MeBeGlyphType.lockOutline, color: AppColors.muted, size: 14),
+                const SizedBox(width: 4),
+                Flexible(
+                  child: Text(
+                    'Dữ liệu ẩn danh · Không ai biết số liệu là của bạn',
+                    style: AppTextStyles.bodySm.copyWith(color: AppColors.muted),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
             ),
           ),
 
@@ -113,7 +124,7 @@ class _CommunityStatsScreenState extends ConsumerState<CommunityStatsScreen> {
           _EmptyContrib(),
         ] else ...[
           _StatCard(
-            icon: '🍼',
+            icon: const MeBeIcon(type: MeBeIconType.bottle, size: 22),
             label: 'Số lần bú hôm nay',
             value: '${my.feedingCount} lần',
             percentile: p.feedingPct,
@@ -121,7 +132,7 @@ class _CommunityStatsScreenState extends ConsumerState<CommunityStatsScreen> {
           ),
           const SizedBox(height: AppSpacing.sm),
           _StatCard(
-            icon: '😴',
+            icon: const Text('😴', style: TextStyle(fontSize: 22)),
             label: 'Tổng giấc ngủ hôm nay',
             value: _formatMinutes(my.totalSleepMinutes),
             percentile: p.sleepPct,
@@ -129,7 +140,7 @@ class _CommunityStatsScreenState extends ConsumerState<CommunityStatsScreen> {
           ),
           const SizedBox(height: AppSpacing.sm),
           _StatCard(
-            icon: '🧷',
+            icon: const Text('🧷', style: TextStyle(fontSize: 22)),
             label: 'Số tã thay hôm nay',
             value: '${my.diaperCount} cái',
             percentile: p.diaperPct,
@@ -201,11 +212,22 @@ class _ContributorBanner extends StatelessWidget {
                   style: AppTextStyles.bodyMd.copyWith(
                       fontWeight: FontWeight.w700, color: AppColors.ink),
                 ),
-                Text(
-                  published ? 'Đã cập nhật số liệu của bạn ✓' : 'Đang xử lý...',
-                  style: AppTextStyles.bodySm
-                      .copyWith(color: AppColors.muted),
-                ),
+                published
+                    ? Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Đã cập nhật số liệu của bạn',
+                            style: AppTextStyles.bodySm.copyWith(color: AppColors.muted),
+                          ),
+                          const SizedBox(width: 4),
+                          const MeBeGlyph(MeBeGlyphType.check, color: AppColors.muted, size: 12),
+                        ],
+                      )
+                    : Text(
+                        'Đang xử lý...',
+                        style: AppTextStyles.bodySm.copyWith(color: AppColors.muted),
+                      ),
               ],
             ),
           ),
@@ -216,7 +238,7 @@ class _ContributorBanner extends StatelessWidget {
                     height: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Icon(Icons.refresh_rounded, color: AppColors.blossom),
+                : const MeBeGlyph(MeBeGlyphType.refresh, color: AppColors.blossom),
             onPressed: publishing ? null : onRefresh,
             tooltip: 'Cập nhật số liệu',
           ),
@@ -237,7 +259,7 @@ class _StatCard extends StatelessWidget {
     required this.color,
   });
 
-  final String icon;
+  final Widget icon;
   final String label;
   final String value;
   final double percentile; // 0..100
@@ -266,7 +288,7 @@ class _StatCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(icon, style: const TextStyle(fontSize: 22)),
+              icon,
               const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: Text(

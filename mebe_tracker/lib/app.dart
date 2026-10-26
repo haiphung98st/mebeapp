@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import 'core/constants/app_colors.dart';
 import 'core/constants/app_spacing.dart';
+import 'core/icons/mebe_icons.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'features/achievement/presentation/achievement_overlay.dart';
@@ -218,7 +219,7 @@ class _MaintenanceScreen extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('🐰', style: TextStyle(fontSize: 72)),
+              const MeBeIcon(type: MeBeIconType.mascotBunny, size: 72),
               const SizedBox(height: 24),
               const Text(
                 'Đang bảo trì',

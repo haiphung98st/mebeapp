@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/utils/app_toast.dart';
 import '../admin_utils.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../../data/admin_provider.dart';
 
 Future<void> showGrantBottomSheet(
@@ -87,7 +88,7 @@ class _GrantBottomSheetState extends ConsumerState<_GrantBottomSheet> {
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  const Icon(Icons.star, color: Color(0xFF2ED573), size: 22),
+                  const MeBeGlyph(MeBeGlyphType.star, color: Color(0xFF2ED573), size: 22),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text('Cấp Premium cho ${widget.displayName}',

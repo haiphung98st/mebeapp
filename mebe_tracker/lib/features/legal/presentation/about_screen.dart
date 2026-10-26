@@ -4,6 +4,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/icons/mebe_icons.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -31,7 +32,7 @@ class AboutScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(24),
                   ),
                   alignment: Alignment.center,
-                  child: const Text('🐰', style: TextStyle(fontSize: 44)),
+                  child: const MeBeIcon(type: MeBeIconType.mascotBunny, size: 44),
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Text('MeBé Tracker', style: AppTextStyles.headingLg),

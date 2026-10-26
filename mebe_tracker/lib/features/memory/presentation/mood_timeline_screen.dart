@@ -6,6 +6,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/widgets/bunny_header.dart';
 import '../../../shared/providers/subscription_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../data/mood_timeline_provider.dart';
 
 const _gradientMood = LinearGradient(
@@ -50,10 +51,10 @@ class _MoodTimelineScreenState extends ConsumerState<MoodTimelineScreen> {
               gradient: _gradientMood,
               earLeftColor: const Color(0xFFFDE68A),
               earRightColor: const Color(0xFFFBBF24),
-              title: 'Tâm trạng theo ngày 🌈',
+              title: 'Tâm trạng theo ngày',
               subtitle: isPremium ? '90 ngày' : '30 ngày miễn phí',
               actions: IconButton(
-                icon: const Icon(Icons.close, color: Colors.white),
+                icon: const MeBeGlyph(MeBeGlyphType.close, color: Colors.white),
                 onPressed: () => context.pop(),
               ),
             ),
@@ -240,12 +241,12 @@ class _InsightCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.md),
-          _Row(emoji: '🟢', label: 'Ngày tâm trạng tốt', value: '${insights.greenDays} ngày'),
-          _Row(emoji: '🔴', label: 'Ngày leap storm', value: '${insights.redDays} ngày'),
-          _Row(emoji: '⭐', label: 'Tháng vui nhất', value: insights.bestMonth),
+          _Row(icon: const Text('🟢', style: TextStyle(fontSize: 16)), label: 'Ngày tâm trạng tốt', value: '${insights.greenDays} ngày'),
+          _Row(icon: const Text('🔴', style: TextStyle(fontSize: 16)), label: 'Ngày leap storm', value: '${insights.redDays} ngày'),
+          _Row(icon: const MeBeGlyph(MeBeGlyphType.star, color: Color(0xFFF59E0B), size: 16), label: 'Tháng vui nhất', value: insights.bestMonth),
           if (insights.crankiestWeekday != null)
             _Row(
-              emoji: '😤',
+              icon: const Text('😤', style: TextStyle(fontSize: 16)),
               label: 'Ngày bé hay quấy nhất',
               value: insights.crankiestWeekday!,
             ),
@@ -257,12 +258,12 @@ class _InsightCard extends StatelessWidget {
 
 class _Row extends StatelessWidget {
   const _Row({
-    required this.emoji,
+    required this.icon,
     required this.label,
     required this.value,
   });
 
-  final String emoji;
+  final Widget icon;
   final String label;
   final String value;
 
@@ -272,7 +273,7 @@ class _Row extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 16)),
+          icon,
           const SizedBox(width: 8),
           Expanded(
             child: Text(
@@ -359,7 +360,7 @@ class _UpgradeBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Text('⭐', style: TextStyle(fontSize: 22)),
+          const MeBeGlyph(MeBeGlyphType.star, color: Color(0xFFF59E0B), size: 22),
           const SizedBox(width: AppSpacing.md),
           const Expanded(
             child: Text(

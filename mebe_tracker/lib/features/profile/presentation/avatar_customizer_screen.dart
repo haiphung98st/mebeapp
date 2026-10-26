@@ -6,6 +6,7 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/widgets/animated_bunny_avatar.dart';
 import '../data/avatar_config.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../data/avatar_provider.dart';
 
 class AvatarCustomizerScreen extends ConsumerStatefulWidget {
@@ -248,7 +249,7 @@ class _ColorSection extends StatelessWidget {
                       : null,
                 ),
                 child: isSelected
-                    ? const Icon(Icons.check, color: Colors.white, size: 20)
+                    ? const MeBeGlyph(MeBeGlyphType.check, color: Colors.white, size: 20)
                     : null,
               ),
             );

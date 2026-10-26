@@ -10,6 +10,7 @@ import '../../../core/widgets/confirm_dialog.dart';
 import '../../../shared/models/baby_profile.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../../subscription/presentation/premium_gate.dart';
 
 class ManageBabiesScreen extends ConsumerWidget {
@@ -120,12 +121,12 @@ class ManageBabiesScreen extends ConsumerWidget {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.edit_outlined, color: AppColors.blossom),
+                    icon: const MeBeGlyph(MeBeGlyphType.editOutlined, color: AppColors.blossom),
                     tooltip: 'Sửa thông tin bé',
                     onPressed: () => context.push('/home/profile/edit-baby', extra: baby),
                   ),
                   IconButton(
-                    icon: Icon(Icons.delete_outline, color: canDelete ? AppColors.error : AppColors.divider),
+                    icon: MeBeGlyph(MeBeGlyphType.deleteOutline, color: canDelete ? AppColors.error : AppColors.divider),
                     tooltip: canDelete ? 'Xóa hồ sơ bé' : 'Cần giữ ít nhất 1 bé',
                     onPressed: canDelete ? () => _delete(context, ref, baby) : null,
                   ),
@@ -140,7 +141,7 @@ class ManageBabiesScreen extends ConsumerWidget {
               width: double.infinity,
               child: OutlinedButton.icon(
                 onPressed: () => context.push('/create-baby'),
-                icon: const Icon(Icons.add, color: AppColors.blossom),
+                icon: const MeBeGlyph(MeBeGlyphType.add, color: AppColors.blossom),
                 label: const Text('Thêm bé'),
               ),
             ),

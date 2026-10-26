@@ -5,6 +5,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/providers/subscription_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import 'subscription_screen.dart';
 
 /// Wraps a premium-only [child]; shows a locked teaser that opens the
@@ -33,7 +34,7 @@ class PremiumGate extends ConsumerWidget {
         ),
         child: Row(
           children: [
-            const Icon(Icons.lock_outline, color: AppColors.blossom, size: 18),
+            const MeBeGlyph(MeBeGlyphType.lockOutline, color: AppColors.blossom, size: 18),
             const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: Text(
@@ -41,7 +42,7 @@ class PremiumGate extends ConsumerWidget {
                 style: AppTextStyles.bodyMd.copyWith(color: AppColors.mauve),
               ),
             ),
-            const Icon(Icons.chevron_right, color: AppColors.blossom),
+            const MeBeGlyph(MeBeGlyphType.chevronRight, color: AppColors.blossom),
           ],
         ),
       ),

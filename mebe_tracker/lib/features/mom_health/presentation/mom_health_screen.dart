@@ -9,6 +9,7 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../data/mom_health_entry.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../data/mom_health_provider.dart';
 
 class MomHealthScreen extends ConsumerStatefulWidget {
@@ -324,7 +325,7 @@ class _CheckInCard extends StatelessWidget {
                 ),
                 const SizedBox(width: AppSpacing.sm),
                 IconButton(
-                  icon: const Icon(Icons.add_circle_outline,
+                  icon: const MeBeGlyph(MeBeGlyphType.addCircleOutline,
                       color: AppColors.blossom),
                   onPressed: onAddMed,
                 ),
@@ -369,7 +370,7 @@ class _EpdsCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: AppColors.muted),
+              const MeBeGlyph(MeBeGlyphType.chevronRight, color: AppColors.muted),
             ],
           ),
         ),

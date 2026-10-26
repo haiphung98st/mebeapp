@@ -150,10 +150,14 @@ class AppTheme {
       ),
     );
 
-    final textTheme = GoogleFonts.nunitoTextTheme(ThemeData.dark().textTheme).apply(
+    // Scale font sizes on the Material3 base theme first, where every style
+    // is guaranteed a non-null fontSize — GoogleFonts.nunitoTextTheme() can
+    // hand back styles with a null fontSize for some weights, and applying
+    // fontSizeFactor to those trips TextStyle.apply's assertion.
+    final scaledBase = ThemeData.dark().textTheme.apply(fontSizeFactor: 1.15);
+    final textTheme = GoogleFonts.nunitoTextTheme(scaledBase).apply(
       bodyColor: const Color(0xFFE8D5F5),
       displayColor: Colors.white,
-      fontSizeFactor: 1.15,
     );
 
     return base.copyWith(

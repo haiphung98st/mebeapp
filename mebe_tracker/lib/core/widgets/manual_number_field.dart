@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../constants/app_colors.dart';
+import '../icons/mebe_glyphs.dart';
 import '../constants/app_spacing.dart';
 import '../constants/app_text_styles.dart';
 
@@ -81,7 +82,7 @@ class _ManualNumberFieldState extends State<ManualNumberField> {
         const SizedBox(height: 8),
         Row(
           children: [
-            _StepButton(icon: Icons.remove, onTap: () => _step(-widget.step)),
+            _StepButton(icon: MeBeGlyphType.remove, onTap: () => _step(-widget.step)),
             const SizedBox(width: 10),
             Expanded(
               child: TextField(
@@ -123,7 +124,7 @@ class _ManualNumberFieldState extends State<ManualNumberField> {
               ),
             ),
             const SizedBox(width: 10),
-            _StepButton(icon: Icons.add, onTap: () => _step(widget.step)),
+            _StepButton(icon: MeBeGlyphType.add, onTap: () => _step(widget.step)),
           ],
         ),
       ],
@@ -134,7 +135,7 @@ class _ManualNumberFieldState extends State<ManualNumberField> {
 class _StepButton extends StatelessWidget {
   const _StepButton({required this.icon, required this.onTap});
 
-  final IconData icon;
+  final MeBeGlyphType icon;
   final VoidCallback onTap;
 
   @override
@@ -151,7 +152,7 @@ class _StepButton extends StatelessWidget {
         child: SizedBox(
           width: 44,
           height: 44,
-          child: Icon(icon, color: AppColors.blossom, size: 20),
+          child: MeBeGlyph(icon, color: AppColors.blossom, size: 20),
         ),
       ),
     );

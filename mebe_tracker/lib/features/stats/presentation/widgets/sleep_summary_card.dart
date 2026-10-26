@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/icons/mebe_glyphs.dart';
+import '../../../../core/icons/mebe_icons.dart';
 import '../../../../shared/providers/stats_provider.dart';
 import '../../../sleep/presentation/widgets/sleep_history_list.dart';
 import 'stat_metric.dart';
@@ -19,8 +21,8 @@ class SleepSummaryCard extends ConsumerWidget {
     final entries = ref.watch(statsSleepsProvider);
     final hasData = summary.totalHours > 0;
     final trendHours = (summary.trendMinutesVsPrevious.abs() / 60);
-    final trendArrow = summary.trendMinutesVsPrevious >= 0 ? '↑' : '↓';
-    final trendLabel = summary.trendMinutesVsPrevious >= 0 ? 'nhiều hơn' : 'ít hơn';
+    final isTrendUp = summary.trendMinutesVsPrevious >= 0;
+    final trendLabel = isTrendUp ? 'nhiều hơn' : 'ít hơn';
     final napChart = period == StatsRangeType.year ? bucketByMonth(summary.dailyNapHours) : summary.dailyNapHours;
     final nightChart =
         period == StatsRangeType.year ? bucketByMonth(summary.dailyNightHours) : summary.dailyNightHours;
@@ -35,7 +37,13 @@ class SleepSummaryCard extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('🌙 Giấc ngủ', style: AppTextStyles.headingMd),
+          Row(
+            children: [
+              const MeBeIcon(type: MeBeIconType.sleep, size: 20),
+              const SizedBox(width: 6),
+              Text('Giấc ngủ', style: AppTextStyles.headingMd),
+            ],
+          ),
           const SizedBox(height: AppSpacing.md),
           Row(
             children: [
@@ -99,9 +107,20 @@ class SleepSummaryCard extends ConsumerWidget {
             ],
             if (summary.trendMinutesVsPrevious != 0) ...[
               const SizedBox(height: AppSpacing.sm),
-              Text(
-                '$trendArrow Ngủ $trendLabel ${trendHours.toStringAsFixed(1)} giờ so với kỳ trước',
-                style: AppTextStyles.bodySm.copyWith(color: AppColors.mauve, fontWeight: FontWeight.w700),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  MeBeGlyph(
+                    isTrendUp ? MeBeGlyphType.trendUp : MeBeGlyphType.trendDown,
+                    color: AppColors.mauve,
+                    size: 14,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Ngủ $trendLabel ${trendHours.toStringAsFixed(1)} giờ so với kỳ trước',
+                    style: AppTextStyles.bodySm.copyWith(color: AppColors.mauve, fontWeight: FontWeight.w700),
+                  ),
+                ],
               ),
             ],
             if (entries.isNotEmpty) ...[

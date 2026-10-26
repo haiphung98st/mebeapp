@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/icons/mebe_glyphs.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/date_utils.dart';
@@ -102,8 +103,8 @@ class _TimerCard extends ConsumerWidget {
                 gradient: AppColors.gradientFeeding,
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                timer.isRunning ? Icons.pause : Icons.play_arrow,
+              child: MeBeGlyph(
+                timer.isRunning ? MeBeGlyphType.pause : MeBeGlyphType.playArrow,
                 color: AppColors.white,
                 size: 36,
               ),

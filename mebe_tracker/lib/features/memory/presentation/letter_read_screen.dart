@@ -7,6 +7,8 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../shared/models/future_letter.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../data/letter_provider.dart';
 
 class LetterReadScreen extends ConsumerStatefulWidget {
@@ -46,7 +48,7 @@ class _LetterReadScreenState extends ConsumerState<LetterReadScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFFA67CD8),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const MeBeGlyph(MeBeGlyphType.arrowBack, color: Colors.white),
           onPressed: () => context.pop(),
         ),
         title: Text(
@@ -83,7 +85,7 @@ class _OpenedView extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: AppSpacing.md),
-          const Text('💌', style: TextStyle(fontSize: 56)),
+          const MeBeIcon(type: MeBeIconType.letter, size: 56),
           const SizedBox(height: AppSpacing.md),
           Text(
             letter.title,
@@ -136,15 +138,15 @@ class _OpenedView extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(
-                  Icons.check_circle_rounded,
+                const MeBeGlyph(
+                  MeBeGlyphType.checkCircle,
                   color: AppColors.success,
                   size: 18,
                 ),
                 const SizedBox(width: 6),
                 Text(
                   letter.isOpened
-                      ? 'Đã mở thư này 💕'
+                      ? 'Đã mở thư này'
                       : 'Thư đã mở khoá',
                   style: const TextStyle(
                     fontSize: 13,
@@ -187,11 +189,18 @@ class _LockedView extends StatelessWidget {
           children: [
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 400),
-              child: Text(
-                revealed ? '💌' : '🔒',
-                key: ValueKey(revealed),
-                style: const TextStyle(fontSize: 72),
-              ),
+              child: revealed
+                  ? const MeBeIcon(
+                      key: ValueKey(true),
+                      type: MeBeIconType.letter,
+                      size: 72,
+                    )
+                  : const MeBeGlyph(
+                      MeBeGlyphType.lockOutline,
+                      key: ValueKey(false),
+                      color: AppColors.lavender,
+                      size: 72,
+                    ),
             ),
             const SizedBox(height: AppSpacing.xl),
             Text(

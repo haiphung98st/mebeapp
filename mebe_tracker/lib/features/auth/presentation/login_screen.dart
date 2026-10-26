@@ -9,6 +9,7 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../core/widgets/bunny_avatar.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/services/credential_service.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import 'biometric_login_widget.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -117,7 +118,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 if (_credentialsLoaded) ...[
                   Row(
                     children: [
-                      const Icon(Icons.check_circle,
+                      const MeBeGlyph(MeBeGlyphType.checkCircle,
                           size: 14, color: AppColors.mint),
                       const SizedBox(width: 4),
                       Text(
@@ -134,7 +135,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
                     hintText: 'Email',
-                    prefixIcon: Icon(Icons.email_outlined),
+                    prefixIcon: MeBeGlyph(MeBeGlyphType.emailOutlined),
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty)
@@ -149,11 +150,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   obscureText: _obscurePassword,
                   decoration: InputDecoration(
                     hintText: 'Mật khẩu',
-                    prefixIcon: const Icon(Icons.lock_outline),
+                    prefixIcon: const MeBeGlyph(MeBeGlyphType.lockOutline),
                     suffixIcon: IconButton(
-                      icon: Icon(_obscurePassword
-                          ? Icons.visibility_outlined
-                          : Icons.visibility_off_outlined),
+                      icon: MeBeGlyph(_obscurePassword
+                          ? MeBeGlyphType.visibilityOutlined
+                          : MeBeGlyphType.visibilityOffOutlined),
                       tooltip: _obscurePassword
                           ? 'Hiện mật khẩu'
                           : 'Ẩn mật khẩu',

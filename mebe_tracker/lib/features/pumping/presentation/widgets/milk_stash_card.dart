@@ -8,6 +8,7 @@ import '../../../../core/constants/app_text_styles.dart';
 import '../../../../shared/models/milk_stash_entry.dart';
 import '../../../../shared/providers/home_provider.dart';
 import '../../../../shared/providers/pump_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 
 class MilkStashCard extends ConsumerWidget {
   const MilkStashCard({super.key});
@@ -62,7 +63,7 @@ class MilkStashCard extends ConsumerWidget {
             childAspectRatio: 1.8,
             children: [
               _StashCell(
-                icon: '🧊',
+                icon: MeBeIconType.milkStorage,
                 label: 'Tủ đông',
                 amountMl: freezerMl,
                 detail: '$freezerCount túi',
@@ -71,7 +72,7 @@ class MilkStashCard extends ConsumerWidget {
                 onTap: () => context.push('/home/pumping/stash', extra: StashLocation.freezer),
               ),
               _StashCell(
-                icon: '❄️',
+                icon: MeBeIconType.milkStorage,
                 label: 'Tủ mát',
                 amountMl: fridgeMl,
                 detail: '$fridgeCount túi',
@@ -80,7 +81,7 @@ class MilkStashCard extends ConsumerWidget {
                 onTap: () => context.push('/home/pumping/stash', extra: StashLocation.fridge),
               ),
               _StashCell(
-                icon: '🌸',
+                icon: MeBeIconType.diaper,
                 label: 'Hôm nay',
                 amountMl: todayMl,
                 detail: '${todayPumps.length} lần hút',
@@ -88,7 +89,7 @@ class MilkStashCard extends ConsumerWidget {
                 background: AppColors.blush,
               ),
               _StashCell(
-                icon: '⚠️',
+                icon: MeBeIconType.warning,
                 label: 'Sắp hết hạn',
                 amountMl: expiringMl,
                 detail: '${expiring.length} túi · 2 ngày',
@@ -114,7 +115,7 @@ class _StashCell extends StatelessWidget {
     this.onTap,
   });
 
-  final String icon;
+  final MeBeIconType icon;
   final String label;
   final double amountMl;
   final String detail;
@@ -135,7 +136,7 @@ class _StashCell extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(icon, style: const TextStyle(fontSize: 22)),
+            MeBeIcon(type: icon, size: 22),
             const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: Column(

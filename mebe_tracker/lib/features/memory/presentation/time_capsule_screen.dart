@@ -11,6 +11,8 @@ import '../../../shared/models/time_capsule.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/subscription_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../data/time_capsule_provider.dart';
 
 const _gradientCapsule = LinearGradient(
@@ -39,10 +41,10 @@ class TimeCapsuleScreen extends ConsumerWidget {
               gradient: _gradientCapsule,
               earLeftColor: AppColors.petal,
               earRightColor: AppColors.lilac,
-              title: 'Hộp thời gian 🎁',
+              title: 'Hộp thời gian',
               subtitle: '${capsules.length} hộp',
               actions: IconButton(
-                icon: const Icon(Icons.close, color: Colors.white),
+                icon: const MeBeGlyph(MeBeGlyphType.close, color: Colors.white),
                 onPressed: () => context.pop(),
               ),
             ),
@@ -59,7 +61,10 @@ class TimeCapsuleScreen extends ConsumerWidget {
             )
           else ...[
             if (unlocked.isNotEmpty) ...[
-              _SectionHeader(title: '🔓 Sẵn sàng mở (${unlocked.length})'),
+              _SectionHeader(
+                icon: const MeBeGlyph(MeBeGlyphType.unlockOutline, color: AppColors.body, size: 14),
+                title: 'Sẵn sàng mở (${unlocked.length})',
+              ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (_, i) => _CapsuleTile(
@@ -72,7 +77,10 @@ class TimeCapsuleScreen extends ConsumerWidget {
               ),
             ],
             if (locked.isNotEmpty) ...[
-              _SectionHeader(title: '🔒 Đang khoá (${locked.length})'),
+              _SectionHeader(
+                icon: const MeBeGlyph(MeBeGlyphType.lockOutline, color: AppColors.body, size: 14),
+                title: 'Đang khoá (${locked.length})',
+              ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (_, i) => _CapsuleTile(
@@ -84,7 +92,10 @@ class TimeCapsuleScreen extends ConsumerWidget {
               ),
             ],
             if (opened.isNotEmpty) ...[
-              _SectionHeader(title: '📦 Đã mở (${opened.length})'),
+              _SectionHeader(
+                icon: const MeBeIcon(type: MeBeIconType.timeCapsule, isActive: true, size: 16),
+                title: 'Đã mở (${opened.length})',
+              ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (_, i) => _CapsuleTile(
@@ -102,7 +113,7 @@ class TimeCapsuleScreen extends ConsumerWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('🎁', style: TextStyle(fontSize: 56)),
+                      MeBeIcon(type: MeBeIconType.timeCapsule, size: 56),
                       SizedBox(height: AppSpacing.md),
                       Text(
                         'Chưa có hộp thời gian',
@@ -125,7 +136,7 @@ class TimeCapsuleScreen extends ConsumerWidget {
               onPressed: () => context.push('/memory/time-capsule/create'),
               backgroundColor: AppColors.blossom,
               foregroundColor: Colors.white,
-              icon: const Icon(Icons.add),
+              icon: const MeBeGlyph(MeBeGlyphType.add),
               label: const Text('Tạo hộp'),
             )
           : null,
@@ -147,9 +158,10 @@ class TimeCapsuleScreen extends ConsumerWidget {
 }
 
 class _SectionHeader extends StatelessWidget {
-  const _SectionHeader({required this.title});
+  const _SectionHeader({required this.title, this.icon});
 
   final String title;
+  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -161,13 +173,22 @@ class _SectionHeader extends StatelessWidget {
           AppSpacing.lg,
           AppSpacing.sm,
         ),
-        child: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w800,
-            color: AppColors.body,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) ...[
+              icon!,
+              const SizedBox(width: 6),
+            ],
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
+                color: AppColors.body,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -225,10 +246,9 @@ class _CapsuleTile extends StatelessWidget {
                             : AppColors.blossom,
                   ),
                   child: Center(
-                    child: Text(
-                      isOpened ? '📦' : isUnlocked ? '🎁' : '🔒',
-                      style: const TextStyle(fontSize: 22),
-                    ),
+                    child: isUnlocked
+                        ? MeBeIcon(type: MeBeIconType.timeCapsule, isActive: isOpened, size: 28)
+                        : const MeBeGlyph(MeBeGlyphType.lockOutline, color: AppColors.blossom, size: 22),
                   ),
                 ),
               ),
@@ -371,7 +391,7 @@ class _CapsuleOpenSheet extends ConsumerWidget {
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 children: [
                   const Center(
-                    child: Text('🎉', style: TextStyle(fontSize: 56)),
+                    child: MeBeIcon(type: MeBeIconType.celebration, size: 56),
                   ),
                   const SizedBox(height: AppSpacing.md),
                   Text(
@@ -399,7 +419,14 @@ class _CapsuleOpenSheet extends ConsumerWidget {
                       }
                       if (context.mounted) Navigator.pop(context);
                     },
-                    child: const Text('Đóng hộp 📦'),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Đóng hộp'),
+                        SizedBox(width: 6),
+                        MeBeIcon(type: MeBeIconType.timeCapsule, isActive: true, size: 18),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -476,7 +503,7 @@ class _PremiumGate extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Text('🎁', style: TextStyle(fontSize: 56)),
+          const MeBeIcon(type: MeBeIconType.timeCapsule, size: 56),
           const SizedBox(height: AppSpacing.md),
           const Text(
             'Hộp thời gian',
@@ -495,7 +522,14 @@ class _PremiumGate extends StatelessWidget {
           const SizedBox(height: AppSpacing.xl),
           ElevatedButton(
             onPressed: onUpgrade,
-            child: const Text('Nâng cấp Premium ✨'),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Nâng cấp Premium'),
+                SizedBox(width: 6),
+                MeBeIcon(type: MeBeIconType.premium, size: 18),
+              ],
+            ),
           ),
         ],
       ),

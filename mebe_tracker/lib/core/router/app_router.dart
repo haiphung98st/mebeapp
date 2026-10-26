@@ -341,22 +341,41 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ShellRoute(
         builder: (context, state, child) => ScaffoldWithBottomNav(child: child),
         routes: [
-          GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
+          // Bottom-nav tab roots use NoTransitionPage: the shell's own
+          // PageTransitionSwitcher already animates between them (and knows
+          // which direction to slide), so GoRouter must not also play its
+          // default push transition on top, which always enters from the
+          // right and fights/masks the direction-aware animation.
           GoRoute(
-            path: '/home/feeding',
-            builder: (context, state) => const FeedingScreen(),
+            path: '/home',
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: HomeScreen()),
           ),
           GoRoute(
-            path: '/home/pumping',
-            builder: (context, state) => const PumpingScreen(),
+            path: '/home/feeding',
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: FeedingScreen()),
           ),
           GoRoute(
             path: '/home/sleep',
-            builder: (context, state) => const SleepScreen(),
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: SleepScreen()),
           ),
           GoRoute(
             path: '/home/growth',
-            builder: (context, state) => const GrowthScreen(),
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: GrowthScreen()),
+          ),
+          GoRoute(
+            path: '/home/profile',
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: ProfileScreen()),
+          ),
+          // Pushed on top of a tab root — keep the default platform
+          // push/pop transition since these aren't part of the tab switcher.
+          GoRoute(
+            path: '/home/pumping',
+            builder: (context, state) => const PumpingScreen(),
           ),
           GoRoute(
             path: '/home/diaper',
@@ -365,10 +384,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/home/vaccine',
             builder: (context, state) => const VaccineScreen(),
-          ),
-          GoRoute(
-            path: '/home/profile',
-            builder: (context, state) => const ProfileScreen(),
           ),
         ],
       ),

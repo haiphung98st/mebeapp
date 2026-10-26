@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../shared/models/baby_profile.dart';
 import '../../../../shared/models/growth_entry.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 
 class GrowthPosterWidget extends StatelessWidget {
   const GrowthPosterWidget({
@@ -96,7 +97,7 @@ class GrowthPosterWidget extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Hành trình phát triển 💕',
+                          'Hành trình phát triển',
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.white.withValues(alpha: 0.85),
@@ -113,7 +114,7 @@ class GrowthPosterWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Text('🐰', style: TextStyle(fontSize: 48)),
+                  const MeBeIcon(type: MeBeIconType.mascotBunny, size: 48),
                 ],
               ),
             ),
@@ -142,7 +143,7 @@ class GrowthPosterWidget extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    'MeBé ✨',
+                    'MeBé',
                     style: TextStyle(
                       fontSize: 9,
                       fontWeight: FontWeight.w800,
@@ -150,6 +151,8 @@ class GrowthPosterWidget extends StatelessWidget {
                       letterSpacing: 0.5,
                     ),
                   ),
+                  const SizedBox(width: 3),
+                  MeBeIcon(type: MeBeIconType.premium, size: 10, overrideColor: t.accent.withValues(alpha: 0.6)),
                   const Spacer(),
                   Text(
                     'Ngày tạo: ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',

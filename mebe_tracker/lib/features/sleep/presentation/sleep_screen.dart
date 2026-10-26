@@ -13,6 +13,7 @@ import 'widgets/active_sleep_card.dart';
 import 'widgets/sleep_daily_summary_card.dart';
 import 'widgets/sleep_history_list.dart';
 import 'widgets/smart_window_card.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import 'widgets/weekly_sleep_chart.dart';
 
 class SleepScreen extends ConsumerWidget {
@@ -41,7 +42,7 @@ class SleepScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.powder,
       floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.edit_outlined),
+        icon: const MeBeGlyph(MeBeGlyphType.editOutlined),
         label: const Text('Nhập tay'),
         backgroundColor: AppColors.lavender,
         onPressed: () => showModalBottomSheet(

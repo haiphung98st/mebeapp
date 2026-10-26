@@ -18,6 +18,8 @@ import '../photo_filter.dart';
 import '../story_card/story_card_export.dart';
 import 'baby_book_export.dart';
 import 'baby_book_frame.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import 'baby_book_frame_painter.dart';
 
 enum _Mode { bookPage, poster }
@@ -159,7 +161,7 @@ class _BabyBookFrameEditorScreenState extends ConsumerState<BabyBookFrameEditorS
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('📖', style: TextStyle(fontSize: 56)),
+            const MeBeIcon(type: MeBeIconType.journal, size: 56),
             const SizedBox(height: AppSpacing.md),
             Text('Khung Baby Book là tính năng Premium', style: AppTextStyles.headingSm, textAlign: TextAlign.center),
             const SizedBox(height: AppSpacing.sm),
@@ -263,7 +265,7 @@ class _BabyBookFrameEditorScreenState extends ConsumerState<BabyBookFrameEditorS
             onPressed: _exporting ? null : _exportAndShare,
             icon: _exporting
                 ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                : const Icon(Icons.share_outlined),
+                : const MeBeGlyph(MeBeGlyphType.share),
             label: const Text('Lưu & Chia sẻ'),
           ),
         ),

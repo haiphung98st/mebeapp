@@ -7,6 +7,7 @@ import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/date_utils.dart';
 import '../../../../shared/models/diaper_entry.dart';
 import '../../../../shared/providers/diaper_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../diaper_manual_sheet.dart';
 
 String _dateGroupLabel(DateTime date) {
@@ -77,7 +78,7 @@ class _DiaperLogItem extends ConsumerWidget {
         ),
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-        child: const Icon(Icons.delete, color: AppColors.white),
+        child: const MeBeGlyph(MeBeGlyphType.delete, color: AppColors.white),
       ),
       confirmDismiss: (_) => _confirmDelete(context),
       onDismissed: (_) =>

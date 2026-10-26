@@ -13,6 +13,7 @@ import 'pump_manual_sheet.dart';
 import 'widgets/milk_stash_card.dart';
 import 'widgets/pump_log_list.dart';
 import 'widgets/pump_session_card.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import 'widgets/weekly_chart_card.dart';
 
 class PumpingScreen extends ConsumerWidget {
@@ -22,6 +23,11 @@ class PumpingScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final timer = ref.watch(pumpTimerProvider);
     final allPumps = ref.watch(allPumpsProvider).value ?? const [];
+    final todayPumps = ref.watch(todayPumpsProvider);
+    final todayMl = todayPumps.fold<double>(
+      0,
+      (sum, e) => sum + (e.leftAmountMl ?? 0) + (e.rightAmountMl ?? 0),
+    );
 
     ref.listen(expiringStashProvider, (previous, next) {
       if (next.isEmpty) return;
@@ -34,7 +40,7 @@ class PumpingScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.powder,
       floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.edit_outlined),
+        icon: const MeBeGlyph(MeBeGlyphType.editOutlined),
         label: const Text('Nhập tay'),
         backgroundColor: AppColors.lavender,
         onPressed: () => showModalBottomSheet(
@@ -46,12 +52,13 @@ class PumpingScreen extends ConsumerWidget {
       ),
       body: CustomScrollView(
         slivers: [
-          const SliverToBoxAdapter(
+          SliverToBoxAdapter(
             child: BunnyHeader(
               gradient: AppColors.gradientPump,
               earLeftColor: AppColors.pumpEarLeft,
               earRightColor: AppColors.pumpEarRight,
               title: 'Hút sữa',
+              subtitle: 'Hôm nay: ${todayPumps.length} lần · ${todayMl.toStringAsFixed(0)} ml',
             ),
           ),
           SliverPadding(

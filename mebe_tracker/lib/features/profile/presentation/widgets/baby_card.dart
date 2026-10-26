@@ -9,6 +9,7 @@ import '../../../../core/widgets/animated_bunny_avatar.dart';
 import '../../../../shared/providers/baby_provider.dart';
 import '../../data/avatar_config.dart';
 import '../../data/avatar_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../../../subscription/presentation/premium_gate.dart';
 
 class BabyCard extends ConsumerWidget {
@@ -62,7 +63,7 @@ class BabyCard extends ConsumerWidget {
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.edit_outlined, color: AppColors.blossom),
+                icon: const MeBeGlyph(MeBeGlyphType.editOutlined, color: AppColors.blossom),
                 tooltip: 'Sửa thông tin bé',
                 onPressed: () => context.push('/home/profile/edit-baby', extra: baby),
               ),
@@ -75,7 +76,7 @@ class BabyCard extends ConsumerWidget {
               width: double.infinity,
               child: OutlinedButton.icon(
                 onPressed: () => context.push('/create-baby'),
-                icon: const Icon(Icons.add, color: AppColors.blossom),
+                icon: const MeBeGlyph(MeBeGlyphType.add, color: AppColors.blossom),
                 label: const Text('Thêm bé'),
               ),
             ),

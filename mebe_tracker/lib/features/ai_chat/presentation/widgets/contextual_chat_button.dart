@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/icons/mebe_icons.dart';
 import '../../../../shared/providers/subscription_provider.dart';
 
 class ContextualChatButton extends ConsumerWidget {
@@ -27,21 +28,14 @@ class ContextualChatButton extends ConsumerWidget {
           ),
           backgroundColor: AppColors.blossom,
           foregroundColor: AppColors.white,
-          icon: const Text('🐰', style: TextStyle(fontSize: 18)),
+          icon: const MeBeIcon(type: MeBeIconType.mascotBunny, size: 18),
           label: const Text('Hỏi AI'),
         ),
         if (!isPremium)
           Positioned(
             top: -4,
             right: -4,
-            child: Container(
-              padding: const EdgeInsets.all(4),
-              decoration: const BoxDecoration(
-                color: AppColors.warning,
-                shape: BoxShape.circle,
-              ),
-              child: const Text('✨', style: TextStyle(fontSize: 10)),
-            ),
+            child: const ClipOval(child: MeBeIcon(type: MeBeIconType.premium, size: 18)),
           ),
       ],
     );

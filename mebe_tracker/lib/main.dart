@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -28,16 +29,31 @@ void main() async {
   };
   ErrorWidget.builder = (details) => const ErrorFallback();
 
-  await NotificationService.instance.init();
-  await NotificationService.instance.requestPermission();
-  await LiveActivityService.instance.init();
-  await WidgetService.init(_workmanagerDispatcher);
-  await WidgetService.scheduleBackgroundRefresh();
+  runApp(const ProviderScope(child: MeBeApp()));
+
+  // Non-essential startup work (notification permission dialog, live
+  // activity push-token registration, widget/workmanager setup) runs after
+  // the first frame instead of blocking it — any one of these plugins
+  // hanging (e.g. live_activities awaiting an APNs push token with no
+  // network) must not leave the app stuck on the native launch screen.
+  unawaited(_initBackgroundServices());
+}
+
+Future<void> _initBackgroundServices() async {
+  try {
+    await NotificationService.instance.init();
+    await NotificationService.instance.requestPermission();
+  } catch (_) {}
+  try {
+    await LiveActivityService.instance.init();
+  } catch (_) {}
+  try {
+    await WidgetService.init(_workmanagerDispatcher);
+    await WidgetService.scheduleBackgroundRefresh();
+  } catch (_) {}
 
   WidgetService.listenForWidgetLaunch((uri) {
     if (uri == null) return;
     // Handled in app_router.dart via GoRouter deep link redirect
   });
-
-  runApp(const ProviderScope(child: MeBeApp()));
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../../../../core/icons/mebe_icons.dart';
 
 /// One tappable icon+label entry inside a [HomeFeatureGroup]. Pass
@@ -39,6 +40,7 @@ class HomeFeatureGroup extends StatefulWidget {
     this.isPremium = false,
     this.initiallyExpanded = false,
     this.statsStrip,
+    this.iconType,
   });
 
   final String icon;
@@ -50,6 +52,7 @@ class HomeFeatureGroup extends StatefulWidget {
   final String? badge;
   final bool isPremium;
   final bool initiallyExpanded;
+  final MeBeIconType? iconType;
 
   /// Optional row shown above the icon grid — fills what would otherwise
   /// be dead whitespace with today's at-a-glance numbers.
@@ -89,16 +92,21 @@ class _HomeFeatureGroupState extends State<HomeFeatureGroup> {
               ),
               child: Row(
                 children: [
-                  Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: widget.iconBg,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(widget.icon, style: const TextStyle(fontSize: 18)),
-                  ),
+                  widget.iconType != null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: MeBeIcon(type: widget.iconType!, size: 36, isActive: true),
+                        )
+                      : Container(
+                          width: 36,
+                          height: 36,
+                          decoration: BoxDecoration(
+                            color: widget.iconBg,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(widget.icon, style: const TextStyle(fontSize: 18)),
+                        ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Column(
@@ -131,9 +139,13 @@ class _HomeFeatureGroupState extends State<HomeFeatureGroup> {
                         color: AppColors.lilac,
                         borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
                       ),
-                      child: Text(
-                        '⭐ Premium',
-                        style: AppTextStyles.label.copyWith(color: AppColors.lavender),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const MeBeGlyph(MeBeGlyphType.star, color: AppColors.lavender, size: 12),
+                          const SizedBox(width: 4),
+                          Text('Premium', style: AppTextStyles.label.copyWith(color: AppColors.lavender)),
+                        ],
                       ),
                     ),
                     const SizedBox(width: 6),
@@ -142,7 +154,7 @@ class _HomeFeatureGroupState extends State<HomeFeatureGroup> {
                     turns: _expanded ? 0.5 : 0,
                     duration: const Duration(milliseconds: 250),
                     curve: Curves.easeInOut,
-                    child: const Icon(Icons.expand_more, color: AppColors.muted, size: 20),
+                    child: const MeBeGlyph(MeBeGlyphType.expandMore, color: AppColors.muted, size: 20),
                   ),
                 ],
               ),
@@ -236,7 +248,7 @@ class _FeatureButton extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                     alignment: Alignment.center,
-                    child: const Text('⭐', style: TextStyle(fontSize: 9)),
+                    child: const MeBeGlyph(MeBeGlyphType.star, color: Colors.white, size: 9),
                   ),
                 ),
             ],

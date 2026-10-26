@@ -11,6 +11,8 @@ import '../../../core/widgets/sheet_handle.dart';
 import '../../../shared/models/sleep_entry.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../../../shared/providers/sleep_provider.dart';
 
 String _qualityLabel(SleepQuality quality) {
@@ -80,14 +82,16 @@ class _SleepManualSheetState extends ConsumerState<SleepManualSheet> {
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
               child: Row(
                 children: [
+                  const MeBeIcon(type: MeBeIconType.sleep, size: 22),
+                  const SizedBox(width: 8),
                   Text(
-                    widget.existing == null ? '🌙 Ghi giấc ngủ' : '🌙 Chỉnh sửa giấc ngủ',
+                    widget.existing == null ? 'Ghi giấc ngủ' : 'Chỉnh sửa giấc ngủ',
                     style: AppTextStyles.headingLg,
                   ),
                   const Spacer(),
                   if (widget.existing != null)
                     IconButton(
-                      icon: const Icon(Icons.delete_outline, color: AppColors.error),
+                      icon: const MeBeGlyph(MeBeGlyphType.deleteOutline, color: AppColors.error),
                       onPressed: _confirmDelete,
                     ),
                 ],
@@ -106,7 +110,8 @@ class _SleepManualSheetState extends ConsumerState<SleepManualSheet> {
                       children: [
                         Expanded(
                           child: _TypeCard(
-                            label: '☀️ Ngủ ngày',
+                            icon: MeBeIconType.napTime,
+                            label: 'Ngủ ngày',
                             selected: _type == SleepType.nap,
                             onTap: () => setState(() => _type = SleepType.nap),
                           ),
@@ -114,7 +119,8 @@ class _SleepManualSheetState extends ConsumerState<SleepManualSheet> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: _TypeCard(
-                            label: '🌙 Ngủ đêm',
+                            icon: MeBeIconType.sleep,
+                            label: 'Ngủ đêm',
                             selected: _type == SleepType.night,
                             onTap: () => setState(() => _type = SleepType.night),
                           ),
@@ -142,12 +148,19 @@ class _SleepManualSheetState extends ConsumerState<SleepManualSheet> {
                             color: AppColors.lilac,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Text(
-                            '⏱ ${_durationMin ~/ 60}h ${_durationMin % 60}ph',
-                            style: AppTextStyles.bodyMd.copyWith(
-                              color: AppColors.lavender,
-                              fontWeight: FontWeight.w800,
-                            ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const MeBeIcon(type: MeBeIconType.timer, size: 18),
+                              const SizedBox(width: 6),
+                              Text(
+                                '${_durationMin ~/ 60}h ${_durationMin % 60}ph',
+                                style: AppTextStyles.bodyMd.copyWith(
+                                  color: AppColors.lavender,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -266,8 +279,14 @@ class _SleepManualSheetState extends ConsumerState<SleepManualSheet> {
 }
 
 class _TypeCard extends StatelessWidget {
-  const _TypeCard({required this.label, required this.selected, required this.onTap});
+  const _TypeCard({
+    required this.icon,
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
 
+  final MeBeIconType icon;
   final String label;
   final bool selected;
   final VoidCallback onTap;
@@ -284,13 +303,20 @@ class _TypeCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
           border: Border.all(color: selected ? AppColors.lavender : AppColors.blush, width: selected ? 2 : 1),
         ),
-        child: Text(
-          label,
-          textAlign: TextAlign.center,
-          style: AppTextStyles.bodyMd.copyWith(
-            fontWeight: FontWeight.w700,
-            color: selected ? AppColors.white : AppColors.body,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            MeBeIcon(type: icon, size: 20),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodyMd.copyWith(
+                fontWeight: FontWeight.w700,
+                color: selected ? AppColors.white : AppColors.body,
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/widgets/bunny_header.dart';
+import '../../../shared/providers/home_provider.dart';
 import 'bottle_manual_sheet.dart';
 import 'breastfeeding_manual_sheet.dart';
 import 'widgets/bottlefeeding_tab.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import 'widgets/breastfeeding_tab.dart';
 
-class FeedingScreen extends StatefulWidget {
+class FeedingScreen extends ConsumerStatefulWidget {
   const FeedingScreen({super.key});
 
   @override
-  State<FeedingScreen> createState() => _FeedingScreenState();
+  ConsumerState<FeedingScreen> createState() => _FeedingScreenState();
 }
 
-class _FeedingScreenState extends State<FeedingScreen> {
+class _FeedingScreenState extends ConsumerState<FeedingScreen> {
   int _selectedIndex = 0;
 
   void _onSegmentTap(int index) {
@@ -30,10 +34,11 @@ class _FeedingScreenState extends State<FeedingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final todayCount = ref.watch(todayFeedingsProvider).length;
     return Scaffold(
       backgroundColor: AppColors.powder,
       floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.edit_outlined),
+        icon: const MeBeGlyph(MeBeGlyphType.editOutlined),
         label: const Text('Nhập tay'),
         backgroundColor: AppColors.blossom,
         onPressed: () => showModalBottomSheet(
@@ -52,6 +57,7 @@ class _FeedingScreenState extends State<FeedingScreen> {
             earLeftColor: AppColors.feedingEarLeft,
             earRightColor: AppColors.feedingEarRight,
             title: 'Ăn uống',
+            subtitle: 'Hôm nay: $todayCount cữ',
             child: Padding(
               padding: const EdgeInsets.only(top: AppSpacing.lg),
               child: _FeedingSegmentedTabs(
@@ -76,9 +82,9 @@ class _FeedingSegmentedTabs extends StatelessWidget {
   final void Function(int) onTap;
 
   static const _segments = [
-    (icon: '🤱', label: 'Bú mẹ'),
-    (icon: '🍼', label: 'Bú bình'),
-    (icon: '🥛', label: 'Hút sữa'),
+    (icon: MeBeIconType.breastfeed, label: 'Bú mẹ'),
+    (icon: MeBeIconType.bottle, label: 'Bú bình'),
+    (icon: MeBeIconType.pump, label: 'Hút sữa'),
   ];
 
   @override
@@ -102,7 +108,7 @@ class _FeedingSegmentedTabs extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(segment.icon, style: const TextStyle(fontSize: 18)),
+                    MeBeIcon(type: segment.icon, size: 18),
                     const SizedBox(height: 2),
                     Text(
                       segment.label,

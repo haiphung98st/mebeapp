@@ -5,6 +5,8 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/providers/subscription_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../widget_provider.dart';
 
 // Mirrors the native widgets' own palette (ios/MeBeWidget/MeBeWidget.swift,
@@ -37,15 +39,15 @@ String _sleepLabel(int minutes) {
   return m > 0 ? '${h}h${m}p' : '${h}h';
 }
 
-String _feedingIcon(String type) {
+MeBeIconType _feedingIconType(String type) {
   switch (type) {
     case 'breastLeft':
     case 'breastRight':
-      return '🤱';
+      return MeBeIconType.breastfeed;
     case 'bottle':
-      return '🍼';
+      return MeBeIconType.bottle;
     default:
-      return '🥛';
+      return MeBeIconType.pump;
   }
 }
 
@@ -112,7 +114,7 @@ class _WidgetConfigScreenState extends ConsumerState<WidgetConfigScreen> {
             width: double.infinity,
             child: OutlinedButton.icon(
               onPressed: _forceUpdate,
-              icon: const Icon(Icons.refresh),
+              icon: const MeBeGlyph(MeBeGlyphType.refresh),
               label: const Text('Cập nhật widget ngay'),
             ),
           ),
@@ -192,12 +194,22 @@ class _PreviewUpsell extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('🐰', style: TextStyle(fontSize: 28 * fontScale)),
+            MeBeIcon(type: MeBeIconType.mascotBunny, size: 28 * fontScale),
             const SizedBox(height: AppSpacing.xs),
             Text(
-              'Nâng cấp Premium\nđể xem chi tiết ✨',
+              'Nâng cấp Premium',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 10 * fontScale, color: _WidgetColors.subtext),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'để xem chi tiết ',
+                  style: TextStyle(fontSize: 10 * fontScale, color: _WidgetColors.subtext),
+                ),
+                MeBeIcon(type: MeBeIconType.premium, size: 10 * fontScale),
+              ],
             ),
           ],
         ),
@@ -226,18 +238,32 @@ class _SmallPremium extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           if (data.isSleeping)
-            Text('🌙 Ngủ', style: TextStyle(fontSize: 11, color: _WidgetColors.accentBlue))
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const MeBeIcon(type: MeBeIconType.sleep, size: 12),
+                const SizedBox(width: 2),
+                Text('Ngủ', style: TextStyle(fontSize: 11, color: _WidgetColors.accentBlue)),
+              ],
+            )
           else
-            Text(
-              '${_feedingIcon(data.lastFeedingType)} Bú ${_timeAgo(data.lastFeedingTime)}',
-              style: const TextStyle(fontSize: 11, color: _WidgetColors.subtext),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                MeBeIcon(type: _feedingIconType(data.lastFeedingType), size: 12),
+                const SizedBox(width: 2),
+                Text(
+                  'Bú ${_timeAgo(data.lastFeedingTime)}',
+                  style: const TextStyle(fontSize: 11, color: _WidgetColors.subtext),
+                ),
+              ],
             ),
           const Spacer(),
           Row(
             children: [
-              _StatChip('🤱 ${data.todayFeedingCount}'),
+              _StatChip(icon: MeBeIconType.breastfeed, text: '${data.todayFeedingCount}'),
               const SizedBox(width: 4),
-              _StatChip('🌸 ${data.todayDiaperCount}'),
+              _StatChip(icon: MeBeIconType.diaper, text: '${data.todayDiaperCount}'),
             ],
           ),
         ],
@@ -247,8 +273,9 @@ class _SmallPremium extends StatelessWidget {
 }
 
 class _StatChip extends StatelessWidget {
-  const _StatChip(this.text);
+  const _StatChip({required this.icon, required this.text});
 
+  final MeBeIconType icon;
   final String text;
 
   @override
@@ -259,7 +286,14 @@ class _StatChip extends StatelessWidget {
         color: _WidgetColors.primary.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Text(text, style: const TextStyle(fontSize: 10, color: _WidgetColors.text)),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          MeBeIcon(type: icon, size: 10),
+          const SizedBox(width: 2),
+          Text(text, style: const TextStyle(fontSize: 10, color: _WidgetColors.text)),
+        ],
+      ),
     );
   }
 }
@@ -286,11 +320,26 @@ class _MediumPremium extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 if (data.isSleeping)
-                  Text('🌙 Đang ngủ', style: TextStyle(fontSize: 12, color: _WidgetColors.accentBlue))
+                  Row(
+                    children: [
+                      const MeBeIcon(type: MeBeIconType.sleep, size: 13),
+                      const SizedBox(width: 4),
+                      Text('Đang ngủ', style: TextStyle(fontSize: 12, color: _WidgetColors.accentBlue)),
+                    ],
+                  )
                 else
-                  Text(
-                    '${_feedingIcon(data.lastFeedingType)} Bú gần nhất\n${_timeAgo(data.lastFeedingTime)}',
-                    style: const TextStyle(fontSize: 11, color: _WidgetColors.text),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      MeBeIcon(type: _feedingIconType(data.lastFeedingType), size: 13),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          'Bú gần nhất\n${_timeAgo(data.lastFeedingTime)}',
+                          style: const TextStyle(fontSize: 11, color: _WidgetColors.text),
+                        ),
+                      ),
+                    ],
                   ),
               ],
             ),
@@ -302,11 +351,11 @@ class _MediumPremium extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _MiniStatRow('🤱', '${data.todayFeedingCount} cữ'),
+                  _MiniStatRow(MeBeIconType.breastfeed, '${data.todayFeedingCount} cữ'),
                   const SizedBox(height: 4),
-                  _MiniStatRow('🌙', _sleepLabel(data.todaySleepMinutes)),
+                  _MiniStatRow(MeBeIconType.sleep, _sleepLabel(data.todaySleepMinutes)),
                   const SizedBox(height: 4),
-                  _MiniStatRow('🌸', '${data.todayDiaperCount} tã'),
+                  _MiniStatRow(MeBeIconType.diaper, '${data.todayDiaperCount} tã'),
                 ],
               ),
             ),
@@ -320,14 +369,14 @@ class _MediumPremium extends StatelessWidget {
 class _MiniStatRow extends StatelessWidget {
   const _MiniStatRow(this.icon, this.label);
 
-  final String icon;
+  final MeBeIconType icon;
   final String label;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(icon, style: const TextStyle(fontSize: 12)),
+        MeBeIcon(type: icon, size: 12),
         const SizedBox(width: 4),
         Text(label, style: const TextStyle(fontSize: 12, color: _WidgetColors.text)),
       ],
@@ -350,9 +399,17 @@ class _LargePremium extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text(
-                  '🐰 ${data.babyName.isEmpty ? 'MeBé' : data.babyName}',
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: _WidgetColors.text),
+                child: Row(
+                  children: [
+                    const MeBeIcon(type: MeBeIconType.mascotBunny, size: 16),
+                    const SizedBox(width: 4),
+                    Flexible(
+                      child: Text(
+                        data.babyName.isEmpty ? 'MeBé' : data.babyName,
+                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: _WidgetColors.text),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Text('${data.babyAgeWeeks} tuần', style: const TextStyle(fontSize: 11, color: _WidgetColors.subtext)),
@@ -362,27 +419,47 @@ class _LargePremium extends StatelessWidget {
           const Divider(height: 1),
           const SizedBox(height: 10),
           if (data.isSleeping)
-            Text('🌙 Đang ngủ', style: TextStyle(fontSize: 13, color: _WidgetColors.accentBlue))
+            Row(
+              children: [
+                const MeBeIcon(type: MeBeIconType.sleep, size: 14),
+                const SizedBox(width: 4),
+                Text('Đang ngủ', style: TextStyle(fontSize: 13, color: _WidgetColors.accentBlue)),
+              ],
+            )
           else ...[
-            Text(
-              '${_feedingIcon(data.lastFeedingType)} Bú ${_timeAgo(data.lastFeedingTime)}',
-              style: const TextStyle(fontSize: 13, color: _WidgetColors.text),
+            Row(
+              children: [
+                MeBeIcon(type: _feedingIconType(data.lastFeedingType), size: 14),
+                const SizedBox(width: 4),
+                Text(
+                  'Bú ${_timeAgo(data.lastFeedingTime)}',
+                  style: const TextStyle(fontSize: 13, color: _WidgetColors.text),
+                ),
+              ],
             ),
             if (data.nextFeedingTime != null)
-              Text(
-                '⏰ Bú tiếp: ${_timeAgo(data.nextFeedingTime)}',
-                style: const TextStyle(fontSize: 11, color: _WidgetColors.subtext),
+              Row(
+                children: [
+                  const MeBeIcon(type: MeBeIconType.timer, size: 12),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Bú tiếp: ${_timeAgo(data.nextFeedingTime)}',
+                    style: const TextStyle(fontSize: 11, color: _WidgetColors.subtext),
+                  ),
+                ],
               ),
           ],
           const SizedBox(height: 10),
           Row(
             children: [
               Expanded(
-                child: _LargeStatCard('🤱', 'Bú', '${data.todayFeedingCount} cữ', _WidgetColors.accentPink),
+                child: _LargeStatCard(
+                    MeBeIconType.breastfeed, 'Bú', '${data.todayFeedingCount} cữ', _WidgetColors.accentPink),
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: _LargeStatCard('🌙', 'Ngủ', _sleepLabel(data.todaySleepMinutes), _WidgetColors.accentBlue),
+                child: _LargeStatCard(
+                    MeBeIconType.sleep, 'Ngủ', _sleepLabel(data.todaySleepMinutes), _WidgetColors.accentBlue),
               ),
             ],
           ),
@@ -390,12 +467,13 @@ class _LargePremium extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: _LargeStatCard('🌸', 'Thay tã', '${data.todayDiaperCount} lần', _WidgetColors.accentGreen),
+                child: _LargeStatCard(
+                    MeBeIconType.diaper, 'Thay tã', '${data.todayDiaperCount} lần', _WidgetColors.accentGreen),
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: _LargeStatCard(
-                  '🥛',
+                  MeBeIconType.pump,
                   'Hút sữa',
                   data.todayPumpMl > 0 ? '${data.todayPumpMl.toInt()}ml' : '--',
                   _WidgetColors.primary,
@@ -412,7 +490,7 @@ class _LargePremium extends StatelessWidget {
 class _LargeStatCard extends StatelessWidget {
   const _LargeStatCard(this.icon, this.label, this.value, this.color);
 
-  final String icon;
+  final MeBeIconType icon;
   final String label;
   final String value;
   final Color color;
@@ -428,7 +506,7 @@ class _LargeStatCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(icon, style: const TextStyle(fontSize: 16)),
+          MeBeIcon(type: icon, size: 16),
           const SizedBox(height: 2),
           Text(label, style: const TextStyle(fontSize: 10, color: _WidgetColors.subtext)),
           Text(value, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: color)),

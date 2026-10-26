@@ -15,6 +15,8 @@ import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/subscription_provider.dart';
 import '../../../shared/models/story_card.dart';
 import '../data/story_card_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import 'widgets/story_card_widget.dart';
 
 const _gradientMemory = LinearGradient(
@@ -41,10 +43,10 @@ class StoryCardsScreen extends ConsumerWidget {
               gradient: _gradientMemory,
               earLeftColor: AppColors.petal,
               earRightColor: AppColors.lilac,
-              title: 'Thẻ kỷ niệm 📖',
+              title: 'Thẻ kỷ niệm',
               subtitle: '${cards.length} kỷ niệm đẹp',
               actions: IconButton(
-                icon: const Icon(Icons.close, color: Colors.white),
+                icon: const MeBeGlyph(MeBeGlyphType.close, color: Colors.white),
                 onPressed: () => context.pop(),
               ),
             ),
@@ -56,7 +58,7 @@ class StoryCardsScreen extends ConsumerWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('📖', style: TextStyle(fontSize: 56)),
+                    MeBeIcon(type: MeBeIconType.journal, size: 56),
                     SizedBox(height: AppSpacing.md),
                     Text(
                       'Chưa có thẻ kỷ niệm',
@@ -104,8 +106,17 @@ class StoryCardsScreen extends ConsumerWidget {
             : () => context.push('/home/subscription'),
         backgroundColor: AppColors.blossom,
         foregroundColor: Colors.white,
-        icon: const Icon(Icons.add),
-        label: Text(isPremium ? 'Tạo thẻ' : 'Premium ✨'),
+        icon: const MeBeGlyph(MeBeGlyphType.add),
+        label: isPremium
+            ? const Text('Tạo thẻ')
+            : const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Premium'),
+                  SizedBox(width: 4),
+                  MeBeIcon(type: MeBeIconType.premium, size: 16),
+                ],
+              ),
       ),
     );
   }
@@ -178,7 +189,7 @@ class _CardGridItem extends ConsumerWidget {
       final bytes = byteData.buffer.asUint8List();
       await Share.shareXFiles(
         [XFile.fromData(bytes, mimeType: 'image/png', name: 'memory_card.png')],
-        text: '${card.titleVi} 💕 — ${card.contentVi}\n\nMeBé ✨',
+        text: '${card.titleVi} — ${card.contentVi}\n\nMeBé ✨',
       );
     } catch (_) {
       if (context.mounted) {
@@ -238,7 +249,7 @@ class _CardDetailSheet extends StatelessWidget {
                         Navigator.pop(context);
                         onShare();
                       },
-                      icon: const Icon(Icons.share_rounded),
+                      icon: const MeBeGlyph(MeBeGlyphType.share),
                       label: const Text('Chia sẻ kỷ niệm'),
                     ),
                   const SizedBox(height: AppSpacing.sm),
@@ -272,7 +283,7 @@ class _CardDetailSheet extends StatelessWidget {
                       foregroundColor: AppColors.error,
                       side: const BorderSide(color: AppColors.error),
                     ),
-                    icon: const Icon(Icons.delete_outline),
+                    icon: const MeBeGlyph(MeBeGlyphType.deleteOutline),
                     label: const Text('Xoá thẻ'),
                   ),
                 ],
@@ -442,7 +453,7 @@ class _CreateCardSheetState extends ConsumerState<_CreateCardSheet> {
                         color: Colors.white,
                       ),
                     )
-                  : const Text('Lưu kỷ niệm 💕'),
+                  : const Text('Lưu kỷ niệm'),
             ),
           ],
         ),

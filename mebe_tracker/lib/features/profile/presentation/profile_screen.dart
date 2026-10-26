@@ -25,7 +25,9 @@ import '../../../shared/services/credential_service.dart';
 import '../../subscription/presentation/premium_gate.dart';
 import '../../subscription/presentation/subscription_screen.dart';
 import 'widgets/baby_card.dart';
-import 'widgets/family_sharing_section.dart';
+// import 'widgets/family_sharing_section.dart'; // Temporarily hidden: invites are broken.
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import 'widgets/profile_tile.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -136,7 +138,7 @@ class ProfileScreen extends ConsumerWidget {
               delegate: SliverChildListDelegate([
                 // 1. Hồ sơ bé
                 _ProfileCard(
-                  icon: '👶',
+                  icon: const MeBeIcon(type: MeBeIconType.baby, size: 20),
                   title: 'Hồ sơ bé',
                   child: Column(
                     children: [
@@ -146,7 +148,7 @@ class ProfileScreen extends ConsumerWidget {
                         width: double.infinity,
                         child: TextButton.icon(
                           onPressed: () => context.push('/home/profile/manage-babies'),
-                          icon: const Icon(Icons.people_outline, size: 18),
+                          icon: const MeBeGlyph(MeBeGlyphType.people, size: 18),
                           label: const Text('Quản lý các bé'),
                         ),
                       ),
@@ -157,17 +159,18 @@ class ProfileScreen extends ConsumerWidget {
 
                 // 2. Tài khoản
                 _ProfileCard(
-                  icon: '👤',
+                  icon: const MeBeIcon(type: MeBeIconType.profile, size: 20),
                   title: 'Tài khoản',
                   padded: false,
                   child: Column(
                     children: [
                       ProfileTile(
-                        icon: Icons.lock_outline,
+                        glyph: MeBeGlyphType.lockOutline,
                         label: 'Đổi mật khẩu',
                         onTap: () => _changePassword(context, ref),
                       ),
-                      const FamilySharingSection(),
+                      // Temporarily hidden: family sharing invites are broken.
+                      // const FamilySharingSection(),
                     ],
                   ),
                 ),
@@ -175,7 +178,7 @@ class ProfileScreen extends ConsumerWidget {
 
                 // 3. Premium & Thanh toán
                 const _ProfileCard(
-                  icon: '🎀',
+                  icon: MeBeIcon(type: MeBeIconType.premium, size: 20),
                   title: 'Premium & Thanh toán',
                   padded: false,
                   child: _PremiumSection(),
@@ -184,7 +187,7 @@ class ProfileScreen extends ConsumerWidget {
 
                 // 4. Cài đặt
                 _ProfileCard(
-                  icon: '⚙️',
+                  icon: const MeBeGlyph(MeBeGlyphType.settingsGear, color: AppColors.ink, size: 18),
                   title: 'Cài đặt',
                   padded: false,
                   child: Column(
@@ -249,7 +252,7 @@ class ProfileScreen extends ConsumerWidget {
 
                 // 5. Kỷ niệm
                 _ProfileCard(
-                  icon: '📸',
+                  icon: const MeBeIcon(type: MeBeIconType.memory, size: 20),
                   title: 'Kỷ niệm',
                   padded: false,
                   child: PremiumGate(
@@ -266,7 +269,7 @@ class ProfileScreen extends ConsumerWidget {
 
                 // 6. Hỗ trợ & Pháp lý
                 _ProfileCard(
-                  icon: '📄',
+                  icon: const MeBeIcon(type: MeBeIconType.journal, size: 20),
                   title: 'Hỗ trợ & Pháp lý',
                   padded: false,
                   child: Column(
@@ -297,12 +300,12 @@ class ProfileScreen extends ConsumerWidget {
                         onTap: () => context.push('/legal/disclaimer'),
                       ),
                       ProfileTile(
-                        icon: Icons.star_outline,
+                        glyph: MeBeGlyphType.starOutline,
                         label: 'Đánh giá app',
                         onTap: () => _showComingSoon(context),
                       ),
                       ProfileTile(
-                        icon: Icons.info_outline,
+                        glyph: MeBeGlyphType.infoOutline,
                         label: 'Về MeBé Tracker',
                         onTap: () => context.push('/legal/about'),
                       ),
@@ -313,7 +316,7 @@ class ProfileScreen extends ConsumerWidget {
 
                 // Danger zone
                 _ProfileCard(
-                  icon: '⚠️',
+                  icon: const MeBeIcon(type: MeBeIconType.warning, size: 20),
                   title: 'Vùng nguy hiểm',
                   padded: false,
                   child: Column(
@@ -325,7 +328,7 @@ class ProfileScreen extends ConsumerWidget {
                         onTap: () => _signOut(context, ref),
                       ),
                       ProfileTile(
-                        icon: Icons.delete_outline,
+                        glyph: MeBeGlyphType.deleteOutline,
                         label: 'Xóa tài khoản',
                         textColor: AppColors.error,
                         onTap: () => _deleteAccount(context, ref),
@@ -426,7 +429,7 @@ class _ProfileGradientHeaderState extends ConsumerState<_ProfileGradientHeader> 
                               height: 10,
                               child: CircularProgressIndicator(strokeWidth: 1.5, color: AppColors.white),
                             )
-                          : const Icon(Icons.camera_alt, size: 12, color: AppColors.white),
+                          : const MeBeGlyph(MeBeGlyphType.cameraAlt, size: 12, color: AppColors.white),
                     ),
                   ],
                 ),
@@ -523,7 +526,7 @@ class _ProfileCard extends StatelessWidget {
     this.padded = true,
   });
 
-  final String icon;
+  final Widget icon;
   final String title;
   final Widget child;
   final bool padded;
@@ -546,7 +549,7 @@ class _ProfileCard extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, AppSpacing.sm),
             child: Row(
               children: [
-                Text(icon, style: const TextStyle(fontSize: 16)),
+                icon,
                 const SizedBox(width: AppSpacing.xs),
                 Text(title, style: AppTextStyles.headingSm),
               ],

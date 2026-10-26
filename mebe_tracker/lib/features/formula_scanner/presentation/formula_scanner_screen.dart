@@ -5,6 +5,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../data/formula_database.dart';
 
 /// Scanner screen. Pop with [FormulaScanResult] when formula is identified,
@@ -171,7 +172,7 @@ class _FoundCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.check_circle, color: AppColors.mint, size: 22),
+              const MeBeGlyph(MeBeGlyphType.checkCircle, color: AppColors.mint, size: 22),
               const SizedBox(width: AppSpacing.sm),
               Text('Tìm thấy!',
                   style: AppTextStyles.headingSm

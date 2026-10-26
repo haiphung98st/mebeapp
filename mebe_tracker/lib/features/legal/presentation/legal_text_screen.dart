@@ -4,6 +4,7 @@ import 'package:share_plus/share_plus.dart' show Share;
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../../../core/constants/app_text_styles.dart';
 
 /// Shared reader screen for legal documents (terms, privacy, disclaimer).
@@ -33,7 +34,7 @@ class LegalTextScreen extends StatelessWidget {
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.share_outlined),
+            icon: const MeBeGlyph(MeBeGlyphType.share),
             tooltip: 'Chia sẻ',
             onPressed: () => Share.share('$title\n\n$markdownContent'),
           ),

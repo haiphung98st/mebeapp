@@ -5,6 +5,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/icons/mebe_icons.dart';
 import '../../../core/widgets/bunny_avatar.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/subscription_provider.dart';
@@ -19,7 +20,7 @@ const _premiumFeatures = [
   'Export PDF',
   'Kho sữa nâng cao',
   'Lịch tiêm chủng',
-  'Hỏi bé – Trợ lý AI 🐰',
+  'Hỏi bé – Trợ lý AI',
   'Widget',
   'Hỗ trợ ưu tiên',
 ];
@@ -203,17 +204,24 @@ class _FeatureComparisonList extends StatelessWidget {
         const SizedBox(height: AppSpacing.lg),
         Text('Premium', style: AppTextStyles.headingSm.copyWith(color: AppColors.blossom)),
         const SizedBox(height: AppSpacing.xs),
-        ..._premiumFeatures.map((f) => _FeatureRow(text: f, isPremium: true)),
+        ..._premiumFeatures.map((f) => _FeatureRow(
+              text: f,
+              isPremium: true,
+              trailingIcon: f.contains('Trợ lý AI')
+                  ? const MeBeIcon(type: MeBeIconType.mascotBunny, size: 16)
+                  : null,
+            )),
       ],
     );
   }
 }
 
 class _FeatureRow extends StatelessWidget {
-  const _FeatureRow({required this.text, required this.isPremium});
+  const _FeatureRow({required this.text, required this.isPremium, this.trailingIcon});
 
   final String text;
   final bool isPremium;
+  final Widget? trailingIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -228,6 +236,10 @@ class _FeatureRow extends StatelessWidget {
           ),
           const SizedBox(width: AppSpacing.sm),
           Text(text, style: AppTextStyles.bodyMd),
+          if (trailingIcon != null) ...[
+            const SizedBox(width: 4),
+            trailingIcon!,
+          ],
         ],
       ),
     );

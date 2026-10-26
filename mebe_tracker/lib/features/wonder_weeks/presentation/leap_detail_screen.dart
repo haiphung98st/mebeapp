@@ -4,6 +4,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../data/wonder_weeks_data.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 
 class LeapDetailScreen extends StatelessWidget {
   const LeapDetailScreen({super.key, required this.leap});
@@ -39,7 +40,7 @@ class LeapDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const SizedBox(height: 40),
-                      Text('🧠', style: const TextStyle(fontSize: 48)),
+                      const MeBeIcon(type: MeBeIconType.wonderWeeks, size: 48),
                       const SizedBox(height: AppSpacing.sm),
                       Text(
                         leap.name,
@@ -109,7 +110,7 @@ class _WeekTimeline extends StatelessWidget {
           Text('Lịch trình', style: AppTextStyles.bodyLg.copyWith(color: AppColors.ink)),
           const SizedBox(height: AppSpacing.md),
           _TimelineItem(
-            icon: '⛈️',
+            icon: MeBeIconType.wonderWeeksStormy,
             color: AppColors.warning,
             label: 'Giai đoạn bão',
             detail: 'Tuần ${leap.stormStartWeek} – ${leap.stormEndWeek}',
@@ -117,7 +118,7 @@ class _WeekTimeline extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.md),
           _TimelineItem(
-            icon: '☀️',
+            icon: MeBeIconType.wonderWeeksCalm,
             color: AppColors.success,
             label: 'Giai đoạn nắng',
             detail: 'Tuần ${leap.stormEndWeek} – ${leap.sunnyEndWeek}',
@@ -138,7 +139,7 @@ class _TimelineItem extends StatelessWidget {
     required this.description,
   });
 
-  final String icon;
+  final MeBeIconType icon;
   final Color color;
   final String label;
   final String detail;
@@ -149,17 +150,7 @@ class _TimelineItem extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.12),
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: Text(icon, style: const TextStyle(fontSize: 20)),
-          ),
-        ),
+        ClipOval(child: MeBeIcon(type: icon, size: 40)),
         const SizedBox(width: AppSpacing.md),
         Expanded(
           child: Column(
@@ -255,7 +246,7 @@ class _SkillsCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Text('✨', style: TextStyle(fontSize: 20)),
+              const MeBeIcon(type: MeBeIconType.premium, size: 20),
               const SizedBox(width: AppSpacing.sm),
               Text(
                 'Kỹ năng bé sẽ phát triển',

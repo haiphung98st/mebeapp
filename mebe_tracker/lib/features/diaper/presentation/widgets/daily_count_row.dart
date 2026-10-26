@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/icons/mebe_icons.dart';
 import '../../../../shared/models/diaper_entry.dart';
 import '../../../../shared/providers/diaper_provider.dart';
 import '../../../../shared/providers/home_provider.dart';
@@ -39,9 +40,16 @@ class DailyCountRow extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '💧 $wetCount lần ướt · 💩 $dirtyCount lần bẩn · Tổng: $total lần',
-            style: AppTextStyles.bodyLg,
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 6,
+            runSpacing: 4,
+            children: [
+              const MeBeIcon(type: MeBeIconType.diaperWet, size: 18),
+              Text('$wetCount lần ướt ·', style: AppTextStyles.bodyLg),
+              const MeBeIcon(type: MeBeIconType.diaperDirty, size: 18),
+              Text('$dirtyCount lần bẩn · Tổng: $total lần', style: AppTextStyles.bodyLg),
+            ],
           ),
           const SizedBox(height: AppSpacing.xs),
           Text(

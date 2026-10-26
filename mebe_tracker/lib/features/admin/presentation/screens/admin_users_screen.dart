@@ -5,6 +5,7 @@ import '../../../../core/utils/app_toast.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
 import '../../data/admin_provider.dart';
 import '../admin_shell.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../widgets/grant_bottom_sheet.dart';
 
 class AdminUsersScreen extends ConsumerStatefulWidget {
@@ -244,7 +245,7 @@ class _UserResultCard extends StatelessWidget {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: onGrant,
-                  icon: const Icon(Icons.star_outline, size: 18),
+                  icon: const MeBeGlyph(MeBeGlyphType.starOutline, size: 18),
                   label: const Text('Cấp Premium'),
                 ),
               ),
@@ -259,7 +260,7 @@ class _UserResultCard extends StatelessWidget {
                             height: 16,
                             child:
                                 CircularProgressIndicator(strokeWidth: 2, color: AdminColors.danger))
-                        : const Icon(Icons.remove_circle_outline, size: 18,
+                        : const MeBeGlyph(MeBeGlyphType.removeCircleOutline, size: 18,
                             color: AdminColors.danger),
                     label: const Text('Thu hồi', style: TextStyle(color: AdminColors.danger)),
                     style: OutlinedButton.styleFrom(

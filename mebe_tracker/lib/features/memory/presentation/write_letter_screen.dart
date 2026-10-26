@@ -8,6 +8,8 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../shared/models/future_letter.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../data/letter_provider.dart';
 
 class WriteLetterScreen extends ConsumerStatefulWidget {
@@ -106,16 +108,31 @@ class _WriteLetterScreenState extends ConsumerState<WriteLetterScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFFA67CD8),
         leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.white),
+          icon: const MeBeGlyph(MeBeGlyphType.close, color: Colors.white),
           onPressed: () => context.pop(),
         ),
-        title: Text(
-          _step == 0 ? 'Chọn thời điểm' : 'Viết thư 💌',
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
+        title: _step == 0
+            ? const Text(
+                'Chọn thời điểm',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w800,
+                ),
+              )
+            : const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  MeBeIcon(type: MeBeIconType.letter, size: 20),
+                  SizedBox(width: 8),
+                  Text(
+                    'Viết thư',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ],
+              ),
         actions: [
           if (_step == 1)
             TextButton(
@@ -230,8 +247,8 @@ class _StepOne extends StatelessWidget {
                         ),
                         const Spacer(),
                         if (selected)
-                          const Icon(
-                            Icons.check_circle_rounded,
+                          const MeBeGlyph(
+                            MeBeGlyphType.checkCircle,
                             color: AppColors.lavender,
                             size: 20,
                           ),
@@ -288,13 +305,20 @@ class _StepTwo extends StatelessWidget {
             color: AppColors.lilac,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Text(
-            '🔒 $unlockLabel',
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-              color: AppColors.lavender,
-            ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const MeBeGlyph(MeBeGlyphType.lockOutline, color: AppColors.lavender, size: 14),
+              const SizedBox(width: 4),
+              Text(
+                unlockLabel,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lavender,
+                ),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: AppSpacing.lg),

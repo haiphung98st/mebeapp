@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/admin_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../admin_utils.dart';
 
 class AdminAuditScreen extends ConsumerStatefulWidget {
@@ -66,7 +67,7 @@ class _AdminAuditScreenState extends ConsumerState<AdminAuditScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.history, size: 64, color: Color(0xFF9999BB)),
+                      const MeBeGlyph(MeBeGlyphType.history, size: 64, color: Color(0xFF9999BB)),
                       const SizedBox(height: 12),
                       Text('Không có nhật ký', style: theme.textTheme.bodySmall),
                     ],

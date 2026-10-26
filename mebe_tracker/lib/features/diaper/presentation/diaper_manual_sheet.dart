@@ -11,6 +11,8 @@ import '../../../core/widgets/sheet_handle.dart';
 import '../../../shared/models/diaper_entry.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../../../shared/providers/diaper_provider.dart';
 
 /// Manual create/edit form for a diaper-change entry. Pass [existing] to
@@ -68,14 +70,16 @@ class _DiaperManualSheetState extends ConsumerState<DiaperManualSheet> {
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
               child: Row(
                 children: [
+                  const MeBeIcon(type: MeBeIconType.diaper, size: 24),
+                  const SizedBox(width: 8),
                   Text(
-                    widget.existing == null ? '🌸 Ghi thay tã' : '🌸 Chỉnh sửa thay tã',
+                    widget.existing == null ? 'Ghi thay tã' : 'Chỉnh sửa thay tã',
                     style: AppTextStyles.headingLg,
                   ),
                   const Spacer(),
                   if (widget.existing != null)
                     IconButton(
-                      icon: const Icon(Icons.delete_outline, color: AppColors.error),
+                      icon: const MeBeGlyph(MeBeGlyphType.deleteOutline, color: AppColors.error),
                       onPressed: _confirmDelete,
                     ),
                 ],

@@ -15,6 +15,8 @@ import '../../../shared/models/sound_memory.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/subscription_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../data/voice_provider.dart';
 
 const _gradientSound = LinearGradient(
@@ -182,10 +184,10 @@ class _SoundscapeScreenState extends ConsumerState<SoundscapeScreen> {
               gradient: _gradientSound,
               earLeftColor: AppColors.mint,
               earRightColor: AppColors.mintLight,
-              title: 'Âm thanh kỷ niệm 🎵',
+              title: 'Âm thanh kỷ niệm',
               subtitle: '${memories.length} âm thanh',
               actions: IconButton(
-                icon: const Icon(Icons.close, color: Colors.white),
+                icon: const MeBeGlyph(MeBeGlyphType.close, color: Colors.white),
                 onPressed: () => context.pop(),
               ),
             ),
@@ -456,8 +458,8 @@ class _SoundCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    isPlaying ? Icons.stop_rounded : Icons.play_arrow_rounded,
+                  MeBeGlyph(
+                    isPlaying ? MeBeGlyphType.stop : MeBeGlyphType.playArrow,
                     color: Colors.white,
                     size: 18,
                   ),
@@ -496,7 +498,7 @@ class _PremiumGate extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Text('🎵', style: TextStyle(fontSize: 56)),
+          const MeBeIcon(type: MeBeIconType.soundscapeMusic, size: 56),
           const SizedBox(height: AppSpacing.md),
           const Text(
             'Âm thanh kỷ niệm',
@@ -518,7 +520,14 @@ class _PremiumGate extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.mint,
             ),
-            child: const Text('Nâng cấp Premium ✨'),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Nâng cấp Premium'),
+                SizedBox(width: 6),
+                MeBeIcon(type: MeBeIconType.premium, size: 18),
+              ],
+            ),
           ),
         ],
       ),

@@ -6,6 +6,7 @@ import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../shared/providers/baby_provider.dart';
 import '../../../../shared/providers/subscription_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../../../subscription/presentation/subscription_screen.dart';
 
 class BabySwitcher extends ConsumerWidget {
@@ -64,7 +65,7 @@ class BabySwitcher extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (isLocked) ...[
-                    Icon(Icons.lock_outline,
+                    MeBeGlyph(MeBeGlyphType.lockOutline,
                         size: 12,
                         color: AppColors.white.withValues(alpha: 0.85)),
                     const SizedBox(width: 4),

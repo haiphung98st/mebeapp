@@ -7,6 +7,8 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../data/wonder_weeks_data.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../data/wonder_weeks_provider.dart';
 
 class WonderWeeksScreen extends ConsumerWidget {
@@ -107,7 +109,7 @@ class _WonderWeeksHeader extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Text('🧠', style: TextStyle(fontSize: 32)),
+              const MeBeIcon(type: MeBeIconType.wonderWeeks, size: 32),
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Column(
@@ -140,7 +142,7 @@ class _WonderWeeksHeader extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.info_outline, color: AppColors.lilac, size: 16),
+                  const MeBeGlyph(MeBeGlyphType.infoOutline, color: AppColors.lilac, size: 16),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(
@@ -186,7 +188,7 @@ class _StormBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Text('⛈️', style: TextStyle(fontSize: 24)),
+          const MeBeIcon(type: MeBeIconType.wonderWeeksStormy, size: 34),
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
@@ -226,7 +228,7 @@ class _NextLeapBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Text('☀️', style: TextStyle(fontSize: 24)),
+          const MeBeIcon(type: MeBeIconType.wonderWeeksCalm, size: 34),
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
@@ -316,8 +318,8 @@ class _LeapCard extends StatelessWidget {
                             ),
                             child: Text(
                               state.status == LeapStatus.stormy
-                                  ? '⛈️ Bão'
-                                  : '☀️ Nắng',
+                                  ? 'Bão'
+                                  : 'Nắng',
                               style: AppTextStyles.label.copyWith(
                                 color: state.status == LeapStatus.stormy
                                     ? AppColors.warning
@@ -346,8 +348,8 @@ class _LeapCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(
-                Icons.chevron_right,
+              MeBeGlyph(
+                MeBeGlyphType.chevronRight,
                 color: isDone ? AppColors.muted : const Color(0xFF7B5AAA),
               ),
             ],
@@ -367,27 +369,25 @@ class _LeapBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     Color bg;
     Color fg;
-    String icon;
+    MeBeIconType? statusIcon;
     switch (status) {
       case LeapStatus.stormy:
         bg = AppColors.warning.withOpacity(0.15);
         fg = AppColors.warning;
-        icon = '⛈️';
+        statusIcon = MeBeIconType.wonderWeeksStormy;
         break;
       case LeapStatus.sunny:
         bg = AppColors.mint.withOpacity(0.15);
         fg = AppColors.success;
-        icon = '☀️';
+        statusIcon = MeBeIconType.wonderWeeksCalm;
         break;
       case LeapStatus.done:
         bg = AppColors.mintLight;
         fg = AppColors.success;
-        icon = '✓';
         break;
       default:
         bg = AppColors.lilac;
         fg = const Color(0xFF5B3A8A);
-        icon = number.toString();
     }
 
     return Container(
@@ -399,7 +399,7 @@ class _LeapBadge extends StatelessWidget {
       ),
       child: Center(
         child: status == LeapStatus.done
-            ? Icon(Icons.check_circle_rounded, color: fg, size: 24)
+            ? MeBeGlyph(MeBeGlyphType.checkCircle, color: fg, size: 24)
             : status == LeapStatus.beforeFirst
                 ? Text(
                     number.toString(),
@@ -409,7 +409,7 @@ class _LeapBadge extends StatelessWidget {
                       fontSize: 16,
                     ),
                   )
-                : Text(icon, style: const TextStyle(fontSize: 20)),
+                : ClipOval(child: MeBeIcon(type: statusIcon!, size: 48)),
       ),
     );
   }

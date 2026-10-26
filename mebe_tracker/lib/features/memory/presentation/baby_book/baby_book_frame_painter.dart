@@ -74,7 +74,7 @@ class BabyBookPagePainter extends CustomPainter {
       miniX += 270;
     }
 
-    _drawText(canvas, 'MeBé Tracker 🌸', Offset(textX, height - 60), fontSize: 22, color: const Color(0xFFF472A0).withValues(alpha: 0.5), align: TextAlign.left);
+    _drawText(canvas, 'MeBé Tracker', Offset(textX, height - 60), fontSize: 22, color: const Color(0xFFF472A0).withValues(alpha: 0.5), align: TextAlign.left);
   }
 
   void _paintMoonlightDark(Canvas canvas) {
@@ -108,7 +108,7 @@ class BabyBookPagePainter extends CustomPainter {
       _drawText(canvas, '"${data.tagline}"', Offset(textX, height - 260), fontSize: 34, fontWeight: FontWeight.w700, color: const Color(0xFFFDE68A), align: TextAlign.left);
     }
 
-    _drawText(canvas, 'MeBé Tracker 🌙', Offset(textX, height - 70), fontSize: 22, color: const Color(0xFFC9A8F5).withValues(alpha: 0.6), align: TextAlign.left);
+    _drawText(canvas, 'MeBé Tracker', Offset(textX, height - 70), fontSize: 22, color: const Color(0xFFC9A8F5).withValues(alpha: 0.6), align: TextAlign.left);
   }
 
   // ── Helpers ────────────────────────────────────────────────
@@ -210,7 +210,7 @@ class GrowthPosterPainter extends CustomPainter {
     if (data.quote != null) {
       _drawCenteredText(canvas, '"${data.quote}"', height - 260, fontSize: 58, fontWeight: FontWeight.w700, color: const Color(0xFFF472A0));
     }
-    _drawCenteredText(canvas, 'MeBé Tracker 🌸', height - 100, fontSize: 40, color: const Color(0xFFF472A0).withValues(alpha: 0.5));
+    _drawCenteredText(canvas, 'MeBé Tracker', height - 100, fontSize: 40, color: const Color(0xFFF472A0).withValues(alpha: 0.5));
   }
 
   void _paintStarryNight(Canvas canvas) {
@@ -238,7 +238,7 @@ class GrowthPosterPainter extends CustomPainter {
     if (data.quote != null) {
       _drawCenteredText(canvas, '"${data.quote}"', height - 260, fontSize: 58, fontWeight: FontWeight.w700, color: const Color(0xFFFDE68A));
     }
-    _drawCenteredText(canvas, 'MeBé Tracker 🌙', height - 100, fontSize: 40, color: const Color(0xFFC9A8F5).withValues(alpha: 0.5));
+    _drawCenteredText(canvas, 'MeBé Tracker', height - 100, fontSize: 40, color: const Color(0xFFC9A8F5).withValues(alpha: 0.5));
   }
 
   void _drawPhoto(Canvas canvas, Rect rect, {required Color borderColor, required double borderWidth, required double radius, bool isCircleFallback = false}) {

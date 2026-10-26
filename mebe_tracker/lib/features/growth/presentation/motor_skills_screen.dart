@@ -8,6 +8,7 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/widgets/bunny_header.dart';
 import '../data/motor_entry.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../data/motor_provider.dart';
 
 class MotorSkillsScreen extends ConsumerStatefulWidget {
@@ -71,7 +72,7 @@ class _MotorSkillsScreenState extends ConsumerState<MotorSkillsScreen> {
             title: 'Vận động',
             subtitle: 'Luyện tập cùng bé',
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              icon: const MeBeGlyph(MeBeGlyphType.arrowBack, color: Colors.white),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
@@ -224,8 +225,8 @@ class _TimerCard extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Icon(
-                running ? Icons.stop_rounded : Icons.play_arrow_rounded,
+              child: MeBeGlyph(
+                running ? MeBeGlyphType.stop : MeBeGlyphType.playArrow,
                 size: 40,
                 color: running ? AppColors.error : AppColors.success,
               ),

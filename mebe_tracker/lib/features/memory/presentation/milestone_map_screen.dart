@@ -7,6 +7,8 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/widgets/bunny_header.dart';
 import '../../../shared/providers/subscription_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../data/milestone_map_provider.dart';
 
 const _gradientMilestone = LinearGradient(
@@ -32,10 +34,10 @@ class MilestoneMapScreen extends ConsumerWidget {
               gradient: _gradientMilestone,
               earLeftColor: AppColors.petal,
               earRightColor: AppColors.lilac,
-              title: 'Bản đồ cột mốc 🗺️',
+              title: 'Bản đồ cột mốc',
               subtitle: isPremium ? 'Tất cả cột mốc' : '3 cột mốc miễn phí',
               actions: IconButton(
-                icon: const Icon(Icons.close, color: Colors.white),
+                icon: const MeBeGlyph(MeBeGlyphType.close, color: Colors.white),
                 onPressed: () => context.pop(),
               ),
             ),
@@ -64,7 +66,7 @@ class MilestoneMapScreen extends ConsumerWidget {
                       child: Center(
                         child: Column(
                           children: [
-                            Text('🗺️', style: TextStyle(fontSize: 56)),
+                            MeBeIcon(type: MeBeIconType.mapTrail, size: 56),
                             SizedBox(height: AppSpacing.md),
                             Text(
                               'Chưa có cột mốc nào',
@@ -183,8 +185,8 @@ class _TimelineWidget extends StatelessWidget {
                             onTap: () => Share.share(
                               '${item.emoji} ${item.titleVi}\n${item.shareText!}\n\nMeBé ✨',
                             ),
-                            child: const Icon(
-                              Icons.share_rounded,
+                            child: const MeBeGlyph(
+                              MeBeGlyphType.share,
                               size: 16,
                               color: AppColors.muted,
                             ),
@@ -228,7 +230,7 @@ class _UpgradeBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Text('🔒', style: TextStyle(fontSize: 22)),
+          const MeBeGlyph(MeBeGlyphType.lockOutline, color: AppColors.lavender, size: 22),
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Text(

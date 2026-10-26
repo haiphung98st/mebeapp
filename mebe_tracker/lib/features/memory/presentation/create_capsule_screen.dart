@@ -8,6 +8,8 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../shared/models/time_capsule.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../data/time_capsule_provider.dart';
 
 class CreateCapsuleScreen extends ConsumerStatefulWidget {
@@ -67,7 +69,7 @@ class _CreateCapsuleScreenState extends ConsumerState<CreateCapsuleScreen> {
     setState(() {
       _items.add(CapsuleItem(
         type: 'note',
-        titleVi: 'Ghi chú từ mẹ 💕',
+        titleVi: 'Ghi chú từ mẹ',
         contentVi: text,
         emoji: '📝',
       ));
@@ -109,7 +111,7 @@ class _CreateCapsuleScreenState extends ConsumerState<CreateCapsuleScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.blossom,
         leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.white),
+          icon: const MeBeGlyph(MeBeGlyphType.close, color: Colors.white),
           onPressed: () => context.pop(),
         ),
         title: Text(
@@ -162,7 +164,16 @@ class _CreateCapsuleScreenState extends ConsumerState<CreateCapsuleScreen> {
                               color: Colors.white,
                             ),
                           )
-                        : Text(_step == 3 ? 'Tạo hộp 🎁' : 'Tiếp theo →'),
+                        : (_step == 3
+                            ? const Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text('Tạo hộp'),
+                                  SizedBox(width: 6),
+                                  MeBeIcon(type: MeBeIconType.timeCapsule, size: 18),
+                                ],
+                              )
+                            : const Text('Tiếp theo →')),
                   ),
                 ],
               ),
@@ -224,7 +235,7 @@ class _Step0 extends StatelessWidget {
             autofocus: true,
             decoration: const InputDecoration(
               labelText: 'Tên hộp',
-              hintText: 'VD: Hộp tình yêu của mẹ 💕',
+              hintText: 'VD: Hộp tình yêu của mẹ',
             ),
           ),
         ],
@@ -292,8 +303,8 @@ class _Step1 extends StatelessWidget {
                   ),
                   const Spacer(),
                   if (selected)
-                    const Icon(
-                      Icons.check_circle_rounded,
+                    const MeBeGlyph(
+                      MeBeGlyphType.checkCircle,
                       color: AppColors.blossom,
                     ),
                 ],
@@ -376,8 +387,8 @@ class _Step2 extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(
-                      Icons.close,
+                    icon: const MeBeGlyph(
+                      MeBeGlyphType.close,
                       size: 18,
                       color: AppColors.muted,
                     ),
@@ -412,7 +423,7 @@ class _Step3 extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.lg),
       child: Column(
         children: [
-          const Text('🎁', style: TextStyle(fontSize: 56)),
+          const MeBeIcon(type: MeBeIconType.timeCapsule, size: 56),
           const SizedBox(height: AppSpacing.md),
           Text(
             title,

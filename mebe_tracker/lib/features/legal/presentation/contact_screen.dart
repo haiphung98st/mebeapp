@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../../../core/constants/app_text_styles.dart';
 
 class ContactScreen extends StatelessWidget {
@@ -97,7 +98,7 @@ class _ContactCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: AppColors.muted),
+              const MeBeGlyph(MeBeGlyphType.chevronRight, color: AppColors.muted),
             ],
           ),
         ),

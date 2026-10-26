@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_spacing.dart';
 import '../constants/app_text_styles.dart';
+import '../icons/mebe_icons.dart';
 
 /// Shown when a stream/future provider fails to load, with a retry action.
 class ErrorCard extends StatelessWidget {
@@ -22,7 +23,16 @@ class ErrorCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text('🐰 $message', style: AppTextStyles.bodyMd, textAlign: TextAlign.center),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const MeBeIcon(type: MeBeIconType.mascotBunny, size: 20),
+              const SizedBox(width: 6),
+              Flexible(
+                child: Text(message, style: AppTextStyles.bodyMd, textAlign: TextAlign.center),
+              ),
+            ],
+          ),
           const SizedBox(height: AppSpacing.sm),
           OutlinedButton(onPressed: onRetry, child: const Text('Thử lại')),
         ],

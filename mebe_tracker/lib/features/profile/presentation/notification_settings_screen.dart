@@ -6,6 +6,8 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/widgets/time_of_day_list_tile.dart';
 import '../../../shared/models/notification_config.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../../../shared/providers/notification_config_provider.dart';
 
 class NotificationSettingsScreen extends ConsumerStatefulWidget {
@@ -87,7 +89,7 @@ class _NotificationSettingsScreenState
     if (mounted) {
       setState(() => _dirty = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('🐰 Đã lưu cài đặt thông báo')),
+        const SnackBar(content: Text('Đã lưu cài đặt thông báo')),
       );
     }
   }
@@ -134,10 +136,10 @@ class _NotificationSettingsScreenState
 
   Widget _presetPanel() {
     final presets = [
-      (NotificationPreset.newborn, '🌙', 'Mới sinh', '2h · hút 3h'),
-      (NotificationPreset.months3to6, '🌤️', '3-6 tháng', '3h · hút 4h'),
-      (NotificationPreset.months6plus, '☀️', '6+ tháng', '4h · 2 lần hút'),
-      (NotificationPreset.custom, '✏️', 'Tự chỉnh', 'Tuỳ bạn'),
+      (NotificationPreset.newborn, MeBeIconType.sleep, 'Mới sinh', '2h · hút 3h'),
+      (NotificationPreset.months3to6, MeBeIconType.napTime, '3-6 tháng', '3h · hút 4h'),
+      (NotificationPreset.months6plus, MeBeIconType.wonderWeeksCalm, '6+ tháng', '4h · 2 lần hút'),
+      (NotificationPreset.custom, MeBeIconType.timer, 'Tự chỉnh', 'Tuỳ bạn'),
     ];
     return SizedBox(
       height: 90,
@@ -149,7 +151,7 @@ class _NotificationSettingsScreenState
         separatorBuilder: (_, __) =>
             const SizedBox(width: AppSpacing.md),
         itemBuilder: (ctx, i) {
-          final (preset, emoji, label, sub) = presets[i];
+          final (preset, presetIcon, label, sub) = presets[i];
           return GestureDetector(
             onTap: () => _applyPreset(preset),
             child: AnimatedContainer(
@@ -165,7 +167,9 @@ class _NotificationSettingsScreenState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('$emoji $label',
+                  MeBeIcon(type: presetIcon, size: 22),
+                  const SizedBox(height: 4),
+                  Text(label,
                       style: AppTextStyles.bodySm
                           .copyWith(fontWeight: FontWeight.w700)),
                   const SizedBox(height: 2),
@@ -183,14 +187,24 @@ class _NotificationSettingsScreenState
 
   // ── SECTION CARD ─────────────────────────────────────────
 
-  Widget _section(String title, List<Widget> children) {
+  Widget _section(String title, List<Widget> children, {Widget? icon}) {
     return Padding(
       padding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: AppTextStyles.label),
+          if (icon == null)
+            Text(title, style: AppTextStyles.label)
+          else
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                icon,
+                const SizedBox(width: AppSpacing.xs),
+                Text(title, style: AppTextStyles.label),
+              ],
+            ),
           const SizedBox(height: AppSpacing.sm),
           Material(
             color: AppColors.white,
@@ -358,7 +372,7 @@ class _NotificationSettingsScreenState
                     ]);
                   }
                 },
-                icon: const Icon(Icons.add, size: 18),
+                icon: const MeBeGlyph(MeBeGlyphType.add, size: 18),
                 label: const Text('+ Thêm giờ nhắc'),
                 style: TextButton.styleFrom(
                     foregroundColor: AppColors.blossom),
@@ -392,7 +406,7 @@ class _NotificationSettingsScreenState
   // ── SECTIONS ─────────────────────────────────────────────
 
   Widget _feedingSection() {
-    return _section('CỮ BÚ 🤱', [
+    return _section('CỮ BÚ', [
       _switchRow('Nhắc cữ bú', _draft.feedingEnabled,
           (v) => _set(_draft.copyWith(feedingEnabled: v))),
       AnimatedCrossFade(
@@ -455,11 +469,11 @@ class _NotificationSettingsScreenState
           ],
         ),
       ),
-    ]);
+    ], icon: const MeBeIcon(type: MeBeIconType.bottle, size: 18));
   }
 
   Widget _pumpSection() {
-    return _section('HÚT SỮA 🥛', [
+    return _section('HÚT SỮA', [
       _switchRow('Nhắc hút sữa', _draft.pumpEnabled,
           (v) => _set(_draft.copyWith(pumpEnabled: v))),
       AnimatedCrossFade(
@@ -547,11 +561,11 @@ class _NotificationSettingsScreenState
           ],
         ),
       ),
-    ]);
+    ], icon: const MeBeIcon(type: MeBeIconType.pump, size: 18));
   }
 
   Widget _sleepSection() {
-    return _section('GIẤC NGỦ 🌙', [
+    return _section('GIẤC NGỦ', [
       _switchRow(
         'Nhắc chuẩn bị ngủ',
         _draft.sleepWindowReminder,
@@ -578,11 +592,11 @@ class _NotificationSettingsScreenState
               _set(_draft.copyWith(sleepMaxNapMinutes: v.round())),
         ),
       ),
-    ]);
+    ], icon: const MeBeIcon(type: MeBeIconType.sleep, size: 18));
   }
 
   Widget _vaccineSection() {
-    return _section('TIÊM CHỦNG 💉', [
+    return _section('TIÊM CHỦNG', [
       _switchRow('Nhắc lịch tiêm chủng', _draft.vaccineEnabled,
           (v) => _set(_draft.copyWith(vaccineEnabled: v))),
       AnimatedCrossFade(
@@ -616,11 +630,11 @@ class _NotificationSettingsScreenState
           ],
         ),
       ),
-    ]);
+    ], icon: const MeBeIcon(type: MeBeIconType.vaccine, size: 18));
   }
 
   Widget _milkStashSection() {
-    return _section('KHO SỮA 🧊', [
+    return _section('KHO SỮA', [
       _switchRow('Cảnh báo sữa sắp hết hạn', _draft.milkStashEnabled,
           (v) => _set(_draft.copyWith(milkStashEnabled: v))),
       AnimatedCrossFade(
@@ -653,11 +667,11 @@ class _NotificationSettingsScreenState
           ],
         ),
       ),
-    ]);
+    ], icon: const MeBeIcon(type: MeBeIconType.milkStorage, size: 18));
   }
 
   Widget _quietHoursSection() {
-    return _section('GIỜ YÊN TĨNH 🔕', [
+    return _section('GIỜ YÊN TĨNH', [
       _switchRow(
         'Bật giờ yên tĩnh',
         _draft.quietHoursEnabled,
@@ -721,7 +735,7 @@ class _NotificationSettingsScreenState
 
   Widget _weeklyReportSection() {
     const days = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
-    return _section('BÁO CÁO TUẦN 📊', [
+    return _section('BÁO CÁO TUẦN', [
       _switchRow('Báo cáo tuần', _draft.weeklyReportEnabled,
           (v) => _set(_draft.copyWith(weeklyReportEnabled: v))),
       if (_draft.weeklyReportEnabled) ...[
@@ -753,7 +767,7 @@ class _NotificationSettingsScreenState
           ),
         ),
       ],
-    ]);
+    ], icon: const MeBeIcon(type: MeBeIconType.stats, size: 18));
   }
 
   Widget _timeChip(String label) {

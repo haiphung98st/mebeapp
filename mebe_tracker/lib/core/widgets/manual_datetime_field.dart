@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../constants/app_colors.dart';
 import '../constants/app_spacing.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../constants/app_text_styles.dart';
 
 /// Tappable field for manual-entry forms: shows a date+time value, opens a
@@ -41,7 +42,7 @@ class ManualDateTimeField extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Icon(Icons.calendar_today_outlined, size: 18, color: AppColors.blossom),
+            const MeBeGlyph(MeBeGlyphType.calendarToday, size: 18, color: AppColors.blossom),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
@@ -59,7 +60,7 @@ class ManualDateTimeField extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.edit_outlined, size: 16, color: AppColors.muted),
+            const MeBeGlyph(MeBeGlyphType.editOutlined, size: 16, color: AppColors.muted),
           ],
         ),
       ),

@@ -8,6 +8,7 @@ import '../../../../core/utils/date_utils.dart';
 import '../../../../core/utils/duration_utils.dart';
 import '../../../../shared/models/sleep_entry.dart';
 import '../../../../shared/providers/sleep_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../sleep_manual_sheet.dart';
 
 String _dateGroupLabel(DateTime date) {
@@ -82,7 +83,7 @@ class _SleepHistoryItem extends ConsumerWidget {
         ),
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-        child: const Icon(Icons.delete, color: AppColors.white),
+        child: const MeBeGlyph(MeBeGlyphType.delete, color: AppColors.white),
       ),
       confirmDismiss: (_) => _confirmDelete(context),
       onDismissed: (_) =>

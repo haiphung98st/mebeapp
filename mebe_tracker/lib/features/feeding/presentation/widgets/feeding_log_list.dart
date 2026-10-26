@@ -8,6 +8,7 @@ import '../../../../core/utils/date_utils.dart';
 import '../../../../shared/models/feeding_entry.dart';
 import '../../../../shared/providers/feeding_provider.dart';
 import '../bottle_manual_sheet.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../breastfeeding_manual_sheet.dart';
 
 String _titleFor(FeedingType type) {
@@ -66,7 +67,7 @@ class FeedingLogList extends ConsumerWidget {
                 ),
                 alignment: Alignment.centerRight,
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                child: const Icon(Icons.delete, color: AppColors.white),
+                child: const MeBeGlyph(MeBeGlyphType.delete, color: AppColors.white),
               ),
               confirmDismiss: (_) => _confirmDelete(context),
               onDismissed: (_) => _delete(ref, entry),

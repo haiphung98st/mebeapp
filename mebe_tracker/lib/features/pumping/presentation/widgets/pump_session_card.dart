@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/icons/mebe_glyphs.dart';
+import '../../../../core/icons/mebe_icons.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/duration_utils.dart';
@@ -33,7 +35,7 @@ class NewSessionButton extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          const Text('🐰', style: TextStyle(fontSize: 48)),
+          const MeBeIcon(type: MeBeIconType.mascotBunny, size: 48),
           const SizedBox(height: AppSpacing.md),
           Text('Bắt đầu phiên hút sữa', style: AppTextStyles.headingMd),
           const SizedBox(height: AppSpacing.lg),
@@ -117,7 +119,15 @@ class CurrentSessionCard extends ConsumerWidget {
             width: double.infinity,
             child: FilledButton(
               onPressed: total <= 0 ? null : () => _finishSession(context, ref, total),
-              child: Text('✓ Xong phiên này · ${total.toStringAsFixed(0)}ml'),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const MeBeGlyph(MeBeGlyphType.check, color: AppColors.white, size: 16),
+                  const SizedBox(width: 6),
+                  Text('Xong phiên này · ${total.toStringAsFixed(0)}ml'),
+                ],
+              ),
             ),
           ),
         ],
@@ -159,7 +169,7 @@ class _SideColumn extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _StepIcon(icon: Icons.remove, onTap: () => onAmountChanged(amountMl - 10)),
+            _StepIcon(icon: MeBeGlyphType.remove, onTap: () => onAmountChanged(amountMl - 10)),
             SizedBox(
               width: 56,
               child: Text(
@@ -168,7 +178,7 @@ class _SideColumn extends StatelessWidget {
                 style: AppTextStyles.headingSm,
               ),
             ),
-            _StepIcon(icon: Icons.add, onTap: () => onAmountChanged(amountMl + 10)),
+            _StepIcon(icon: MeBeGlyphType.add, onTap: () => onAmountChanged(amountMl + 10)),
           ],
         ),
         const SizedBox(height: AppSpacing.sm),
@@ -184,8 +194,8 @@ class _SideColumn extends StatelessWidget {
               gradient: AppColors.gradientPump,
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              isRunning ? Icons.pause : Icons.play_arrow,
+            child: MeBeGlyph(
+              isRunning ? MeBeGlyphType.pause : MeBeGlyphType.playArrow,
               color: AppColors.white,
             ),
           ),
@@ -198,7 +208,7 @@ class _SideColumn extends StatelessWidget {
 class _StepIcon extends StatelessWidget {
   const _StepIcon({required this.icon, required this.onTap});
 
-  final IconData icon;
+  final MeBeGlyphType icon;
   final VoidCallback onTap;
 
   @override
@@ -210,7 +220,7 @@ class _StepIcon extends StatelessWidget {
         width: 28,
         height: 28,
         decoration: const BoxDecoration(color: AppColors.lilac, shape: BoxShape.circle),
-        child: Icon(icon, size: 16, color: AppColors.mauve),
+        child: MeBeGlyph(icon, size: 16, color: AppColors.mauve),
       ),
     );
   }

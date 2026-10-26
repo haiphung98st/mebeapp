@@ -12,6 +12,8 @@ import '../../../core/widgets/sheet_handle.dart';
 import '../../../shared/models/feeding_entry.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../../../shared/providers/feeding_provider.dart';
 
 const _mlPerOz = 29.5735;
@@ -21,11 +23,22 @@ enum _MilkType { breast, formula, mixed }
 String _milkTypeLabel(_MilkType type) {
   switch (type) {
     case _MilkType.breast:
-      return '🤱 Sữa mẹ';
+      return 'Sữa mẹ';
     case _MilkType.formula:
-      return '🥛 Sữa CT';
+      return 'Sữa CT';
     case _MilkType.mixed:
-      return '🍼 Hỗn hợp';
+      return 'Hỗn hợp';
+  }
+}
+
+MeBeIconType _milkTypeIcon(_MilkType type) {
+  switch (type) {
+    case _MilkType.breast:
+      return MeBeIconType.breastfeed;
+    case _MilkType.formula:
+      return MeBeIconType.pump;
+    case _MilkType.mixed:
+      return MeBeIconType.bottle;
   }
 }
 
@@ -86,14 +99,16 @@ class _BottleManualSheetState extends ConsumerState<BottleManualSheet> {
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
               child: Row(
                 children: [
+                  const MeBeIcon(type: MeBeIconType.bottle, size: 24),
+                  const SizedBox(width: 8),
                   Text(
-                    widget.existing == null ? '🍼 Ghi cữ bú bình' : '🍼 Chỉnh sửa',
+                    widget.existing == null ? 'Ghi cữ bú bình' : 'Chỉnh sửa',
                     style: AppTextStyles.headingLg,
                   ),
                   const Spacer(),
                   if (widget.existing != null)
                     IconButton(
-                      icon: const Icon(Icons.delete_outline, color: AppColors.error),
+                      icon: const MeBeGlyph(MeBeGlyphType.deleteOutline, color: AppColors.error),
                       onPressed: _confirmDelete,
                     ),
                   SegmentedButton<bool>(
@@ -145,7 +160,14 @@ class _BottleManualSheetState extends ConsumerState<BottleManualSheet> {
                       spacing: 8,
                       children: _MilkType.values
                           .map((type) => ChoiceChip(
-                                label: Text(_milkTypeLabel(type)),
+                                label: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    MeBeIcon(type: _milkTypeIcon(type), size: 16),
+                                    const SizedBox(width: 4),
+                                    Text(_milkTypeLabel(type)),
+                                  ],
+                                ),
                                 selected: _milkType == type,
                                 onSelected: (_) => setState(() => _milkType = type),
                                 selectedColor: AppColors.blossom.withValues(alpha: 0.2),

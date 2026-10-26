@@ -9,6 +9,8 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/home_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../data/wrapped_stats.dart';
 
 // Provider that computes stats for a given year
@@ -130,7 +132,7 @@ class _WrappedScreenState extends ConsumerState<WrappedScreen> {
             top: MediaQuery.of(context).padding.top + 24,
             left: AppSpacing.md,
             child: IconButton(
-              icon: const Icon(Icons.close, color: Colors.white),
+              icon: const MeBeGlyph(MeBeGlyphType.close, color: Colors.white),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
@@ -205,9 +207,10 @@ class _BigNumber extends StatelessWidget {
 }
 
 class _StatRow extends StatelessWidget {
-  const _StatRow(this.label, this.value);
+  const _StatRow(this.label, this.value, {this.icon});
   final String label;
   final String value;
+  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -216,9 +219,15 @@ class _StatRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label,
-              style: const TextStyle(
-                  color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500)),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (icon != null) ...[icon!, const SizedBox(width: 4)],
+              Text(label,
+                  style: const TextStyle(
+                      color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500)),
+            ],
+          ),
           Text(value,
               style: const TextStyle(
                   color: Colors.white, fontSize: 15, fontWeight: FontWeight.w800)),
@@ -268,7 +277,7 @@ class _CoverPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('🐰', style: TextStyle(fontSize: 64)),
+          const MeBeIcon(type: MeBeIconType.mascotBunny, size: 64),
           const Spacer(),
           Text(
             '${stats.year}',
@@ -291,13 +300,21 @@ class _CoverPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text(
-            'Nhấn để xem hành trình\ncủa bạn trong một năm qua ✨',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.white.withOpacity(0.8),
-              height: 1.5,
-            ),
+          Row(
+            children: [
+              Flexible(
+                child: Text(
+                  'Nhấn để xem hành trình\ncủa bạn trong một năm qua',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.white.withOpacity(0.8),
+                    height: 1.5,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 4),
+              const MeBeIcon(type: MeBeIconType.premium, size: 14),
+            ],
           ),
           const Spacer(),
           Row(
@@ -335,7 +352,7 @@ class _FeedingPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('🍼', style: TextStyle(fontSize: 48)),
+          const MeBeIcon(type: MeBeIconType.bottle, size: 48),
           const SizedBox(height: AppSpacing.lg),
           Text(
             'CỮ BÚ',
@@ -446,7 +463,7 @@ class _SleepMoonRow extends StatelessWidget {
       runSpacing: 4,
       children: List.generate(
         moons.clamp(0, 20),
-        (_) => const Text('🌙', style: TextStyle(fontSize: 20)),
+        (_) => const MeBeIcon(type: MeBeIconType.sleep, size: 20),
       ),
     );
   }
@@ -469,7 +486,7 @@ class _DiaperPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('🌸', style: TextStyle(fontSize: 48)),
+          const MeBeIcon(type: MeBeIconType.diaper, size: 48),
           const SizedBox(height: AppSpacing.lg),
           Text(
             'THAY TÃ',
@@ -500,9 +517,17 @@ class _DiaperPage extends StatelessWidget {
             ),
             child: Column(
               children: [
-                _StatRow('Tã ướt 💧', '${stats.wetDiapers}'),
+                _StatRow(
+                  'Tã ướt',
+                  '${stats.wetDiapers}',
+                  icon: const MeBeIcon(type: MeBeIconType.diaperWet, size: 14),
+                ),
                 const Divider(color: Colors.white24, height: 20),
-                _StatRow('Tã bẩn 💩', '${stats.dirtyDiapers}'),
+                _StatRow(
+                  'Tã bẩn',
+                  '${stats.dirtyDiapers}',
+                  icon: const MeBeIcon(type: MeBeIconType.diaperDirty, size: 14),
+                ),
               ],
             ),
           ),
@@ -544,7 +569,7 @@ class _DiaperBar extends StatelessWidget {
                   height: 24,
                   color: Colors.blue.shade300,
                   alignment: Alignment.center,
-                  child: const Text('💧', style: TextStyle(fontSize: 12)),
+                  child: const MeBeIcon(type: MeBeIconType.diaperWet, size: 12),
                 ),
               ),
               Expanded(
@@ -553,7 +578,7 @@ class _DiaperBar extends StatelessWidget {
                   height: 24,
                   color: Colors.brown.shade300,
                   alignment: Alignment.center,
-                  child: const Text('💩', style: TextStyle(fontSize: 12)),
+                  child: const MeBeIcon(type: MeBeIconType.diaperDirty, size: 12),
                 ),
               ),
             ],
@@ -581,7 +606,7 @@ class _PumpPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('🥛', style: TextStyle(fontSize: 48)),
+          const MeBeIcon(type: MeBeIconType.pump, size: 48),
           const SizedBox(height: AppSpacing.lg),
           Text(
             'HÚT SỮA',
@@ -635,7 +660,7 @@ class _MilkBottles extends StatelessWidget {
       runSpacing: 4,
       children: List.generate(
         bottles,
-        (_) => const Text('🍼', style: TextStyle(fontSize: 22)),
+        (_) => const MeBeIcon(type: MeBeIconType.bottle, size: 22),
       ),
     );
   }
@@ -672,7 +697,7 @@ Cảm ơn vì đã không ngủ đủ giấc để yêu thương bé 💕
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('🏆', style: TextStyle(fontSize: 48)),
+          const MeBeIcon(type: MeBeIconType.trophy, size: 48),
           const SizedBox(height: AppSpacing.lg),
           Text(
             'TỔNG KẾT',
@@ -729,7 +754,7 @@ Cảm ơn vì đã không ngủ đủ giấc để yêu thương bé 💕
                   borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
                 ),
               ),
-              icon: const Icon(Icons.share_rounded),
+              icon: const MeBeGlyph(MeBeGlyphType.share),
               label: const Text(
                 'Chia sẻ năng năm',
                 style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),

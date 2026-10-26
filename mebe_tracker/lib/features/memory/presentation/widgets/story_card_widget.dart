@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../../../../shared/models/story_card.dart';
 
 class StoryCardWidget extends StatelessWidget {
@@ -178,9 +180,9 @@ class _CardTop extends StatelessWidget {
             top: 0,
             bottom: 0,
             child: Center(
-              child: Text(
-                '🐰',
-                style: TextStyle(fontSize: compact ? 24 : 36),
+              child: MeBeIcon(
+                type: MeBeIconType.mascotBunny,
+                size: compact ? 24 : 36,
               ),
             ),
           ),
@@ -230,7 +232,7 @@ class _CardFooter extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            'MeBé ✨',
+            'MeBé',
             style: TextStyle(
               fontSize: 9,
               fontWeight: FontWeight.w800,
@@ -238,10 +240,12 @@ class _CardFooter extends StatelessWidget {
               letterSpacing: 0.5,
             ),
           ),
+          const SizedBox(width: 3),
+          MeBeIcon(type: MeBeIconType.premium, size: 10, overrideColor: t.accent.withValues(alpha: 0.6)),
           const Spacer(),
           if (onShare != null && !compact)
             IconButton(
-              icon: Icon(Icons.share_rounded, size: 18, color: t.accent),
+              icon: MeBeGlyph(MeBeGlyphType.share, size: 18, color: t.accent),
               onPressed: onShare,
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(minWidth: 36, minHeight: 36),

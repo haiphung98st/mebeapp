@@ -10,6 +10,8 @@ import '../../../core/widgets/bunny_header.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/growth_provider.dart';
 import '../data/teeth_data.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../data/teeth_provider.dart';
 
 class TeethScreen extends ConsumerWidget {
@@ -37,7 +39,7 @@ class TeethScreen extends ConsumerWidget {
             title: 'Răng Sữa',
             subtitle: '$totalErupted / 20 răng đã mọc',
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              icon: const MeBeGlyph(MeBeGlyphType.arrowBack, color: Colors.white),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
@@ -121,7 +123,7 @@ class _ProgressCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Text('🦷', style: TextStyle(fontSize: 28)),
+              const MeBeIcon(type: MeBeIconType.teeth, size: 28),
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Column(
@@ -305,7 +307,7 @@ class _ToothCell extends StatelessWidget {
       ),
       child: Center(
         child: isErupted
-            ? const Icon(Icons.check, color: AppColors.success, size: 16)
+            ? const MeBeGlyph(MeBeGlyphType.check, color: AppColors.success, size: 16)
             : Text(
                 '${def.orderFromCenter}',
                 style: TextStyle(
@@ -403,16 +405,9 @@ class _EruptionTimeline extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: AppSpacing.sm),
             child: Row(
               children: [
-                Container(
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: AppColors.mintLight,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Center(
-                    child: Text('🦷', style: TextStyle(fontSize: 16)),
-                  ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: const MeBeIcon(type: MeBeIconType.teeth, size: 32),
                 ),
                 const SizedBox(width: AppSpacing.md),
                 Expanded(
@@ -503,7 +498,7 @@ class _ToothSheetState extends State<_ToothSheet> {
           const SizedBox(height: AppSpacing.lg),
           Row(
             children: [
-              const Text('🦷', style: TextStyle(fontSize: 28)),
+              const MeBeIcon(type: MeBeIconType.teeth, size: 28),
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Column(
@@ -542,7 +537,7 @@ class _ToothSheetState extends State<_ToothSheet> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.calendar_today, color: AppColors.blossom, size: 18),
+                    const MeBeGlyph(MeBeGlyphType.calendarToday, color: AppColors.blossom, size: 18),
                     const SizedBox(width: AppSpacing.sm),
                     Text(dateLabel, style: AppTextStyles.bodyMd),
                   ],
@@ -559,7 +554,7 @@ class _ToothSheetState extends State<_ToothSheet> {
                         setState(() => _saving = true);
                         await widget.onMarkErupted(_selectedDate);
                       },
-                icon: const Icon(Icons.check),
+                icon: const MeBeGlyph(MeBeGlyphType.check),
                 label: const Text('Đánh dấu đã mọc'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.success,
@@ -577,7 +572,7 @@ class _ToothSheetState extends State<_ToothSheet> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.check_circle, color: AppColors.success, size: 20),
+                  const MeBeGlyph(MeBeGlyphType.checkCircle, color: AppColors.success, size: 20),
                   const SizedBox(width: AppSpacing.sm),
                   Text(
                     'Đã mọc ngày $dateLabel',
@@ -594,7 +589,7 @@ class _ToothSheetState extends State<_ToothSheet> {
                   setState(() => _saving = true);
                   await widget.onUnmark();
                 },
-                icon: const Icon(Icons.close, color: AppColors.error),
+                icon: const MeBeGlyph(MeBeGlyphType.close, color: AppColors.error),
                 label: const Text('Xoá đánh dấu'),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.error,

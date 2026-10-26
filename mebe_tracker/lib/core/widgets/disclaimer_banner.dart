@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/app_colors.dart';
 import '../constants/app_spacing.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../constants/app_text_styles.dart';
 
 /// Amber medical-disclaimer strip. Pass [dismissible]: false to keep it
@@ -38,7 +39,7 @@ class _DisclaimerBannerState extends State<DisclaimerBanner> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.warning_amber_rounded, size: 18, color: AppColors.warning),
+          const MeBeGlyph(MeBeGlyphType.warningAmber, size: 18, color: AppColors.warning),
           const SizedBox(width: AppSpacing.xs),
           Expanded(
             child: Text(
@@ -50,7 +51,7 @@ class _DisclaimerBannerState extends State<DisclaimerBanner> {
             const SizedBox(width: AppSpacing.xs),
             GestureDetector(
               onTap: () => setState(() => _dismissed = true),
-              child: const Icon(Icons.close, size: 16, color: AppColors.warning),
+              child: const MeBeGlyph(MeBeGlyphType.close, size: 16, color: AppColors.warning),
             ),
           ],
         ],

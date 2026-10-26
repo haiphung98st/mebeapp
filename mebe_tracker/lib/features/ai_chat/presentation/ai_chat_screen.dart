@@ -9,6 +9,8 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../core/widgets/disclaimer_banner.dart';
 import '../../../shared/providers/subscription_provider.dart';
 import '../data/chat_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../domain/models/chat_models.dart';
 
 class AiChatScreen extends ConsumerStatefulWidget {
@@ -46,7 +48,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
         elevation: 0,
         title: Row(
           children: [
-            const Text('🐰', style: TextStyle(fontSize: 20)),
+            const MeBeIcon(type: MeBeIconType.mascotBunny, size: 20),
             const SizedBox(width: AppSpacing.xs),
             Text('Hỏi bé', style: AppTextStyles.headingMd),
           ],
@@ -54,7 +56,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
         actions: [
           if (isPremium)
             IconButton(
-              icon: const Icon(Icons.history_rounded, color: AppColors.blossom),
+              icon: const MeBeGlyph(MeBeGlyphType.history, color: AppColors.blossom),
               onPressed: () => context.push('/ai-chat/history'),
               tooltip: 'Lịch sử',
             ),
@@ -103,7 +105,7 @@ class AiChatPaywall extends StatelessWidget {
             ),
             child: Column(
               children: [
-                const Text('🐰', style: TextStyle(fontSize: 48)),
+                const MeBeIcon(type: MeBeIconType.mascotBunny, size: 48),
                 const SizedBox(height: AppSpacing.sm),
                 Text(
                   'Hỏi bé – Trợ lý AI của mẹ',
@@ -191,11 +193,7 @@ class _PreviewChatItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (!isUser) ...[
-            const CircleAvatar(
-              radius: 14,
-              backgroundColor: AppColors.blossom,
-              child: Text('🐰', style: TextStyle(fontSize: 14)),
-            ),
+            const ClipOval(child: MeBeIcon(type: MeBeIconType.mascotBunny, size: 28)),
             const SizedBox(width: AppSpacing.xs),
           ],
           Flexible(
@@ -234,10 +232,10 @@ class _FeatureList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const features = [
-      ('🤱', 'Tư vấn cho bú mẹ & sữa công thức'),
-      ('🌙', 'Gợi ý lịch ngủ theo tuổi bé'),
-      ('📊', 'Phân tích dữ liệu theo dõi của bé'),
-      ('💉', 'Hỗ trợ lịch tiêm chủng'),
+      (MeBeIconType.breastfeed, 'Tư vấn cho bú mẹ & sữa công thức'),
+      (MeBeIconType.sleep, 'Gợi ý lịch ngủ theo tuổi bé'),
+      (MeBeIconType.stats, 'Phân tích dữ liệu theo dõi của bé'),
+      (MeBeIconType.vaccine, 'Hỗ trợ lịch tiêm chủng'),
     ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,7 +246,7 @@ class _FeatureList extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
               child: Row(
                 children: [
-                  Text(f.$1, style: const TextStyle(fontSize: 20)),
+                  MeBeIcon(type: f.$1, size: 20),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(child: Text(f.$2, style: AppTextStyles.bodyMd)),
                 ],
@@ -427,11 +425,7 @@ class _AiBubble extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          const CircleAvatar(
-            radius: 14,
-            backgroundColor: AppColors.blossom,
-            child: Text('🐰', style: TextStyle(fontSize: 14)),
-          ),
+          ClipOval(child: MeBeIcon(type: MeBeIconType.mascotBunny, size: 28)),
           const SizedBox(width: AppSpacing.xs),
           Flexible(
             child: Container(
@@ -538,11 +532,7 @@ class _TypingIndicator extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
       child: Row(
         children: [
-          const CircleAvatar(
-            radius: 14,
-            backgroundColor: AppColors.blossom,
-            child: Text('🐰', style: TextStyle(fontSize: 14)),
-          ),
+          ClipOval(child: MeBeIcon(type: MeBeIconType.mascotBunny, size: 28)),
           const SizedBox(width: AppSpacing.xs),
           Container(
             padding: const EdgeInsets.all(AppSpacing.md),
@@ -651,7 +641,7 @@ class _ErrorBubble extends StatelessWidget {
               )
             else
               IconButton(
-                icon: const Icon(Icons.close, size: 18, color: AppColors.muted),
+                icon: const MeBeGlyph(MeBeGlyphType.close, size: 18, color: AppColors.muted),
                 onPressed: onDismiss,
               ),
           ],
@@ -671,17 +661,17 @@ class _EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const suggestions = [
-      '🤱 Bé bú bao nhiêu lần mỗi ngày?',
-      '🌙 Lịch ngủ cho bé 3 tháng?',
-      '💉 Bé cần tiêm vắc xin gì tiếp theo?',
-      '⚖️ Cân nặng bé như vậy có bình thường không?',
+      (MeBeIconType.breastfeed, 'Bé bú bao nhiêu lần mỗi ngày?'),
+      (MeBeIconType.sleep, 'Lịch ngủ cho bé 3 tháng?'),
+      (MeBeIconType.vaccine, 'Bé cần tiêm vắc xin gì tiếp theo?'),
+      (MeBeIconType.weightScale, 'Cân nặng bé như vậy có bình thường không?'),
     ];
     return SingleChildScrollView(
       padding: const EdgeInsets.all(AppSpacing.lg),
       child: Column(
         children: [
           const SizedBox(height: AppSpacing.xl),
-          const Text('🐰', style: TextStyle(fontSize: 64)),
+          const MeBeIcon(type: MeBeIconType.mascotBunny, size: 64),
           const SizedBox(height: AppSpacing.md),
           Text('Hỏi bé gì hôm nay?', style: AppTextStyles.displaySm),
           const SizedBox(height: AppSpacing.xs),
@@ -697,7 +687,7 @@ class _EmptyState extends StatelessWidget {
             alignment: WrapAlignment.center,
             children: suggestions
                 .map((s) => InkWell(
-                      onTap: () => onQuestion(s),
+                      onTap: () => onQuestion(s.$2),
                       borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -709,7 +699,14 @@ class _EmptyState extends StatelessWidget {
                           border: Border.all(color: AppColors.divider),
                           borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
                         ),
-                        child: Text(s, style: AppTextStyles.bodyMd),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            MeBeIcon(type: s.$1, size: 20),
+                            const SizedBox(width: 6),
+                            Text(s.$2, style: AppTextStyles.bodyMd),
+                          ],
+                        ),
                       ),
                     ))
                 .toList(),

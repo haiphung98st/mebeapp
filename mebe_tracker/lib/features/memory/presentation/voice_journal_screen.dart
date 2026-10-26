@@ -16,6 +16,8 @@ import '../../../shared/models/voice_entry.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/subscription_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../data/voice_provider.dart';
 
 const _gradientVoice = LinearGradient(
@@ -122,10 +124,10 @@ class _VoiceJournalScreenState extends ConsumerState<VoiceJournalScreen> {
               gradient: _gradientVoice,
               earLeftColor: AppColors.mint,
               earRightColor: AppColors.mintLight,
-              title: 'Nhật ký giọng nói 🎙️',
+              title: 'Nhật ký giọng nói',
               subtitle: '${entries.length} bản ghi',
               actions: IconButton(
-                icon: const Icon(Icons.close, color: Colors.white),
+                icon: const MeBeGlyph(MeBeGlyphType.close, color: Colors.white),
                 onPressed: () => context.pop(),
               ),
             ),
@@ -249,10 +251,7 @@ class _RecorderCard extends StatelessWidget {
               ),
             )
           else
-            const Text(
-              '🎙️',
-              style: TextStyle(fontSize: 48),
-            ),
+            const MeBeIcon(type: MeBeIconType.voiceJournal, size: 48),
           const SizedBox(height: AppSpacing.md),
           Text(
             isRecording ? 'Đang ghi âm...' : 'Ghi nhật ký giọng nói',
@@ -369,10 +368,10 @@ class _EntryTileState extends ConsumerState<_EntryTile> {
                   color: AppColors.mint.withValues(alpha: 0.15),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
+                child: MeBeGlyph(
                   _playing
-                      ? Icons.stop_rounded
-                      : Icons.play_arrow_rounded,
+                      ? MeBeGlyphType.stop
+                      : MeBeGlyphType.playArrow,
                   color: AppColors.mint,
                   size: 24,
                 ),
@@ -460,7 +459,7 @@ class _PremiumGate extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Text('🎙️', style: TextStyle(fontSize: 56)),
+          const MeBeIcon(type: MeBeIconType.voiceJournal, size: 56),
           const SizedBox(height: AppSpacing.md),
           const Text(
             'Nhật ký giọng nói',
@@ -482,7 +481,14 @@ class _PremiumGate extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.mint,
             ),
-            child: const Text('Nâng cấp Premium ✨'),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Nâng cấp Premium'),
+                SizedBox(width: 6),
+                MeBeIcon(type: MeBeIconType.premium, size: 18),
+              ],
+            ),
           ),
         ],
       ),

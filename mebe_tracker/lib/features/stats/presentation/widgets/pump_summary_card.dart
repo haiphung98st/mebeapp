@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/icons/mebe_icons.dart';
 import '../../../../shared/providers/stats_provider.dart';
 import '../../../pumping/presentation/widgets/pump_log_list.dart';
 import 'stat_metric.dart';
@@ -29,7 +30,13 @@ class PumpSummaryCard extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('🥛 Hút sữa', style: AppTextStyles.headingMd),
+          Row(
+            children: [
+              const MeBeIcon(type: MeBeIconType.pump, size: 20),
+              const SizedBox(width: 6),
+              Text('Hút sữa', style: AppTextStyles.headingMd),
+            ],
+          ),
           const SizedBox(height: AppSpacing.md),
           Row(
             children: [

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/icons/mebe_glyphs.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/error_handling.dart';
@@ -23,6 +24,7 @@ class BottlefeedingTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final todayFeedings = ref.watch(todayFeedingsProvider);
     final bottleFeedings = todayFeedings.where((e) => e.type == FeedingType.bottle).toList();
+    final totalMl = bottleFeedings.fold<double>(0, (sum, e) => sum + (e.amountMl ?? 0));
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(AppSpacing.lg),
@@ -31,7 +33,19 @@ class BottlefeedingTab extends ConsumerWidget {
         children: [
           const _AmountCard(),
           const SizedBox(height: AppSpacing.lg),
-          Text('Lịch sử hôm nay', style: AppTextStyles.headingMd),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Lịch sử hôm nay', style: AppTextStyles.headingMd),
+              Text(
+                'Tổng: ${totalMl.toStringAsFixed(0)} ml',
+                style: AppTextStyles.bodyMd.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.blossom,
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: AppSpacing.md),
           FeedingLogList(entries: bottleFeedings, emptyLabel: 'Chưa có cữ bú bình hôm nay'),
         ],
@@ -97,7 +111,7 @@ class _AmountCardState extends ConsumerState<_AmountCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _StepButton(icon: Icons.remove, onTap: () => _step(-10)),
+              _StepButton(icon: MeBeGlyphType.remove, onTap: () => _step(-10)),
               SizedBox(
                 width: 140,
                 child: Column(
@@ -107,7 +121,7 @@ class _AmountCardState extends ConsumerState<_AmountCard> {
                   ],
                 ),
               ),
-              _StepButton(icon: Icons.add, onTap: () => _step(10)),
+              _StepButton(icon: MeBeGlyphType.add, onTap: () => _step(10)),
             ],
           ),
           const SizedBox(height: AppSpacing.md),
@@ -217,7 +231,7 @@ class _AmountCardState extends ConsumerState<_AmountCard> {
 class _StepButton extends StatelessWidget {
   const _StepButton({required this.icon, required this.onTap});
 
-  final IconData icon;
+  final MeBeGlyphType icon;
   final VoidCallback onTap;
 
   @override
@@ -232,7 +246,7 @@ class _StepButton extends StatelessWidget {
           color: AppColors.powder,
           shape: BoxShape.circle,
         ),
-        child: Icon(icon, color: AppColors.blossom),
+        child: MeBeGlyph(icon, color: AppColors.blossom),
       ),
     );
   }

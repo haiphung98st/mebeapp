@@ -7,6 +7,7 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/models/milk_stash_entry.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../../../shared/providers/pump_provider.dart';
 
 String _locationLabel(StashLocation location) =>
@@ -35,7 +36,7 @@ class MilkStashDetailScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.lavender,
         onPressed: () => _showAddStashDialog(context, ref),
-        child: const Icon(Icons.add, color: AppColors.white),
+        child: const MeBeGlyph(MeBeGlyphType.add, color: AppColors.white),
       ),
       body: stash.isEmpty
           ? Center(child: Text('Chưa có túi sữa nào', style: AppTextStyles.bodyMd))
@@ -83,7 +84,7 @@ class _StashListItem extends ConsumerWidget {
         ),
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-        child: const Icon(Icons.delete, color: AppColors.white),
+        child: const MeBeGlyph(MeBeGlyphType.delete, color: AppColors.white),
       ),
       confirmDismiss: (_) => _confirmDelete(context),
       onDismissed: (_) =>

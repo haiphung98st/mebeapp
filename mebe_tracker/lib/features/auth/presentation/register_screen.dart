@@ -10,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../../../shared/providers/auth_provider.dart';
 
 /// Bump when Terms/Privacy content changes materially — existing users whose
@@ -129,7 +130,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   controller: _nameController,
                   decoration: const InputDecoration(
                     hintText: 'Tên của bạn',
-                    prefixIcon: Icon(Icons.person_outline),
+                    prefixIcon: MeBeGlyph(MeBeGlyphType.personOutline),
                   ),
                   validator: (value) =>
                       (value == null || value.trim().isEmpty) ? 'Vui lòng nhập tên' : null,
@@ -140,7 +141,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
                     hintText: 'Email',
-                    prefixIcon: Icon(Icons.email_outlined),
+                    prefixIcon: MeBeGlyph(MeBeGlyphType.emailOutlined),
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) return 'Vui lòng nhập email';
@@ -154,9 +155,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   obscureText: _obscurePassword,
                   decoration: InputDecoration(
                     hintText: 'Mật khẩu',
-                    prefixIcon: const Icon(Icons.lock_outline),
+                    prefixIcon: const MeBeGlyph(MeBeGlyphType.lockOutline),
                     suffixIcon: IconButton(
-                      icon: Icon(_obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+                      icon: MeBeGlyph(_obscurePassword ? MeBeGlyphType.visibilityOutlined : MeBeGlyphType.visibilityOffOutlined),
                       tooltip: _obscurePassword ? 'Hiện mật khẩu' : 'Ẩn mật khẩu',
                       onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                     ),
@@ -172,9 +173,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   obscureText: _obscureConfirm,
                   decoration: InputDecoration(
                     hintText: 'Xác nhận mật khẩu',
-                    prefixIcon: const Icon(Icons.lock_outline),
+                    prefixIcon: const MeBeGlyph(MeBeGlyphType.lockOutline),
                     suffixIcon: IconButton(
-                      icon: Icon(_obscureConfirm ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+                      icon: MeBeGlyph(_obscureConfirm ? MeBeGlyphType.visibilityOutlined : MeBeGlyphType.visibilityOffOutlined),
                       tooltip: _obscureConfirm ? 'Hiện mật khẩu' : 'Ẩn mật khẩu',
                       onPressed: () => setState(() => _obscureConfirm = !_obscureConfirm),
                     ),

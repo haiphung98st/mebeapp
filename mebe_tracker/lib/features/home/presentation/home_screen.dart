@@ -21,6 +21,7 @@ import 'widgets/daily_summary_card.dart';
 import 'widgets/feature_group.dart';
 import 'widgets/home_header.dart';
 import 'widgets/home_skeleton.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import 'widgets/recent_events_list.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -141,6 +142,7 @@ class HomeScreen extends ConsumerWidget {
                     // ── Sinh hoạt hàng ngày ─────────────────────────────
                     HomeFeatureGroup(
                       icon: '🤱',
+                      iconType: MeBeIconType.breastfeed,
                       iconBg: const Color(0xFFFFE8F3),
                       featureIconBg: const Color(0xFFFFF0F7),
                       name: 'Sinh hoạt hàng ngày',
@@ -207,55 +209,58 @@ class HomeScreen extends ConsumerWidget {
                     // ── Phát triển & Sức khoẻ ───────────────────────────
                     HomeFeatureGroup(
                       icon: '📈',
+                      iconType: MeBeIconType.growth,
                       iconBg: const Color(0xFFE4FBF4),
                       featureIconBg: const Color(0xFFEDFDF7),
                       name: 'Phát triển & Sức khoẻ',
                       description: 'Cân nặng · Vaccine · Thuốc',
                       features: [
-                        HomeFeature(icon: '⚖️', label: 'Cân nặng', onTap: () => context.go('/home/growth')),
-                        HomeFeature(icon: '💉', label: 'Tiêm chủng', onTap: () => context.go('/home/vaccine')),
-                        HomeFeature(icon: '🌡️', label: 'Sức khoẻ', onTap: () => context.push('/home/health')),
-                        HomeFeature(icon: '🦷', label: 'Mọc răng', onTap: () => context.push('/home/growth/teeth')),
-                        HomeFeature(icon: '🏃', label: 'Vận động', onTap: () => context.push('/home/growth/motor')),
-                        HomeFeature(icon: '🤰', label: 'Mang thai', onTap: () => context.push('/prenatal')),
+                        HomeFeature(icon: '⚖️', iconType: MeBeIconType.weightScale, label: 'Cân nặng', onTap: () => context.go('/home/growth')),
+                        HomeFeature(icon: '💉', iconType: MeBeIconType.vaccine, label: 'Tiêm chủng', onTap: () => context.go('/home/vaccine')),
+                        HomeFeature(icon: '🌡️', iconType: MeBeIconType.temperature, label: 'Sức khoẻ', onTap: () => context.push('/home/health')),
+                        HomeFeature(icon: '🦷', iconType: MeBeIconType.teeth, label: 'Mọc răng', onTap: () => context.push('/home/growth/teeth')),
+                        HomeFeature(icon: '🏃', iconType: MeBeIconType.motorSkill, label: 'Vận động', onTap: () => context.push('/home/growth/motor')),
+                        HomeFeature(icon: '🤰', iconType: MeBeIconType.pregnancy, label: 'Mang thai', onTap: () => context.push('/prenatal')),
                       ],
                     ),
 
                     // ── Kế hoạch & Lịch ──────────────────────────────────
                     HomeFeatureGroup(
                       icon: '📅',
+                      iconType: MeBeIconType.calendar,
                       iconBg: const Color(0xFFFFF3E0),
                       featureIconBg: const Color(0xFFFFFBF0),
                       name: 'Kế hoạch & Lịch',
                       description: 'EASY · Wonder Weeks · Thống kê',
                       features: [
-                        HomeFeature(icon: '📋', label: 'Lịch EASY', onTap: () => context.push('/easy')),
-                        HomeFeature(icon: '🌙', label: 'Wonder Weeks', onTap: () => context.push('/home/growth/wonder-weeks')),
-                        HomeFeature(icon: '📊', label: 'Thống kê', onTap: () => context.push('/home/stats')),
-                        HomeFeature(icon: '🏅', label: 'Thành tích', onTap: () => context.push('/achievements')),
-                        HomeFeature(icon: '😊', label: 'Cảm xúc', onTap: () => context.go('/home/diaper')),
-                        HomeFeature(icon: '👥', label: 'Cộng đồng', onTap: () => context.push('/community')),
-                        HomeFeature(icon: '🎉', label: 'Year Wrapped', onTap: () => context.push('/wrapped')),
+                        HomeFeature(icon: '📋', iconType: MeBeIconType.easySchedule, label: 'Lịch EASY', onTap: () => context.push('/easy')),
+                        HomeFeature(icon: '🌙', iconType: MeBeIconType.wonderWeeks, label: 'Wonder Weeks', onTap: () => context.push('/home/growth/wonder-weeks')),
+                        HomeFeature(icon: '📊', iconType: MeBeIconType.stats, label: 'Thống kê', onTap: () => context.push('/home/stats')),
+                        HomeFeature(icon: '🏅', iconType: MeBeIconType.trophy, label: 'Thành tích', onTap: () => context.push('/achievements')),
+                        HomeFeature(icon: '😊', iconType: MeBeIconType.babyHappy, label: 'Cảm xúc', onTap: () => context.go('/home/diaper')),
+                        HomeFeature(icon: '👥', iconType: MeBeIconType.community, label: 'Cộng đồng', onTap: () => context.push('/community')),
+                        HomeFeature(icon: '🎉', iconType: MeBeIconType.celebration, label: 'Year Wrapped', onTap: () => context.push('/wrapped')),
                       ],
                     ),
 
                     // ── Kỷ niệm (Premium) ────────────────────────────────
                     HomeFeatureGroup(
                       icon: '💝',
+                      iconType: MeBeIconType.memory,
                       iconBg: const Color(0xFFF0EAFF),
                       featureIconBg: const Color(0xFFF5F0FF),
                       name: 'Kỷ niệm',
                       description: 'Nhật ký · Thư · Hộp thời gian',
                       isPremium: true,
                       features: [
-                        HomeFeature(icon: '✨', label: 'Story Cards', isPremium: !isPremium, onTap: () => context.push('/memory/story-cards')),
-                        HomeFeature(icon: '💌', label: 'Thư tương lai', isPremium: !isPremium, onTap: () => context.push('/memory/letters')),
-                        HomeFeature(icon: '🎙️', label: 'Voice Journal', isPremium: !isPremium, onTap: () => context.push('/memory/voice-journal')),
-                        HomeFeature(icon: '⏳', label: 'Hộp thời gian', isPremium: !isPremium, onTap: () => context.push('/memory/time-capsule')),
-                        HomeFeature(icon: '📖', label: 'Baby Book', isPremium: !isPremium, onTap: () => context.push('/memory/baby-book')),
-                        HomeFeature(icon: '🌈', label: 'Mood Timeline', isPremium: !isPremium, onTap: () => context.push('/memory/mood-timeline')),
-                        HomeFeature(icon: '🗺️', label: 'Milestone Map', isPremium: !isPremium, onTap: () => context.push('/memory/milestone-map')),
-                        HomeFeature(icon: '🎵', label: 'Soundscape', isPremium: !isPremium, onTap: () => context.push('/memory/soundscape')),
+                        HomeFeature(icon: '✨', iconType: MeBeIconType.premium, label: 'Story Cards', isPremium: !isPremium, onTap: () => context.push('/memory/story-cards')),
+                        HomeFeature(icon: '💌', iconType: MeBeIconType.letter, label: 'Thư tương lai', isPremium: !isPremium, onTap: () => context.push('/memory/letters')),
+                        HomeFeature(icon: '🎙️', iconType: MeBeIconType.voiceJournal, label: 'Voice Journal', isPremium: !isPremium, onTap: () => context.push('/memory/voice-journal')),
+                        HomeFeature(icon: '⏳', iconType: MeBeIconType.timeCapsule, label: 'Hộp thời gian', isPremium: !isPremium, onTap: () => context.push('/memory/time-capsule')),
+                        HomeFeature(icon: '📖', iconType: MeBeIconType.journal, label: 'Baby Book', isPremium: !isPremium, onTap: () => context.push('/memory/baby-book')),
+                        HomeFeature(icon: '🌈', iconType: MeBeIconType.moodTimelineRainbow, label: 'Mood Timeline', isPremium: !isPremium, onTap: () => context.push('/memory/mood-timeline')),
+                        HomeFeature(icon: '🗺️', iconType: MeBeIconType.mapTrail, label: 'Milestone Map', isPremium: !isPremium, onTap: () => context.push('/memory/milestone-map')),
+                        HomeFeature(icon: '🎵', iconType: MeBeIconType.soundscapeMusic, label: 'Soundscape', isPremium: !isPremium, onTap: () => context.push('/memory/soundscape')),
                       ],
                     ),
 
@@ -276,15 +281,16 @@ class HomeScreen extends ConsumerWidget {
                     // ── Mẹ khoẻ ──────────────────────────────────────────
                     HomeFeatureGroup(
                       icon: '🌸',
+                      iconType: MeBeIconType.momCare,
                       iconBg: const Color(0xFFFFE8F3),
                       featureIconBg: const Color(0xFFFFF0F7),
                       name: 'Mẹ khoẻ',
                       description: 'Mood · Nước · Thuốc bổ',
                       features: [
-                        HomeFeature(icon: '😊', label: 'Tâm trạng mẹ', onTap: () => context.push('/home/mom-health')),
-                        HomeFeature(icon: '💧', label: 'Uống nước', onTap: () => context.push('/home/mom-health')),
-                        HomeFeature(icon: '💊', label: 'Thuốc bổ', onTap: () => context.push('/home/mom-health')),
-                        HomeFeature(icon: '😴', label: 'Giấc ngủ mẹ', onTap: () => context.push('/home/mom-health')),
+                        HomeFeature(icon: '😊', iconType: MeBeIconType.babyHappy, label: 'Tâm trạng mẹ', onTap: () => context.push('/home/mom-health')),
+                        HomeFeature(icon: '💧', iconType: MeBeIconType.diaperWet, label: 'Uống nước', onTap: () => context.push('/home/mom-health')),
+                        HomeFeature(icon: '💊', iconType: MeBeIconType.vitamin, label: 'Thuốc bổ', onTap: () => context.push('/home/mom-health')),
+                        HomeFeature(icon: '😴', iconType: MeBeIconType.sleep, label: 'Giấc ngủ mẹ', onTap: () => context.push('/home/mom-health')),
                       ],
                     ),
 
@@ -348,7 +354,7 @@ class _NightHomeView extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
               child: Row(
                 children: [
-                  const Text('🌙', style: TextStyle(fontSize: 18)),
+                  const MeBeGlyph(MeBeGlyphType.moonNight, color: Colors.white38, size: 18),
                   const SizedBox(width: 8),
                   const Text('Chế độ ban đêm',
                       style: TextStyle(color: Colors.white38, fontSize: 12)),
@@ -401,8 +407,7 @@ class _NightHomeView extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('🌙',
-                        style: TextStyle(fontSize: 24)),
+                    const MeBeGlyph(MeBeGlyphType.moonNight, color: Color(0xFFC9A8F5), size: 24),
                     const SizedBox(width: 12),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -429,14 +434,14 @@ class _NightHomeView extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
               child: Row(
                 children: [
-                  _NightButton('🤱', 'Ghi bú',
+                  _NightButton(MeBeGlyphType.nursingHeart, 'Ghi bú',
                       onTap: () => context.push('/home/feeding')),
                   const SizedBox(width: 12),
-                  _NightButton('🌸', 'Ghi tã',
+                  _NightButton(MeBeGlyphType.diaperSmall, 'Ghi tã',
                       onTap: () => context.push('/home/diaper')),
                   const SizedBox(width: 12),
                   _NightButton(
-                    '⏹',
+                    MeBeGlyphType.stop,
                     'Dừng ngủ',
                     onTap: () =>
                         ref.read(activeSleepProvider.notifier).reset(),
@@ -456,7 +461,7 @@ class _NightButton extends StatelessWidget {
   const _NightButton(this.icon, this.label,
       {required this.onTap, this.enabled = true});
 
-  final String icon;
+  final MeBeGlyphType icon;
   final String label;
   final VoidCallback onTap;
   final bool enabled;
@@ -481,10 +486,7 @@ class _NightButton extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Text(icon,
-                  style: TextStyle(
-                      fontSize: 28,
-                      color: enabled ? null : Colors.white12)),
+              MeBeGlyph(icon, size: 28, color: enabled ? Colors.white70 : Colors.white12),
               const SizedBox(height: 6),
               Text(label,
                   style: TextStyle(
@@ -602,9 +604,9 @@ class _WonderWeeksBanner extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(
-              isStormy ? '⛈️' : '🧠',
-              style: const TextStyle(fontSize: 22),
+            MeBeIcon(
+              type: isStormy ? MeBeIconType.wonderWeeksStormy : MeBeIconType.wonderWeeksCalm,
+              size: 34,
             ),
             const SizedBox(width: AppSpacing.md),
             Expanded(
@@ -623,7 +625,7 @@ class _WonderWeeksBanner extends StatelessWidget {
                   ),
                   Text(
                     isStormy
-                        ? 'Bé đang trong giai đoạn phát triển nhảy vọt 🌟'
+                        ? 'Bé đang trong giai đoạn phát triển nhảy vọt'
                         : nextLeap!.name,
                     style: TextStyle(
                       fontSize: 11,
@@ -633,7 +635,7 @@ class _WonderWeeksBanner extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: Color(0xFF7B5AAA), size: 18),
+            const MeBeGlyph(MeBeGlyphType.chevronRight, color: Color(0xFF7B5AAA), size: 18),
           ],
         ),
       ),

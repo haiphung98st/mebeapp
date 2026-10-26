@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/icons/mebe_icons.dart';
 import '../../../../core/utils/date_utils.dart';
 import '../../../../shared/providers/home_provider.dart';
 
@@ -42,16 +43,7 @@ class RecentEventsList extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: AppSpacing.md),
                 child: Row(
                   children: [
-                    Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: event.iconBackground,
-                        shape: BoxShape.circle,
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(event.icon, style: const TextStyle(fontSize: 16)),
-                    ),
+                    ClipOval(child: MeBeIcon(type: event.icon, size: 36)),
                     const SizedBox(width: AppSpacing.md),
                     Expanded(
                       child: Column(

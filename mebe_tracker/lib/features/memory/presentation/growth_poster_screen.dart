@@ -14,6 +14,8 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/providers/growth_provider.dart';
 import '../../../shared/providers/subscription_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import 'widgets/growth_poster_widget.dart';
 
 class GrowthPosterScreen extends ConsumerStatefulWidget {
@@ -76,7 +78,7 @@ class _GrowthPosterScreenState extends ConsumerState<GrowthPosterScreen> {
       if (bytes == null) return;
       await Share.shareXFiles(
         [XFile.fromData(bytes, mimeType: 'image/png', name: 'growth_poster.png')],
-        text: 'Hành trình phát triển của bé 💕 — MeBé ✨',
+        text: 'Hành trình phát triển của bé — MeBé ✨',
       );
     } catch (_) {
     } finally {
@@ -95,15 +97,22 @@ class _GrowthPosterScreenState extends ConsumerState<GrowthPosterScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.info,
         leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.white),
+          icon: const MeBeGlyph(MeBeGlyphType.close, color: Colors.white),
           onPressed: () => context.pop(),
         ),
-        title: const Text(
-          'Poster phát triển 📏',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w800,
-          ),
+        title: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            MeBeGlyph(MeBeGlyphType.rulerLength, color: Colors.white, size: 18),
+            SizedBox(width: 8),
+            Text(
+              'Poster phát triển',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ],
         ),
       ),
       body: !isPremium
@@ -184,7 +193,7 @@ class _GrowthPosterScreenState extends ConsumerState<GrowthPosterScreen> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.info,
                               ),
-                              icon: const Icon(Icons.share_rounded),
+                              icon: const MeBeGlyph(MeBeGlyphType.share),
                               label: const Text('Chia sẻ'),
                             ),
                           ),
@@ -211,7 +220,7 @@ class _PremiumGate extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('📏', style: TextStyle(fontSize: 56)),
+            const MeBeGlyph(MeBeGlyphType.rulerLength, color: AppColors.info, size: 56),
             const SizedBox(height: AppSpacing.md),
             const Text(
               'Poster phát triển',
@@ -230,7 +239,14 @@ class _PremiumGate extends StatelessWidget {
             const SizedBox(height: AppSpacing.xl),
             ElevatedButton(
               onPressed: onUpgrade,
-              child: const Text('Nâng cấp Premium ✨'),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Nâng cấp Premium'),
+                  SizedBox(width: 6),
+                  MeBeIcon(type: MeBeIconType.premium, size: 18),
+                ],
+              ),
             ),
           ],
         ),

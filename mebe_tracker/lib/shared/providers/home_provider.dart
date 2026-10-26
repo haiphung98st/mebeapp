@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/constants/app_colors.dart';
+import '../../core/icons/mebe_icons.dart';
 import '../../core/utils/date_utils.dart';
 import '../models/diaper_entry.dart';
 import '../models/feeding_entry.dart';
@@ -75,7 +76,7 @@ class RecentEvent {
   });
 
   final RecentEventType type;
-  final String icon;
+  final MeBeIconType icon;
   final Color iconBackground;
   final String title;
   final String subtitle;
@@ -116,7 +117,7 @@ final recentEventsProvider = Provider<List<RecentEvent>>((ref) {
     ...feedings.map(
       (e) => RecentEvent(
         type: RecentEventType.feeding,
-        icon: '🍼',
+        icon: MeBeIconType.bottle,
         iconBackground: AppColors.blush,
         title: _feedingTitle(e),
         subtitle: _feedingSubtitle(e),
@@ -126,7 +127,7 @@ final recentEventsProvider = Provider<List<RecentEvent>>((ref) {
     ...sleeps.map(
       (e) => RecentEvent(
         type: RecentEventType.sleep,
-        icon: '🌙',
+        icon: MeBeIconType.sleep,
         iconBackground: AppColors.lilac,
         title: 'Giấc ngủ',
         subtitle: e.type == SleepType.nap
@@ -138,7 +139,7 @@ final recentEventsProvider = Provider<List<RecentEvent>>((ref) {
     ...pumps.map(
       (e) => RecentEvent(
         type: RecentEventType.pump,
-        icon: '🥛',
+        icon: MeBeIconType.pump,
         iconBackground: AppColors.lilac,
         title: 'Hút sữa',
         subtitle: 'Tổng ${((e.leftAmountMl ?? 0) + (e.rightAmountMl ?? 0)).toStringAsFixed(0)} ml',

@@ -9,6 +9,8 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../data/chat_provider.dart';
 import '../data/chat_service.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../domain/models/chat_models.dart';
 
 class ChatHistoryScreen extends ConsumerWidget {
@@ -100,7 +102,7 @@ class _ConversationTile extends StatelessWidget {
           color: AppColors.error,
           borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
         ),
-        child: const Icon(Icons.delete_outline, color: AppColors.white),
+        child: const MeBeGlyph(MeBeGlyphType.deleteOutline, color: AppColors.white),
       ),
       onDismissed: (_) => onDelete(),
       child: InkWell(
@@ -121,11 +123,7 @@ class _ConversationTile extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const CircleAvatar(
-                radius: 22,
-                backgroundColor: AppColors.blush,
-                child: Text('🐰', style: TextStyle(fontSize: 20)),
-              ),
+              const ClipOval(child: MeBeIcon(type: MeBeIconType.mascotBunny, size: 44)),
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Column(

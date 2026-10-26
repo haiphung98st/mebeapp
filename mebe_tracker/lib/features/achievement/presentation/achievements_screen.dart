@@ -6,6 +6,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../data/achievement_data.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../data/achievement_provider.dart';
 
 class AchievementsScreen extends ConsumerWidget {
@@ -412,7 +413,7 @@ class _AchievementSheet extends StatelessWidget {
                     Navigator.pop(context);
                     onShare!();
                   },
-                  icon: const Icon(Icons.share),
+                  icon: const MeBeGlyph(MeBeGlyphType.share),
                   label: const Text('Chia sẻ thành tích'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.blossom,

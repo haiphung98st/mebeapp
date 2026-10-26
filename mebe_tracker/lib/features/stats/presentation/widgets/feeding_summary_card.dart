@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/icons/mebe_icons.dart';
 import '../../../../shared/providers/stats_provider.dart';
 import '../../../feeding/presentation/widgets/feeding_log_list.dart';
 import 'stat_metric.dart';
@@ -29,7 +30,13 @@ class FeedingSummaryCard extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('🍼 Cữ bú', style: AppTextStyles.headingMd),
+          Row(
+            children: [
+              const MeBeIcon(type: MeBeIconType.bottle, size: 20),
+              const SizedBox(width: 6),
+              Text('Cữ bú', style: AppTextStyles.headingMd),
+            ],
+          ),
           const SizedBox(height: AppSpacing.md),
           Row(
             children: [

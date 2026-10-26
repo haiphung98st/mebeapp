@@ -12,6 +12,7 @@ import 'widgets/daily_count_row.dart';
 import 'widgets/diaper_color_guide.dart';
 import 'widgets/diaper_log_list.dart';
 import 'widgets/mood_section.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import 'widgets/quick_log_section.dart';
 
 class DiaperScreen extends ConsumerWidget {
@@ -30,7 +31,7 @@ class DiaperScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.powder,
       floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.edit_outlined),
+        icon: const MeBeGlyph(MeBeGlyphType.editOutlined),
         label: const Text('Nhập tay'),
         backgroundColor: AppColors.mint,
         onPressed: () => showModalBottomSheet(

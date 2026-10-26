@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../../../core/constants/app_text_styles.dart';
 
 /// Standalone medical-disclaimer reader, reachable from Hồ sơ > Hỗ trợ & Pháp lý
@@ -34,7 +35,7 @@ class DisclaimerScreen extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.warning_amber_rounded, color: AppColors.warning, size: 28),
+                  const MeBeGlyph(MeBeGlyphType.warningAmber, color: AppColors.warning, size: 28),
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: Text(

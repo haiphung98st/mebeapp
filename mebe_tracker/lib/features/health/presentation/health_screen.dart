@@ -9,6 +9,7 @@ import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../../../shared/services/firestore_service.dart';
 import '../data/health_models.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../data/health_provider.dart';
 
 class HealthScreen extends ConsumerStatefulWidget {
@@ -266,7 +267,7 @@ class _TempTile extends ConsumerWidget {
       ),
       subtitle: Text(fmt.format(reading.recordedAt)),
       trailing: IconButton(
-        icon: const Icon(Icons.delete_outline, color: AppColors.muted),
+        icon: const MeBeGlyph(MeBeGlyphType.deleteOutline, color: AppColors.muted),
         onPressed: () async {
           final user = ref.read(currentUserProvider);
           if (user == null) return;
@@ -454,7 +455,7 @@ class _MedTile extends ConsumerWidget {
           '${fmt.format(med.givenAt)}${med.doseMg != null ? ' · ${med.doseMg} ${med.doseUnit}' : ''}${hasNext ? '\nLiều tiếp: ${fmt.format(med.nextDoseAt!)}' : ''}',
         ),
         trailing: IconButton(
-          icon: const Icon(Icons.delete_outline, color: AppColors.muted),
+          icon: const MeBeGlyph(MeBeGlyphType.deleteOutline, color: AppColors.muted),
           onPressed: () async {
             final user = ref.read(currentUserProvider);
             if (user == null) return;
@@ -635,7 +636,7 @@ class _IllnessTile extends ConsumerWidget {
               child: const Text('Khỏi', style: TextStyle(color: AppColors.mint)),
             )
           : IconButton(
-              icon: const Icon(Icons.delete_outline, color: AppColors.muted),
+              icon: const MeBeGlyph(MeBeGlyphType.deleteOutline, color: AppColors.muted),
               onPressed: () async {
                 final user = ref.read(currentUserProvider);
                 if (user == null) return;

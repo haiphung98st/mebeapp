@@ -9,6 +9,7 @@ import '../../../core/widgets/bunny_header.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
 import '../data/community_message.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../data/community_provider.dart';
 
 class CommunityScreen extends ConsumerStatefulWidget {
@@ -83,7 +84,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                 ? 'Bé sinh tuần ${_weekLabel(baby.dateOfBirth)}'
                 : 'Nhóm theo tuần sinh',
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              icon: const MeBeGlyph(MeBeGlyphType.arrowBack, color: Colors.white),
               onPressed: () => Navigator.of(context).pop(),
             ),
             actions: IconButton(
@@ -116,11 +117,20 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
               padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
               color: AppColors.lavender.withOpacity(0.15),
-              child: Text(
-                '🔒 Nhóm ẩn danh · Chỉ mẹ cùng tuần sinh mới thấy',
-                style:
-                    AppTextStyles.bodySm.copyWith(color: AppColors.muted),
-                textAlign: TextAlign.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const MeBeGlyph(MeBeGlyphType.lockOutline, color: AppColors.muted, size: 14),
+                  const SizedBox(width: 4),
+                  Flexible(
+                    child: Text(
+                      'Nhóm ẩn danh · Chỉ mẹ cùng tuần sinh mới thấy',
+                      style:
+                          AppTextStyles.bodySm.copyWith(color: AppColors.muted),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
               ),
             ),
 

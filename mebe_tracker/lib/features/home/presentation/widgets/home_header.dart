@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/icons/mebe_glyphs.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../shared/providers/auth_provider.dart';
@@ -58,7 +59,7 @@ class HomeHeader extends ConsumerWidget {
                     shape: BoxShape.circle,
                   ),
                   alignment: Alignment.center,
-                  child: const Text('🌙', style: TextStyle(fontSize: 16)),
+                  child: const MeBeGlyph(MeBeGlyphType.moonNight, color: Colors.white, size: 16),
                 ),
               ),
             ],

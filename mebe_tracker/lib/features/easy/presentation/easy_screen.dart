@@ -10,6 +10,7 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/widgets/bunny_header.dart';
 import '../data/easy_data.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../data/easy_provider.dart';
 
 class EasyScreen extends ConsumerWidget {
@@ -25,7 +26,7 @@ class EasyScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.mint,
         onPressed: () => _showAddBlock(context, ref),
-        child: const Icon(Icons.add),
+        child: const MeBeGlyph(MeBeGlyphType.add),
       ),
       body: Column(
         children: [
@@ -40,11 +41,11 @@ class EasyScreen extends ConsumerWidget {
             title: 'EASY Schedule',
             subtitle: 'Eat · Activity · Sleep · You',
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              icon: const MeBeGlyph(MeBeGlyphType.arrowBack, color: Colors.white),
               onPressed: () => Navigator.of(context).pop(),
             ),
             actions: IconButton(
-              icon: const Icon(Icons.refresh, color: Colors.white),
+              icon: const MeBeGlyph(MeBeGlyphType.refresh, color: Colors.white),
               onPressed: () => ref.read(easyScheduleProvider.notifier).resetToDefault(),
               tooltip: 'Đặt lại mặc định',
             ),
@@ -324,7 +325,7 @@ class _BlockTile extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () => onRemove(block.id),
-            child: const Icon(Icons.close, size: 18, color: AppColors.muted),
+            child: const MeBeGlyph(MeBeGlyphType.close, size: 18, color: AppColors.muted),
           ),
         ],
       ),
@@ -500,7 +501,7 @@ class _NumberPicker extends StatelessWidget {
       children: [
         IconButton(
           onPressed: value > min ? () => onChanged(value - step) : null,
-          icon: const Icon(Icons.remove),
+          icon: const MeBeGlyph(MeBeGlyphType.remove),
           color: AppColors.blossom,
           iconSize: 20,
         ),
@@ -513,7 +514,7 @@ class _NumberPicker extends StatelessWidget {
         ),
         IconButton(
           onPressed: value < max ? () => onChanged(value + step) : null,
-          icon: const Icon(Icons.add),
+          icon: const MeBeGlyph(MeBeGlyphType.add),
           color: AppColors.blossom,
           iconSize: 20,
         ),

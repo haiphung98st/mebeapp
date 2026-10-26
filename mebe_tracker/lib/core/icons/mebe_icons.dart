@@ -15,9 +15,14 @@ enum MeBeIconType {
   // Actions
   quickLog, play, pause, edit, share, sync, add, delete,
   // Status
-  done, warning, babyHappy, babySleeping, babyCrying, milestone,
+  done, warning, babyHappy, babySleeping, babyCrying, babyCalm, babyFussy, milestone,
   // Home activity grid extras
   milkStorage, solidFood, scanMilk,
+  // Recurring feature icons (Phase 2)
+  mascotBunny, vaccine, teeth, pregnancy, letter, voiceJournal, soundscapeMusic,
+  mapTrail, moodTimelineRainbow, timeCapsule, diaperWet, diaperDirty, temperature,
+  motorSkill, community, wonderWeeksStormy, wonderWeeksCalm, easySchedule, napTime,
+  weightScale, trophy, celebration, momCare, vitamin,
 }
 
 enum _GradientFamily { blossom, lavender, mint, gold, blue, coral, green }
@@ -78,6 +83,32 @@ const _familyOf = <MeBeIconType, _GradientFamily>{
   MeBeIconType.milkStorage: _GradientFamily.blue,
   MeBeIconType.solidFood: _GradientFamily.gold,
   MeBeIconType.scanMilk: _GradientFamily.coral,
+  MeBeIconType.babyCalm: _GradientFamily.lavender,
+  MeBeIconType.babyFussy: _GradientFamily.coral,
+  MeBeIconType.mascotBunny: _GradientFamily.blossom,
+  MeBeIconType.vaccine: _GradientFamily.blue,
+  MeBeIconType.teeth: _GradientFamily.blue,
+  MeBeIconType.pregnancy: _GradientFamily.blossom,
+  MeBeIconType.letter: _GradientFamily.lavender,
+  MeBeIconType.voiceJournal: _GradientFamily.lavender,
+  MeBeIconType.soundscapeMusic: _GradientFamily.lavender,
+  MeBeIconType.mapTrail: _GradientFamily.lavender,
+  MeBeIconType.moodTimelineRainbow: _GradientFamily.gold,
+  MeBeIconType.timeCapsule: _GradientFamily.gold,
+  MeBeIconType.diaperWet: _GradientFamily.mint,
+  MeBeIconType.diaperDirty: _GradientFamily.mint,
+  MeBeIconType.temperature: _GradientFamily.coral,
+  MeBeIconType.motorSkill: _GradientFamily.green,
+  MeBeIconType.community: _GradientFamily.blue,
+  MeBeIconType.wonderWeeksStormy: _GradientFamily.lavender,
+  MeBeIconType.wonderWeeksCalm: _GradientFamily.lavender,
+  MeBeIconType.easySchedule: _GradientFamily.gold,
+  MeBeIconType.napTime: _GradientFamily.gold,
+  MeBeIconType.weightScale: _GradientFamily.green,
+  MeBeIconType.trophy: _GradientFamily.gold,
+  MeBeIconType.celebration: _GradientFamily.coral,
+  MeBeIconType.momCare: _GradientFamily.blossom,
+  MeBeIconType.vitamin: _GradientFamily.coral,
 };
 
 /// A single MeBé icon: a soft circular background plus a gradient-filled
@@ -169,6 +200,10 @@ class _MeBeIconPainter extends CustomPainter {
         _paintWarning(canvas);
       case MeBeIconType.babyCrying:
         _paintBabyCrying(canvas);
+      case MeBeIconType.babyCalm:
+        _paintBabyCalm(canvas);
+      case MeBeIconType.babyFussy:
+        _paintBabyFussy(canvas);
       case MeBeIconType.quickLog:
         _paintBolt(canvas);
       case MeBeIconType.play:
@@ -193,6 +228,54 @@ class _MeBeIconPainter extends CustomPainter {
         _paintSolidFood(canvas);
       case MeBeIconType.scanMilk:
         _paintScanMilk(canvas);
+      case MeBeIconType.mascotBunny:
+        _paintMascotBunny(canvas);
+      case MeBeIconType.vaccine:
+        _paintVaccine(canvas);
+      case MeBeIconType.teeth:
+        _paintTeeth(canvas);
+      case MeBeIconType.pregnancy:
+        _paintPregnancy(canvas);
+      case MeBeIconType.letter:
+        _paintLetter(canvas);
+      case MeBeIconType.voiceJournal:
+        _paintVoiceJournal(canvas);
+      case MeBeIconType.soundscapeMusic:
+        _paintSoundscapeMusic(canvas);
+      case MeBeIconType.mapTrail:
+        _paintMapTrail(canvas);
+      case MeBeIconType.moodTimelineRainbow:
+        _paintMoodTimelineRainbow(canvas);
+      case MeBeIconType.timeCapsule:
+        _paintTimeCapsule(canvas);
+      case MeBeIconType.diaperWet:
+        _paintDiaperWet(canvas);
+      case MeBeIconType.diaperDirty:
+        _paintDiaperDirty(canvas);
+      case MeBeIconType.temperature:
+        _paintTemperature(canvas);
+      case MeBeIconType.motorSkill:
+        _paintMotorSkill(canvas);
+      case MeBeIconType.community:
+        _paintCommunity(canvas);
+      case MeBeIconType.wonderWeeksStormy:
+        _paintWonderWeeksStormy(canvas);
+      case MeBeIconType.wonderWeeksCalm:
+        _paintWonderWeeksCalm(canvas);
+      case MeBeIconType.easySchedule:
+        _paintEasySchedule(canvas);
+      case MeBeIconType.napTime:
+        _paintNapTime(canvas);
+      case MeBeIconType.weightScale:
+        _paintWeightScale(canvas);
+      case MeBeIconType.trophy:
+        _paintTrophy(canvas);
+      case MeBeIconType.celebration:
+        _paintCelebration(canvas);
+      case MeBeIconType.momCare:
+        _paintMomCare(canvas);
+      case MeBeIconType.vitamin:
+        _paintVitamin(canvas);
     }
     canvas.restore();
   }
@@ -710,6 +793,489 @@ class _MeBeIconPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round);
+  }
+
+  // ── Baby calm (bunny, relaxed eyes) ────────────────────
+  void _paintBabyCalm(Canvas canvas) {
+    _bg(canvas, const Color(0xFFF0F0FF));
+    canvas.drawCircle(const Offset(24, 22), 12, _fill);
+    final earPaint = Paint()..color = _colors.first;
+    canvas.drawOval(Rect.fromCenter(center: const Offset(18, 12), width: 6, height: 10), earPaint);
+    canvas.drawOval(Rect.fromCenter(center: const Offset(30, 12), width: 6, height: 10), earPaint);
+    final eyePaint = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 1.6
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+    canvas.drawPath(Path()..moveTo(19, 22)..quadraticBezierTo(21, 24, 23, 22), eyePaint);
+    canvas.drawPath(Path()..moveTo(25, 22)..quadraticBezierTo(27, 24, 29, 22), eyePaint);
+    canvas.drawPath(
+      Path()
+        ..moveTo(20, 28)
+        ..quadraticBezierTo(24, 31, 28, 28),
+      eyePaint,
+    );
+  }
+
+  // ── Baby fussy (bunny, furrowed brow) ──────────────────
+  void _paintBabyFussy(Canvas canvas) {
+    _bg(canvas, const Color(0xFFFFF3EC));
+    canvas.drawCircle(const Offset(24, 22), 12, _fill);
+    final earPaint = Paint()..color = _colors.first;
+    canvas.drawOval(Rect.fromCenter(center: const Offset(18, 12), width: 6, height: 10), earPaint);
+    canvas.drawOval(Rect.fromCenter(center: const Offset(30, 12), width: 6, height: 10), earPaint);
+    canvas.drawCircle(const Offset(21, 22), 1.6, Paint()..color = Colors.white);
+    canvas.drawCircle(const Offset(27, 22), 1.6, Paint()..color = Colors.white);
+    final browPaint = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 1.6
+      ..strokeCap = StrokeCap.round;
+    canvas.drawLine(const Offset(18.5, 17.5), const Offset(21.5, 18.8), browPaint);
+    canvas.drawLine(const Offset(29.5, 17.5), const Offset(26.5, 18.8), browPaint);
+    canvas.drawPath(
+      Path()
+        ..moveTo(20, 29)
+        ..quadraticBezierTo(24, 26.5, 28, 29),
+      Paint()
+        ..color = Colors.white
+        ..strokeWidth = 1.8
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round,
+    );
+  }
+
+  // ── Mascot bunny (full body, sitting) ──────────────────
+  void _paintMascotBunny(Canvas canvas) {
+    _bg(canvas, const Color(0xFFFFF0F6));
+    final earPaint = Paint()..color = _colors.first;
+    canvas.drawOval(Rect.fromCenter(center: const Offset(18, 12), width: 6.5, height: 15), earPaint);
+    canvas.drawOval(Rect.fromCenter(center: const Offset(30, 12), width: 6.5, height: 15), earPaint);
+    canvas.drawOval(
+      Rect.fromCenter(center: const Offset(18, 13), width: 3, height: 10),
+      Paint()..color = Colors.white.withValues(alpha: 0.5),
+    );
+    canvas.drawOval(
+      Rect.fromCenter(center: const Offset(30, 13), width: 3, height: 10),
+      Paint()..color = Colors.white.withValues(alpha: 0.5),
+    );
+    final body = Path()
+      ..moveTo(24, 16)
+      ..cubicTo(33, 16, 37, 24, 35, 32)
+      ..cubicTo(33, 39, 15, 39, 13, 32)
+      ..cubicTo(11, 24, 15, 16, 24, 16)
+      ..close();
+    canvas.drawPath(body, _fill);
+    canvas.drawCircle(const Offset(20, 26), 1.6, Paint()..color = Colors.white);
+    canvas.drawCircle(const Offset(28, 26), 1.6, Paint()..color = Colors.white);
+    final nose = Path()
+      ..moveTo(22.5, 30)
+      ..lineTo(25.5, 30)
+      ..lineTo(24, 32)
+      ..close();
+    canvas.drawPath(nose, Paint()..color = Colors.white.withValues(alpha: 0.9));
+    canvas.drawOval(
+      Rect.fromCenter(center: const Offset(24, 36), width: 10, height: 5),
+      Paint()..color = Colors.white.withValues(alpha: 0.35),
+    );
+  }
+
+  // ── Vaccine (syringe) ────────────────────────────────────
+  void _paintVaccine(Canvas canvas) {
+    _bg(canvas, const Color(0xFFF0F5FF));
+    canvas.save();
+    canvas.translate(24, 24);
+    canvas.rotate(-math.pi / 4);
+    canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(-4, -14, 8, 18), const Radius.circular(2)), _fill);
+    canvas.drawRect(const Rect.fromLTWH(-4, -18, 8, 5), Paint()..color = _colors.first);
+    canvas.drawLine(const Offset(0, 4), const Offset(0, 13), Paint()..color = _colors.last..strokeWidth = 2.4..strokeCap = StrokeCap.round);
+    for (final dy in [-9.0, -4.5, 0.0]) {
+      canvas.drawLine(Offset(-4, dy), Offset(4, dy), Paint()..color = Colors.white.withValues(alpha: 0.6)..strokeWidth = 1.2);
+    }
+    canvas.restore();
+  }
+
+  // ── Teeth ──────────────────────────────────────────────
+  void _paintTeeth(Canvas canvas) {
+    _bg(canvas, const Color(0xFFF0F5FF));
+    for (final dx in [-6.0, 6.0]) {
+      final tooth = Path()
+        ..moveTo(24 + dx - 5, 14)
+        ..cubicTo(24 + dx - 6, 22, 24 + dx - 5, 32, 24 + dx - 2, 34)
+        ..cubicTo(24 + dx, 32, 24 + dx, 30, 24 + dx + 2, 34)
+        ..cubicTo(24 + dx + 5, 32, 24 + dx + 6, 22, 24 + dx + 5, 14)
+        ..cubicTo(24 + dx, 11, 24 + dx - 5, 11, 24 + dx - 5, 14)
+        ..close();
+      canvas.drawPath(tooth, _fill);
+    }
+  }
+
+  // ── Pregnancy (belly silhouette + heart) ───────────────
+  void _paintPregnancy(Canvas canvas) {
+    _bg(canvas, const Color(0xFFFFF0F6));
+    final body = Path()
+      ..moveTo(20, 10)
+      ..cubicTo(16, 10, 15, 14, 16, 17)
+      ..cubicTo(11, 19, 9, 26, 13, 32)
+      ..cubicTo(17, 39, 31, 39, 33, 30)
+      ..cubicTo(35, 22, 30, 16, 24, 15)
+      ..cubicTo(24, 12, 22, 10, 20, 10)
+      ..close();
+    canvas.drawPath(body, _fill);
+    _drawHeart(canvas, const Offset(24, 27), 4.5, Colors.white.withValues(alpha: 0.85));
+  }
+
+  // ── Letter (envelope) ──────────────────────────────────
+  void _paintLetter(Canvas canvas) {
+    _bg(canvas, const Color(0xFFF3F0FF));
+    final body = RRect.fromRectAndRadius(const Rect.fromLTWH(9, 14, 30, 21), const Radius.circular(4));
+    canvas.drawRRect(body, _fill);
+    final flap = Path()
+      ..moveTo(9, 16)
+      ..lineTo(24, 28)
+      ..lineTo(39, 16);
+    canvas.drawPath(
+      flap,
+      Paint()
+        ..color = Colors.white.withValues(alpha: 0.7)
+        ..strokeWidth = 2
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round
+        ..strokeJoin = StrokeJoin.round,
+    );
+  }
+
+  // ── Voice journal (microphone) ─────────────────────────
+  void _paintVoiceJournal(Canvas canvas) {
+    _bg(canvas, const Color(0xFFF3F0FF));
+    canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(19, 9, 10, 18), const Radius.circular(5)), _fill);
+    canvas.drawArc(
+      const Rect.fromLTWH(13, 18, 22, 18),
+      0,
+      math.pi,
+      false,
+      Paint()
+        ..color = _colors.last
+        ..strokeWidth = 2.4
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round,
+    );
+    canvas.drawLine(
+      const Offset(24, 32),
+      const Offset(24, 38),
+      Paint()
+        ..color = _colors.last
+        ..strokeWidth = 2.4
+        ..strokeCap = StrokeCap.round,
+    );
+    canvas.drawLine(
+      const Offset(18, 38),
+      const Offset(30, 38),
+      Paint()
+        ..color = _colors.last
+        ..strokeWidth = 2.4
+        ..strokeCap = StrokeCap.round,
+    );
+  }
+
+  // ── Soundscape (music notes) ───────────────────────────
+  void _paintSoundscapeMusic(Canvas canvas) {
+    _bg(canvas, const Color(0xFFF3F0FF));
+    for (final (cx, cy, stemTop) in [(18.0, 32.0, 12.0), (30.0, 28.0, 16.0)]) {
+      canvas.drawOval(Rect.fromCenter(center: Offset(cx, cy), width: 6.5, height: 5), _fill);
+      canvas.drawLine(Offset(cx + 3.1, cy), Offset(cx + 3.1, stemTop), Paint()..color = _colors.last..strokeWidth = 2);
+      canvas.drawLine(Offset(cx + 3.1, stemTop), Offset(cx + 7, stemTop + 2), Paint()..color = _colors.last..strokeWidth = 2);
+    }
+  }
+
+  // ── Milestone map (pin + trail) ────────────────────────
+  void _paintMapTrail(Canvas canvas) {
+    _bg(canvas, const Color(0xFFF3F0FF));
+    for (final c in [const Offset(13, 32), const Offset(23, 24), const Offset(31, 30)]) {
+      canvas.drawCircle(c, 2, Paint()..color = Colors.white.withValues(alpha: 0.7));
+    }
+    canvas.drawLine(const Offset(13, 32), const Offset(23, 24), Paint()..color = Colors.white.withValues(alpha: 0.5)..strokeWidth = 1.6);
+    canvas.drawLine(const Offset(23, 24), const Offset(31, 30), Paint()..color = Colors.white.withValues(alpha: 0.5)..strokeWidth = 1.6);
+    final pin = Path()
+      ..moveTo(31, 9)
+      ..cubicTo(26, 9, 23, 12.5, 23, 17)
+      ..cubicTo(23, 22, 31, 30, 31, 30)
+      ..cubicTo(31, 30, 39, 22, 39, 17)
+      ..cubicTo(39, 12.5, 36, 9, 31, 9)
+      ..close();
+    canvas.drawPath(pin, _fill);
+    canvas.drawCircle(const Offset(31, 17), 3.2, Paint()..color = Colors.white);
+  }
+
+  // ── Mood timeline (rainbow) ─────────────────────────────
+  void _paintMoodTimelineRainbow(Canvas canvas) {
+    _bg(canvas, const Color(0xFFFFF8F0));
+    for (final (r, c) in [
+      (15.0, _colors.first),
+      (11.0, Color.lerp(_colors.first, _colors.last, 0.5)!),
+      (7.0, _colors.last),
+    ]) {
+      canvas.drawArc(
+        Rect.fromCenter(center: const Offset(24, 32), width: r * 2, height: r * 2),
+        math.pi,
+        math.pi,
+        false,
+        Paint()
+          ..color = c
+          ..strokeWidth = 3.2
+          ..style = PaintingStyle.stroke
+          ..strokeCap = StrokeCap.round,
+      );
+    }
+  }
+
+  // ── Time capsule (gift box, open/closed via isActive) ──
+  void _paintTimeCapsule(Canvas canvas) {
+    _bg(canvas, const Color(0xFFFFF8F0));
+    final lidOpen = isActive;
+    canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(12, 22, 24, 16), const Radius.circular(3)), _fill);
+    if (lidOpen) {
+      canvas.save();
+      canvas.translate(12, 22);
+      canvas.rotate(-0.35);
+      canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(-1, -7, 26, 7), const Radius.circular(2)), Paint()..color = _colors.first);
+      canvas.restore();
+      _drawStar(canvas, const Offset(24, 12), 3, _colors.last);
+    } else {
+      canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(10, 18, 28, 7), const Radius.circular(2)), Paint()..color = _colors.first);
+    }
+    canvas.drawLine(const Offset(24, 22), const Offset(24, 38), Paint()..color = Colors.white.withValues(alpha: 0.6)..strokeWidth = 2);
+  }
+
+  // ── Diaper wet (droplet) ────────────────────────────────
+  void _paintDiaperWet(Canvas canvas) {
+    _bg(canvas, const Color(0xFFF0FFF8));
+    final drop = Path()
+      ..moveTo(24, 10)
+      ..cubicTo(24 - 9, 22, 24 - 9, 31, 24, 36)
+      ..cubicTo(24 + 9, 31, 24 + 9, 22, 24, 10)
+      ..close();
+    canvas.drawPath(drop, _fill);
+    canvas.drawOval(const Rect.fromLTWH(20, 24, 4, 6), Paint()..color = Colors.white.withValues(alpha: 0.4));
+  }
+
+  // ── Diaper dirty (swirl) ────────────────────────────────
+  void _paintDiaperDirty(Canvas canvas) {
+    _bg(canvas, const Color(0xFFF0FFF8));
+    canvas.drawCircle(const Offset(24, 25), 12, _fill);
+    canvas.drawArc(
+      const Rect.fromLTWH(17, 18, 14, 14),
+      -math.pi * 0.6,
+      math.pi * 1.5,
+      false,
+      Paint()
+        ..color = Colors.white.withValues(alpha: 0.8)
+        ..strokeWidth = 2
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round,
+    );
+  }
+
+  // ── Temperature (thermometer) ──────────────────────────
+  void _paintTemperature(Canvas canvas) {
+    _bg(canvas, const Color(0xFFFFF3EC));
+    canvas.drawCircle(const Offset(24, 32), 6, _fill);
+    canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(21, 10, 6, 24), const Radius.circular(3)), _fill);
+    canvas.drawLine(
+      const Offset(24, 15),
+      const Offset(24, 30),
+      Paint()
+        ..color = Colors.white
+        ..strokeWidth = 2.4
+        ..strokeCap = StrokeCap.round,
+    );
+    canvas.drawCircle(const Offset(24, 32), 2.4, Paint()..color = Colors.white);
+  }
+
+  // ── Motor skill (footprints) ───────────────────────────
+  void _paintMotorSkill(Canvas canvas) {
+    _bg(canvas, const Color(0xFFF0FFF6));
+    void foot(Offset o, double angle) {
+      canvas.save();
+      canvas.translate(o.dx, o.dy);
+      canvas.rotate(angle);
+      canvas.drawOval(const Rect.fromLTWH(-4, -3, 8, 11), _fill);
+      for (final dx in [-3.5, -1.2, 1.2, 3.5]) {
+        canvas.drawCircle(Offset(dx, -6.5), 1.4, Paint()..color = _colors.first);
+      }
+      canvas.restore();
+    }
+
+    foot(const Offset(18, 30), -0.15);
+    foot(const Offset(30, 18), 0.15);
+  }
+
+  // ── Community (people) ─────────────────────────────────
+  void _paintCommunity(Canvas canvas) {
+    _bg(canvas, const Color(0xFFF0F5FF));
+    for (final (cx, r) in [(15.0, 6.0), (33.0, 6.0)]) {
+      canvas.drawCircle(Offset(cx, 18), r * 0.6, Paint()..color = _colors.first);
+      final body = Path()
+        ..moveTo(cx - r, 36)
+        ..cubicTo(cx - r, 28, cx + r, 28, cx + r, 36)
+        ..close();
+      canvas.drawPath(body, Paint()..color = _colors.first);
+    }
+    canvas.drawCircle(const Offset(24, 20), 7.5, _fill);
+    final body = Path()
+      ..moveTo(14, 39)
+      ..cubicTo(14, 29, 34, 29, 34, 39)
+      ..close();
+    canvas.drawPath(body, _fill);
+  }
+
+  // ── Wonder weeks stormy (cloud + bolt) ─────────────────
+  void _paintWonderWeeksStormy(Canvas canvas) {
+    _bg(canvas, const Color(0xFFF0F0FF));
+    final cloud = Path()
+      ..addOval(const Rect.fromLTWH(11, 14, 15, 13))
+      ..addOval(const Rect.fromLTWH(20, 10, 16, 15))
+      ..addOval(const Rect.fromLTWH(28, 15, 12, 11));
+    canvas.drawPath(cloud, _fill);
+    final bolt = Path()
+      ..moveTo(25, 26)
+      ..lineTo(18, 38)
+      ..lineTo(23, 36)
+      ..lineTo(21, 44)
+      ..lineTo(30, 32)
+      ..lineTo(25, 34)
+      ..close();
+    canvas.drawPath(bolt, Paint()..color = _colors.last);
+  }
+
+  // ── Wonder weeks calm (sun) ─────────────────────────────
+  void _paintWonderWeeksCalm(Canvas canvas) {
+    _bg(canvas, const Color(0xFFFFF8F0));
+    canvas.drawCircle(const Offset(24, 24), 9, _fill);
+    for (var i = 0; i < 8; i++) {
+      final angle = i * math.pi / 4;
+      final inner = Offset(24 + 13 * math.cos(angle), 24 + 13 * math.sin(angle));
+      final outer = Offset(24 + 18 * math.cos(angle), 24 + 18 * math.sin(angle));
+      canvas.drawLine(inner, outer, Paint()..color = _colors.last..strokeWidth = 2.4..strokeCap = StrokeCap.round);
+    }
+  }
+
+  // ── EASY schedule (clipboard) ──────────────────────────
+  void _paintEasySchedule(Canvas canvas) {
+    _bg(canvas, const Color(0xFFFFF8F0));
+    canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(11, 11, 26, 28), const Radius.circular(4)), _fill);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(18, 9, 12, 5), const Radius.circular(2.5)),
+      Paint()..color = _colors.first,
+    );
+    for (final y in [20.0, 26.0, 32.0]) {
+      canvas.drawLine(Offset(16, y), Offset(32, y), Paint()..color = Colors.white.withValues(alpha: 0.6)..strokeWidth = 1.6);
+    }
+  }
+
+  // ── Nap time (sleepy sun) ───────────────────────────────
+  void _paintNapTime(Canvas canvas) {
+    _bg(canvas, const Color(0xFFFFF8F0));
+    canvas.drawCircle(const Offset(22, 25), 8, _fill);
+    for (var i = 0; i < 6; i++) {
+      final angle = i * math.pi / 3;
+      final inner = Offset(22 + 11 * math.cos(angle), 25 + 11 * math.sin(angle));
+      final outer = Offset(22 + 15 * math.cos(angle), 25 + 15 * math.sin(angle));
+      canvas.drawLine(inner, outer, Paint()..color = _colors.last..strokeWidth = 2..strokeCap = StrokeCap.round);
+    }
+    final textStyle = Paint()
+      ..color = _colors.last
+      ..strokeWidth = 1.6
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+    canvas.drawLine(const Offset(31, 12), const Offset(35, 12), textStyle);
+    canvas.drawLine(const Offset(35, 12), const Offset(31, 16), textStyle);
+    canvas.drawLine(const Offset(31, 16), const Offset(35, 16), textStyle);
+  }
+
+  // ── Weight (baby scale) ─────────────────────────────────
+  void _paintWeightScale(Canvas canvas) {
+    _bg(canvas, const Color(0xFFF0FFF6));
+    canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(9, 24, 30, 14), const Radius.circular(6)), _fill);
+    canvas.drawArc(
+      const Rect.fromLTWH(16, 15, 16, 16),
+      math.pi,
+      math.pi,
+      false,
+      Paint()
+        ..color = Colors.white
+        ..strokeWidth = 2.2
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round,
+    );
+    canvas.drawCircle(const Offset(24, 31), 4, Paint()..color = Colors.white.withValues(alpha: 0.85));
+  }
+
+  // ── Trophy ───────────────────────────────────────────────
+  void _paintTrophy(Canvas canvas) {
+    _bg(canvas, const Color(0xFFFFF8F0));
+    final cup = Path()
+      ..moveTo(17, 13)
+      ..lineTo(31, 13)
+      ..lineTo(30, 24)
+      ..cubicTo(30, 29, 26, 31, 24, 31)
+      ..cubicTo(22, 31, 18, 29, 18, 24)
+      ..close();
+    canvas.drawPath(cup, _fill);
+    canvas.drawArc(const Rect.fromLTWH(9, 13, 10, 12), math.pi / 2, math.pi, false, Paint()..color = _colors.first..strokeWidth = 2.2..style = PaintingStyle.stroke);
+    canvas.drawArc(const Rect.fromLTWH(29, 13, 10, 12), -math.pi / 2, math.pi, false, Paint()..color = _colors.first..strokeWidth = 2.2..style = PaintingStyle.stroke);
+    canvas.drawRect(const Rect.fromLTWH(22, 31, 4, 5), Paint()..color = _colors.last);
+    canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(17, 36, 14, 3), const Radius.circular(1.5)), Paint()..color = _colors.last);
+  }
+
+  // ── Celebration (confetti burst) ───────────────────────
+  void _paintCelebration(Canvas canvas) {
+    _bg(canvas, const Color(0xFFFFF3EC));
+    _drawStar(canvas, const Offset(24, 20), 6, _colors.last);
+    for (final (dx, dy, c) in [
+      (-11.0, -4.0, _colors.first),
+      (11.0, -6.0, _colors.first),
+      (-8.0, 12.0, _colors.last),
+      (9.0, 13.0, _colors.first),
+      (0.0, -14.0, _colors.last),
+    ]) {
+      canvas.drawCircle(Offset(24 + dx, 24 + dy), 2.2, Paint()..color = c);
+    }
+  }
+
+  // ── Mom care (heart in hands) ───────────────────────────
+  void _paintMomCare(Canvas canvas) {
+    _bg(canvas, const Color(0xFFFFF0F6));
+    _drawHeart(canvas, const Offset(24, 21), 8, _colors.last);
+    final leftHand = Path()
+      ..moveTo(9, 32)
+      ..cubicTo(9, 27, 15, 25, 20, 28)
+      ..cubicTo(16, 29, 13, 32, 13, 36);
+    final rightHand = Path()
+      ..moveTo(39, 32)
+      ..cubicTo(39, 27, 33, 25, 28, 28)
+      ..cubicTo(32, 29, 35, 32, 35, 36);
+    final handStroke = Paint()
+      ..color = _colors.first
+      ..strokeWidth = 3
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+    canvas.drawPath(leftHand, handStroke);
+    canvas.drawPath(rightHand, handStroke);
+  }
+
+  // ── Vitamin (pill capsule) ──────────────────────────────
+  void _paintVitamin(Canvas canvas) {
+    _bg(canvas, const Color(0xFFFFF3EC));
+    canvas.save();
+    canvas.translate(24, 24);
+    canvas.rotate(-math.pi / 4);
+    final capsule = RRect.fromRectAndRadius(const Rect.fromLTWH(-14, -6, 28, 12), const Radius.circular(6));
+    canvas.drawRRect(capsule, Paint()..color = _colors.first);
+    canvas.save();
+    canvas.clipRRect(capsule);
+    canvas.drawRect(const Rect.fromLTWH(0, -6, 14, 12), Paint()..color = _colors.last);
+    canvas.restore();
+    canvas.restore();
   }
 
   // ── Shared primitives ────────────────────────────────────

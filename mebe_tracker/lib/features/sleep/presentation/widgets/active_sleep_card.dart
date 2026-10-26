@@ -7,6 +7,8 @@ import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/date_utils.dart';
 import '../../../../core/utils/duration_utils.dart';
 import '../../../../core/utils/error_handling.dart';
+import '../../../../core/icons/mebe_glyphs.dart';
+import '../../../../core/icons/mebe_icons.dart';
 import '../../../../core/widgets/bunny_avatar.dart';
 import '../../../../shared/models/sleep_entry.dart';
 import '../../../../shared/providers/auth_provider.dart';
@@ -59,7 +61,15 @@ class ActiveSleepCard extends ConsumerWidget {
             child: FilledButton(
               style: FilledButton.styleFrom(backgroundColor: AppColors.nightMid),
               onPressed: () => _endSleep(context, ref),
-              child: const Text('⏹ Kết thúc giấc ngủ'),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  MeBeGlyph(MeBeGlyphType.stop, color: AppColors.white, size: 16),
+                  SizedBox(width: 6),
+                  Text('Kết thúc giấc ngủ'),
+                ],
+              ),
             ),
           ),
         ],
@@ -130,7 +140,15 @@ class StartSleepCard extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
                   foregroundColor: AppColors.white,
                 ),
-                child: const Text('🌙 Bắt đầu ghi giấc ngủ', style: TextStyle(fontWeight: FontWeight.w800)),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    MeBeIcon(type: MeBeIconType.sleep, size: 18),
+                    SizedBox(width: 6),
+                    Text('Bắt đầu ghi giấc ngủ', style: TextStyle(fontWeight: FontWeight.w800)),
+                  ],
+                ),
               ),
             ),
           ),

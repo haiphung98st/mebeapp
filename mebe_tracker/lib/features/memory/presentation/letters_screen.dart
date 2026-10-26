@@ -7,6 +7,8 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/widgets/bunny_header.dart';
 import '../../../shared/models/future_letter.dart';
 import '../../../shared/providers/subscription_provider.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
+import 'package:mebe_tracker/core/icons/mebe_icons.dart';
 import '../data/letter_provider.dart';
 
 const _gradientLetters = LinearGradient(
@@ -34,10 +36,10 @@ class LettersScreen extends ConsumerWidget {
               gradient: _gradientLetters,
               earLeftColor: AppColors.petal,
               earRightColor: AppColors.lilac,
-              title: 'Thư cho tương lai 💌',
+              title: 'Thư cho tương lai',
               subtitle: '${letters.length} lá thư',
               actions: IconButton(
-                icon: const Icon(Icons.close, color: Colors.white),
+                icon: const MeBeGlyph(MeBeGlyphType.close, color: Colors.white),
                 onPressed: () => context.pop(),
               ),
             ),
@@ -54,7 +56,10 @@ class LettersScreen extends ConsumerWidget {
             )
           else ...[
             if (unlocked.isNotEmpty) ...[
-              _SectionHeader(title: 'Đã mở khoá 🔓 (${unlocked.length})'),
+              _SectionHeader(
+                icon: const MeBeGlyph(MeBeGlyphType.unlockOutline, color: AppColors.body, size: 14),
+                title: 'Đã mở khoá (${unlocked.length})',
+              ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (_, i) => _LetterTile(letter: unlocked[i], isUnlocked: true),
@@ -63,7 +68,10 @@ class LettersScreen extends ConsumerWidget {
               ),
             ],
             if (locked.isNotEmpty) ...[
-              _SectionHeader(title: 'Đang khoá 🔒 (${locked.length})'),
+              _SectionHeader(
+                icon: const MeBeGlyph(MeBeGlyphType.lockOutline, color: AppColors.body, size: 14),
+                title: 'Đang khoá (${locked.length})',
+              ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (_, i) => _LetterTile(letter: locked[i], isUnlocked: false),
@@ -77,7 +85,7 @@ class LettersScreen extends ConsumerWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('💌', style: TextStyle(fontSize: 56)),
+                      MeBeIcon(type: MeBeIconType.letter, size: 56),
                       SizedBox(height: AppSpacing.md),
                       Text(
                         'Chưa có thư nào',
@@ -105,7 +113,7 @@ class LettersScreen extends ConsumerWidget {
               onPressed: () => context.push('/memory/letters/write'),
               backgroundColor: AppColors.lavender,
               foregroundColor: Colors.white,
-              icon: const Icon(Icons.edit_note_rounded),
+              icon: const MeBeGlyph(MeBeGlyphType.editOutlined),
               label: const Text('Viết thư'),
             )
           : null,
@@ -114,9 +122,10 @@ class LettersScreen extends ConsumerWidget {
 }
 
 class _SectionHeader extends StatelessWidget {
-  const _SectionHeader({required this.title});
+  const _SectionHeader({required this.title, this.icon});
 
   final String title;
+  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -128,13 +137,22 @@ class _SectionHeader extends StatelessWidget {
           AppSpacing.lg,
           AppSpacing.sm,
         ),
-        child: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w800,
-            color: AppColors.body,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) ...[
+              icon!,
+              const SizedBox(width: 6),
+            ],
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
+                color: AppColors.body,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -181,10 +199,13 @@ class _LetterTile extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
-                  child: Text(
-                    isUnlocked ? '💌' : '🔒',
-                    style: const TextStyle(fontSize: 22),
-                  ),
+                  child: isUnlocked
+                      ? const ClipOval(child: MeBeIcon(type: MeBeIconType.letter, size: 30))
+                      : const MeBeGlyph(
+                          MeBeGlyphType.lockOutline,
+                          color: AppColors.lavender,
+                          size: 22,
+                        ),
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
@@ -213,8 +234,8 @@ class _LetterTile extends ConsumerWidget {
                   ],
                 ),
               ),
-              const Icon(
-                Icons.chevron_right,
+              const MeBeGlyph(
+                MeBeGlyphType.chevronRight,
                 color: AppColors.muted,
               ),
             ],
@@ -245,7 +266,7 @@ class _PremiumGate extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Text('💌', style: TextStyle(fontSize: 56)),
+          const MeBeIcon(type: MeBeIconType.letter, size: 56),
           const SizedBox(height: AppSpacing.md),
           const Text(
             'Viết thư cho tương lai',
@@ -264,7 +285,14 @@ class _PremiumGate extends StatelessWidget {
           const SizedBox(height: AppSpacing.xl),
           ElevatedButton(
             onPressed: onUpgrade,
-            child: const Text('Nâng cấp Premium ✨'),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Nâng cấp Premium'),
+                SizedBox(width: 6),
+                MeBeIcon(type: MeBeIconType.premium, size: 18),
+              ],
+            ),
           ),
         ],
       ),

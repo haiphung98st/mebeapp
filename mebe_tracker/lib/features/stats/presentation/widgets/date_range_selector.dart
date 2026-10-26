@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../../../../shared/providers/stats_provider.dart';
 
 const _tabs = [
@@ -85,7 +86,7 @@ class DateRangeSelector extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.chevron_left, color: AppColors.blossom),
+                  icon: const MeBeGlyph(MeBeGlyphType.chevronLeft, color: AppColors.blossom),
                   onPressed: () => shiftStatsAnchor(ref, -1),
                 ),
                 GestureDetector(
@@ -96,7 +97,7 @@ class DateRangeSelector extends ConsumerWidget {
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.chevron_right),
+                  icon: const MeBeGlyph(MeBeGlyphType.chevronRight),
                   color: canForward ? AppColors.blossom : AppColors.muted,
                   onPressed: canForward ? () => shiftStatsAnchor(ref, 1) : null,
                 ),
