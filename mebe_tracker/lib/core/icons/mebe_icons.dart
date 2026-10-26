@@ -348,12 +348,49 @@ class _MeBeIconPainter extends CustomPainter {
       case MeBeIconType.vitamin:
         _paintVitamin(canvas);
     }
+    _highlight(canvas);
     canvas.restore();
   }
 
   Paint get _fill => Paint()..shader = ui.Gradient.linear(const Offset(24, 8), const Offset(24, 40), _colors);
 
-  void _bg(Canvas canvas, Color color) => canvas.drawCircle(const Offset(24, 24), 22, Paint()..color = color);
+  void _bg(Canvas canvas, Color color) {
+    final rrect = RRect.fromRectAndRadius(
+      const Rect.fromLTWH(2, 2, 44, 44),
+      const Radius.circular(13),
+    );
+    canvas.drawRRect(rrect, Paint()..color = color);
+    // Radial depth overlay — darker edges for 3D gem look
+    canvas.drawRRect(
+      rrect,
+      Paint()
+        ..shader = ui.Gradient.radial(
+          const Offset(18, 15),
+          28,
+          [Colors.white.withValues(alpha: 0.0), Colors.black.withValues(alpha: 0.09)],
+        ),
+    );
+    // Subtle tinted border
+    final family = _familyOf[type] ?? _GradientFamily.blossom;
+    canvas.drawRRect(
+      rrect,
+      Paint()
+        ..color = (_gradients[family]![1]).withValues(alpha: 0.22)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.0,
+    );
+  }
+
+  void _highlight(Canvas canvas) {
+    canvas.save();
+    canvas.translate(17, 13);
+    canvas.rotate(-25 * math.pi / 180);
+    canvas.drawOval(
+      Rect.fromCenter(center: Offset.zero, width: 15, height: 8.5),
+      Paint()..color = Colors.white.withValues(alpha: 0.28),
+    );
+    canvas.restore();
+  }
 
   // ── Home (bunny face) ──────────────────────────────────
   void _paintHome(Canvas canvas) {
