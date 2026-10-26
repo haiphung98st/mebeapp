@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 /// Small single-tone line glyphs MeBé draws itself instead of using
 /// Material icons, for compact UI contexts (buttons, list tiles, app
@@ -54,8 +55,60 @@ enum MeBeGlyphType {
   diaperSmall,
 }
 
-/// A single-tone line-drawn UI glyph, drawn with [CustomPainter] on a
-/// 24×24 viewport (scaled to [size]).
+// Solar Icons mapping — modern line glyphs replacing the hand-drawn look.
+// Outline style for most (thin, single-tone, matches this widget's
+// "compact UI" role); Bold style only where a type needs to read as the
+// filled/active counterpart of an outline sibling (e.g. check vs
+// checkCircle, star vs starOutline). headCircle, nursingHeart and
+// diaperSmall have no suitable off-the-shelf equivalent and keep the
+// original hand-painted illustration.
+const _solarGlyphFor = <MeBeGlyphType, IconData>{
+  MeBeGlyphType.close: SolarIconsOutline.closeCircle,
+  MeBeGlyphType.chevronRight: SolarIconsOutline.altArrowRight,
+  MeBeGlyphType.chevronLeft: SolarIconsOutline.altArrowLeft,
+  MeBeGlyphType.add: SolarIconsOutline.plus,
+  MeBeGlyphType.addCircleOutline: SolarIconsOutline.addCircle,
+  MeBeGlyphType.deleteOutline: SolarIconsOutline.trashBinMinimalistic,
+  MeBeGlyphType.delete: SolarIconsBold.trashBinTrash,
+  MeBeGlyphType.checkCircle: SolarIconsOutline.checkCircle,
+  MeBeGlyphType.check: SolarIconsBold.checkCircle,
+  MeBeGlyphType.lockOutline: SolarIconsOutline.lock,
+  MeBeGlyphType.editOutlined: SolarIconsOutline.pen2,
+  MeBeGlyphType.arrowBack: SolarIconsOutline.arrowLeft,
+  MeBeGlyphType.share: SolarIconsOutline.share,
+  MeBeGlyphType.stop: SolarIconsOutline.stopCircle,
+  MeBeGlyphType.starOutline: SolarIconsOutline.star,
+  MeBeGlyphType.star: SolarIconsBold.star,
+  MeBeGlyphType.remove: SolarIconsOutline.minus,
+  MeBeGlyphType.removeCircleOutline: SolarIconsOutline.minusCircle,
+  MeBeGlyphType.expandMore: SolarIconsOutline.altArrowDown,
+  MeBeGlyphType.expandLess: SolarIconsOutline.altArrowUp,
+  MeBeGlyphType.cameraAlt: SolarIconsOutline.camera,
+  MeBeGlyphType.calendarToday: SolarIconsOutline.calendar,
+  MeBeGlyphType.search: SolarIconsOutline.magnifier,
+  MeBeGlyphType.refresh: SolarIconsOutline.refresh,
+  MeBeGlyphType.personOutline: SolarIconsOutline.user,
+  MeBeGlyphType.pause: SolarIconsOutline.pause,
+  MeBeGlyphType.playArrow: SolarIconsOutline.play,
+  MeBeGlyphType.warningAmber: SolarIconsOutline.dangerTriangle,
+  MeBeGlyphType.infoOutline: SolarIconsOutline.infoCircle,
+  MeBeGlyphType.history: SolarIconsOutline.history,
+  MeBeGlyphType.emailOutlined: SolarIconsOutline.letter,
+  MeBeGlyphType.visibilityOutlined: SolarIconsOutline.eye,
+  MeBeGlyphType.visibilityOffOutlined: SolarIconsOutline.eyeClosed,
+  MeBeGlyphType.people: SolarIconsOutline.usersGroupRounded,
+  MeBeGlyphType.settingsGear: SolarIconsOutline.settings,
+  MeBeGlyphType.unlockOutline: SolarIconsOutline.lockUnlocked,
+  MeBeGlyphType.trendUp: SolarIconsOutline.graphUp,
+  MeBeGlyphType.trendDown: SolarIconsOutline.graphDown,
+  MeBeGlyphType.scaleWeight: SolarIconsOutline.scale,
+  MeBeGlyphType.rulerLength: SolarIconsOutline.ruler,
+  MeBeGlyphType.moonNight: SolarIconsOutline.moon,
+};
+
+/// A single-tone line-drawn UI glyph: either a Solar Icon (modern style) or
+/// — for the few baby-specific concepts with no suitable off-the-shelf
+/// equivalent — the original hand-painted [CustomPainter] illustration.
 class MeBeGlyph extends StatelessWidget {
   const MeBeGlyph(this.type, {super.key, this.size = 20, this.color, this.strokeWidth = 1.8});
 
@@ -66,13 +119,18 @@ class MeBeGlyph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final resolvedColor = color ?? IconTheme.of(context).color ?? Colors.black87;
+    final solarIcon = _solarGlyphFor[type];
+    if (solarIcon != null) {
+      return Icon(solarIcon, size: size, color: resolvedColor);
+    }
     return SizedBox(
       width: size,
       height: size,
       child: CustomPaint(
         painter: _MeBeGlyphPainter(
           type: type,
-          color: color ?? IconTheme.of(context).color ?? Colors.black87,
+          color: resolvedColor,
           strokeWidth: strokeWidth,
         ),
       ),

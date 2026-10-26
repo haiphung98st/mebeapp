@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 /// All icon types MeBé draws itself instead of using Material/Cupertino
 /// glyphs — a soft-gradient illustration style consistent with the rest of
@@ -111,8 +112,70 @@ const _familyOf = <MeBeIconType, _GradientFamily>{
   MeBeIconType.vitamin: _GradientFamily.coral,
 };
 
-/// A single MeBé icon: a soft circular background plus a gradient-filled
-/// illustration, drawn entirely with [CustomPainter] (no image assets).
+// Solar Icons (Bold) mapping — modern rounded glyphs replacing the hand-
+// painted look for types with a good semantic match. Types left unmapped
+// (baby facial expressions, diaper, breastfeed/pump, mascot, teeth,
+// pregnancy — no suitable off-the-shelf equivalent) keep the original
+// CustomPainter illustration below.
+const _solarIconFor = <MeBeIconType, IconData>{
+  MeBeIconType.home: SolarIconsBold.homeSmile,
+  MeBeIconType.baby: SolarIconsBold.smileCircle,
+  MeBeIconType.journal: SolarIconsBold.notebook,
+  MeBeIconType.premium: SolarIconsBold.crownStar,
+  MeBeIconType.stats: SolarIconsBold.pieChart,
+  MeBeIconType.profile: SolarIconsBold.userCircle,
+  MeBeIconType.bottle: SolarIconsBold.bottle,
+  MeBeIconType.sleep: SolarIconsBold.moonSleep,
+  MeBeIconType.growth: SolarIconsBold.chart_2,
+  MeBeIconType.calendar: SolarIconsBold.calendar,
+  MeBeIconType.timer: SolarIconsBold.stopwatch,
+  MeBeIconType.wonderWeeks: SolarIconsBold.cloudBolt,
+  MeBeIconType.memory: SolarIconsBold.galleryWide,
+  MeBeIconType.aiChat: SolarIconsBold.chatRoundDots,
+  MeBeIconType.photo: SolarIconsBold.gallery,
+  MeBeIconType.quickLog: SolarIconsBold.penNewSquare,
+  MeBeIconType.play: SolarIconsBold.play,
+  MeBeIconType.pause: SolarIconsBold.pause,
+  MeBeIconType.edit: SolarIconsBold.pen2,
+  MeBeIconType.share: SolarIconsBold.share,
+  MeBeIconType.sync: SolarIconsBold.refreshCircle,
+  MeBeIconType.add: SolarIconsBold.plus,
+  MeBeIconType.delete: SolarIconsBold.trashBinMinimalistic,
+  MeBeIconType.done: SolarIconsBold.checkCircle,
+  MeBeIconType.warning: SolarIconsBold.dangerTriangle,
+  MeBeIconType.milestone: SolarIconsBold.flag_2,
+  MeBeIconType.scanMilk: SolarIconsBold.scanner_2,
+  MeBeIconType.vaccine: SolarIconsBold.syringe,
+  MeBeIconType.letter: SolarIconsBold.letter,
+  MeBeIconType.voiceJournal: SolarIconsBold.microphone2,
+  MeBeIconType.soundscapeMusic: SolarIconsBold.musicNote2,
+  MeBeIconType.mapTrail: SolarIconsBold.route,
+  MeBeIconType.moodTimelineRainbow: SolarIconsBold.starRainbow,
+  MeBeIconType.timeCapsule: SolarIconsBold.box,
+  MeBeIconType.temperature: SolarIconsBold.thermometer,
+  MeBeIconType.motorSkill: SolarIconsBold.walkingRound,
+  MeBeIconType.community: SolarIconsBold.usersGroupRounded,
+  MeBeIconType.wonderWeeksStormy: SolarIconsBold.cloudStorm,
+  MeBeIconType.wonderWeeksCalm: SolarIconsBold.cloudSun2,
+  MeBeIconType.easySchedule: SolarIconsBold.calendarMark,
+  MeBeIconType.napTime: SolarIconsBold.bed,
+  MeBeIconType.weightScale: SolarIconsBold.scale,
+  MeBeIconType.trophy: SolarIconsBold.medalStar,
+  MeBeIconType.celebration: SolarIconsBold.confetti,
+  MeBeIconType.momCare: SolarIconsBold.handHeart,
+  MeBeIconType.vitamin: SolarIconsBold.pills,
+};
+
+List<Color> _resolveColors(MeBeIconType type, bool isActive, Color? overrideColor) {
+  if (overrideColor != null) return [overrideColor, overrideColor];
+  final family = _familyOf[type] ?? _GradientFamily.blossom;
+  return (isActive ? _gradientsActive : _gradients)[family]!;
+}
+
+/// A single MeBé icon: either a gradient-tinted Solar Icon (modern, rounded
+/// style) or — for the handful of baby-specific concepts with no suitable
+/// off-the-shelf equivalent — the original hand-painted [CustomPainter]
+/// illustration.
 class MeBeIcon extends StatelessWidget {
   const MeBeIcon({
     super.key,
@@ -129,6 +192,18 @@ class MeBeIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final solarIcon = _solarIconFor[type];
+    if (solarIcon != null) {
+      final colors = _resolveColors(type, isActive, overrideColor);
+      return ShaderMask(
+        shaderCallback: (bounds) => LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: colors,
+        ).createShader(bounds),
+        child: Icon(solarIcon, size: size, color: Colors.white),
+      );
+    }
     return SizedBox(
       width: size,
       height: size,
@@ -146,11 +221,7 @@ class _MeBeIconPainter extends CustomPainter {
   final bool isActive;
   final Color? overrideColor;
 
-  List<Color> get _colors {
-    if (overrideColor != null) return [overrideColor!, overrideColor!];
-    final family = _familyOf[type] ?? _GradientFamily.blossom;
-    return (isActive ? _gradientsActive : _gradients)[family]!;
-  }
+  List<Color> get _colors => _resolveColors(type, isActive, overrideColor);
 
   @override
   void paint(Canvas canvas, Size size) {
