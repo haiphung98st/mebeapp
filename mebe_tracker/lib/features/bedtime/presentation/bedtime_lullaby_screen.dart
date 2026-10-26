@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
@@ -49,7 +50,16 @@ class _BedtimeLullabyScreenState extends State<BedtimeLullabyScreen> {
 
     try {
       final player = _players[lullaby.title] ??= AudioPlayer();
-      await player.setUrl(lullaby.audioUrl);
+      await player.setAudioSource(
+        AudioSource.uri(
+          Uri.parse(lullaby.audioUrl),
+          tag: MediaItem(
+            id: lullaby.title,
+            album: 'MeBé — Nhạc ru',
+            title: lullaby.title,
+          ),
+        ),
+      );
       await player.play();
       if (!mounted) return;
       setState(() => _playingTitle = lullaby.title);

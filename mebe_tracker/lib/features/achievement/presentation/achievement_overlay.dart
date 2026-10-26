@@ -56,13 +56,20 @@ class _AchievementListenerState extends ConsumerState<AchievementListener> {
     });
   }
 
-  Future<void> _showToast(AchievementDef ach) async {
+  Future<void> _showToast(AchievementDef ach, [int retriesLeft = 5]) async {
     // This widget sits in MaterialApp.router's `builder`, above the
     // Navigator — so its own `context` has no Overlay ancestor. Go through
     // the router's navigator context instead, which does.
     final navContext = ref.read(goRouterProvider).routerDelegate.navigatorKey.currentContext;
-    if (navContext == null || !navContext.mounted) return;
-    final overlay = Overlay.of(navContext);
+    // On a cold start this can fire before the Navigator has mounted its
+    // first frame (no Overlay yet) — wait a frame and retry rather than
+    // assuming it's always ready.
+    final overlay = navContext != null && navContext.mounted ? Overlay.maybeOf(navContext) : null;
+    if (overlay == null) {
+      if (retriesLeft <= 0 || !mounted) return;
+      await Future.delayed(const Duration(milliseconds: 50));
+      return _showToast(ach, retriesLeft - 1);
+    }
     late OverlayEntry entry;
     entry = OverlayEntry(
       builder: (_) => _AchievementToast(

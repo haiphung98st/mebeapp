@@ -76,6 +76,7 @@ dependencies:
   printing: ^5.12.0
   gal: ^2.3.0
   solar_icons: ^0.2.0
+  just_audio_background: ^0.0.1-beta.17
 dev_dependencies:
   flutter_test:
     sdk: flutter

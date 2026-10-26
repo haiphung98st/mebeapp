@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
@@ -54,7 +55,16 @@ class _BedtimeSoundsScreenState extends State<BedtimeSoundsScreen> {
 
     try {
       final player = _players[sound.title] ??= AudioPlayer();
-      await player.setUrl(sound.audioUrl);
+      await player.setAudioSource(
+        AudioSource.uri(
+          Uri.parse(sound.audioUrl),
+          tag: MediaItem(
+            id: sound.title,
+            album: 'MeBé — Âm thanh thư giãn',
+            title: sound.title,
+          ),
+        ),
+      );
       await player.setLoopMode(LoopMode.one);
       await player.play();
       if (!mounted) return;
