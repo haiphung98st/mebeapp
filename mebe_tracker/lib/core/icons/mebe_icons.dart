@@ -113,26 +113,13 @@ const _familyOf = <MeBeIconType, _GradientFamily>{
 };
 
 // Solar Icons (Bold) mapping — modern rounded glyphs replacing the hand-
-// painted look for types with a good semantic match. Types left unmapped
-// (baby facial expressions, diaper, breastfeed/pump, mascot, teeth,
-// pregnancy — no suitable off-the-shelf equivalent) keep the original
-// CustomPainter illustration below.
+// painted look for types with no bespoke "gem" illustration (see
+// _gemStopsOf below). Types left unmapped (baby facial expressions,
+// pump, mascot, teeth, pregnancy — no suitable off-the-shelf equivalent)
+// keep the original CustomPainter illustration below.
 const _solarIconFor = <MeBeIconType, IconData>{
-  MeBeIconType.home: SolarIconsBold.homeSmile,
-  MeBeIconType.baby: SolarIconsBold.smileCircle,
-  MeBeIconType.journal: SolarIconsBold.notebook,
-  MeBeIconType.premium: SolarIconsBold.crownStar,
   MeBeIconType.stats: SolarIconsBold.pieChart,
-  MeBeIconType.profile: SolarIconsBold.userCircle,
-  MeBeIconType.bottle: SolarIconsBold.bottle,
-  MeBeIconType.sleep: SolarIconsBold.moonSleep,
-  MeBeIconType.growth: SolarIconsBold.chart_2,
-  MeBeIconType.calendar: SolarIconsBold.calendar,
-  MeBeIconType.timer: SolarIconsBold.stopwatch,
   MeBeIconType.wonderWeeks: SolarIconsBold.cloudBolt,
-  MeBeIconType.memory: SolarIconsBold.galleryWide,
-  MeBeIconType.aiChat: SolarIconsBold.chatRoundDots,
-  MeBeIconType.photo: SolarIconsBold.gallery,
   MeBeIconType.quickLog: SolarIconsBold.penNewSquare,
   MeBeIconType.play: SolarIconsBold.play,
   MeBeIconType.pause: SolarIconsBold.pause,
@@ -145,16 +132,12 @@ const _solarIconFor = <MeBeIconType, IconData>{
   MeBeIconType.warning: SolarIconsBold.dangerTriangle,
   MeBeIconType.milestone: SolarIconsBold.flag_2,
   MeBeIconType.scanMilk: SolarIconsBold.scanner_2,
-  MeBeIconType.vaccine: SolarIconsBold.syringe,
-  MeBeIconType.letter: SolarIconsBold.letter,
-  MeBeIconType.voiceJournal: SolarIconsBold.microphone2,
   MeBeIconType.soundscapeMusic: SolarIconsBold.musicNote2,
   MeBeIconType.mapTrail: SolarIconsBold.route,
   MeBeIconType.moodTimelineRainbow: SolarIconsBold.starRainbow,
   MeBeIconType.timeCapsule: SolarIconsBold.box,
   MeBeIconType.temperature: SolarIconsBold.thermometer,
   MeBeIconType.motorSkill: SolarIconsBold.walkingRound,
-  MeBeIconType.community: SolarIconsBold.usersGroupRounded,
   MeBeIconType.wonderWeeksStormy: SolarIconsBold.cloudStorm,
   MeBeIconType.wonderWeeksCalm: SolarIconsBold.cloudSun2,
   MeBeIconType.easySchedule: SolarIconsBold.calendarMark,
@@ -164,6 +147,109 @@ const _solarIconFor = <MeBeIconType, IconData>{
   MeBeIconType.celebration: SolarIconsBold.confetti,
   MeBeIconType.momCare: SolarIconsBold.handHeart,
   MeBeIconType.vitamin: SolarIconsBold.pills,
+};
+
+// ── "Candy Crush gem" background — squircle + 3(/4)-stop radial gradient +
+// tinted stroke + gloss highlight, matching the MeBé Icon Set design file
+// exactly (one entry per redesigned MeBeIconType).
+class _GemSpec {
+  const _GemSpec(this.colors, this.stops, this.stroke);
+  final List<Color> colors;
+  final List<double> stops;
+  final Color stroke;
+}
+
+const _gemSpecs = <MeBeIconType, _GemSpec>{
+  MeBeIconType.home: _GemSpec(
+    [Color(0xFFFF9EC8), Color(0xFFF472A0), Color(0xFFC23070)],
+    [0.0, 0.55, 1.0],
+    Color(0xFFE05590),
+  ),
+  MeBeIconType.bottle: _GemSpec(
+    [Color(0xFFFFD4A8), Color(0xFFFFB997), Color(0xFFD4762A)],
+    [0.0, 0.55, 1.0],
+    Color(0xFFE0893A),
+  ),
+  MeBeIconType.sleep: _GemSpec(
+    [Color(0xFFB8AAFF), Color(0xFF8B7FE8), Color(0xFF5044B8)],
+    [0.0, 0.55, 1.0],
+    Color(0xFF6055C8),
+  ),
+  MeBeIconType.diaper: _GemSpec(
+    [Color(0xFFA8EED8), Color(0xFF7DE8C8), Color(0xFF28A878)],
+    [0.0, 0.55, 1.0],
+    Color(0xFF38B888),
+  ),
+  MeBeIconType.growth: _GemSpec(
+    [Color(0xFFFFA8C8), Color(0xFFF472A0), Color(0xFFA83060)],
+    [0.0, 0.55, 1.0],
+    Color(0xFFD04080),
+  ),
+  MeBeIconType.vaccine: _GemSpec(
+    [Color(0xFFFFE0A8), Color(0xFFFFB997), Color(0xFFCC6820)],
+    [0.0, 0.55, 1.0],
+    Color(0xFFD07828),
+  ),
+  MeBeIconType.memory: _GemSpec(
+    [Color(0xFFE4C8FF), Color(0xFFC9A8F5), Color(0xFF8050CC)],
+    [0.0, 0.55, 1.0],
+    Color(0xFF9860DC),
+  ),
+  MeBeIconType.aiChat: _GemSpec(
+    [Color(0xFFFFB8D0), Color(0xFFF472A0), Color(0xFFC9A8F5), Color(0xFF8050CC)],
+    [0.0, 0.45, 0.75, 1.0],
+    Color(0xFFB060D8),
+  ),
+  MeBeIconType.community: _GemSpec(
+    [Color(0xFFFFD0A8), Color(0xFFFFB997), Color(0xFFC06020)],
+    [0.0, 0.55, 1.0],
+    Color(0xFFD07030),
+  ),
+  MeBeIconType.timer: _GemSpec(
+    [Color(0xFFC8F0E8), Color(0xFF7DE8C8), Color(0xFF1890A0)],
+    [0.0, 0.55, 1.0],
+    Color(0xFF28A0B0),
+  ),
+  MeBeIconType.breastfeed: _GemSpec(
+    [Color(0xFFFFD0E8), Color(0xFFF472A0), Color(0xFFA03060)],
+    [0.0, 0.55, 1.0],
+    Color(0xFFD04080),
+  ),
+  MeBeIconType.solidFood: _GemSpec(
+    [Color(0xFFFFE0B8), Color(0xFFFFB997), Color(0xFFC06020)],
+    [0.0, 0.55, 1.0],
+    Color(0xFFD07030),
+  ),
+  MeBeIconType.photo: _GemSpec(
+    [Color(0xFFFFD0E8), Color(0xFFF472A0), Color(0xFFC9A8F5), Color(0xFF7848C8)],
+    [0.0, 0.45, 0.75, 1.0],
+    Color(0xFFC060C8),
+  ),
+  MeBeIconType.calendar: _GemSpec(
+    [Color(0xFFD8C8FF), Color(0xFFC9A8F5), Color(0xFF5838A8)],
+    [0.0, 0.55, 1.0],
+    Color(0xFF6848B8),
+  ),
+  MeBeIconType.profile: _GemSpec(
+    [Color(0xFFFFD0E8), Color(0xFFF472A0), Color(0xFFA03068)],
+    [0.0, 0.55, 1.0],
+    Color(0xFFC04078),
+  ),
+  MeBeIconType.premium: _GemSpec(
+    [Color(0xFFFFF0A0), Color(0xFFF0C020), Color(0xFFA07008)],
+    [0.0, 0.50, 1.0],
+    Color(0xFFC09010),
+  ),
+  MeBeIconType.letter: _GemSpec(
+    [Color(0xFFE4D0FF), Color(0xFFC9A8F5), Color(0xFF6838B8)],
+    [0.0, 0.55, 1.0],
+    Color(0xFF7848C8),
+  ),
+  MeBeIconType.voiceJournal: _GemSpec(
+    [Color(0xFFB8F0E0), Color(0xFF7DE8C8), Color(0xFF1880A0)],
+    [0.0, 0.55, 1.0],
+    Color(0xFF28A0B8),
+  ),
 };
 
 List<Color> _resolveColors(MeBeIconType type, bool isActive, Color? overrideColor) {
@@ -241,6 +327,7 @@ class _MeBeIconPainter extends CustomPainter {
       case MeBeIconType.premium:
         _paintPremium(canvas);
       case MeBeIconType.breastfeed:
+        _paintBreastfeedGem(canvas);
       case MeBeIconType.baby:
       case MeBeIconType.babyHappy:
         _paintBreastfeed(canvas);
@@ -249,8 +336,9 @@ class _MeBeIconPainter extends CustomPainter {
       case MeBeIconType.growth:
         _paintGrowth(canvas);
       case MeBeIconType.journal:
-      case MeBeIconType.memory:
         _paintJournal(canvas);
+      case MeBeIconType.memory:
+        _paintMemory(canvas);
       case MeBeIconType.stats:
         _paintStats(canvas);
       case MeBeIconType.profile:
@@ -381,6 +469,38 @@ class _MeBeIconPainter extends CustomPainter {
     );
   }
 
+  /// Gem-style squircle background matching the MeBé Icon Set design:
+  /// multi-stop radial gradient + tinted stroke. Falls back to the plain
+  /// [_bg] look if this [type] has no [_gemSpecs] entry.
+  void _bgGem(Canvas canvas) {
+    final spec = _gemSpecs[type];
+    if (spec == null) {
+      _bg(canvas, Colors.white);
+      return;
+    }
+    final rrect = RRect.fromRectAndRadius(
+      const Rect.fromLTWH(2, 2, 44, 44),
+      const Radius.circular(13),
+    );
+    canvas.drawRRect(
+      rrect,
+      Paint()
+        ..shader = ui.Gradient.radial(
+          const Offset(18.8, 16.2),
+          28,
+          spec.colors,
+          spec.stops,
+        ),
+    );
+    canvas.drawRRect(
+      rrect,
+      Paint()
+        ..color = spec.stroke
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.0,
+    );
+  }
+
   void _highlight(Canvas canvas) {
     canvas.save();
     canvas.translate(17, 13);
@@ -392,111 +512,148 @@ class _MeBeIconPainter extends CustomPainter {
     canvas.restore();
   }
 
-  // ── Home (bunny face) ──────────────────────────────────
+  // ── Home (house) ────────────────────────────────────────
   void _paintHome(Canvas canvas) {
-    _bg(canvas, const Color(0xFFFFF0F6));
-    final body = Path()
-      ..moveTo(24, 10)
-      ..cubicTo(36, 14, 38, 26, 36, 32)
-      ..cubicTo(34, 38, 28, 40, 24, 40)
-      ..cubicTo(20, 40, 14, 38, 12, 32)
-      ..cubicTo(10, 26, 12, 14, 24, 10)
+    _bgGem(canvas);
+    final s = 0.6; // 80->48 viewBox scale
+    Offset p(double x, double y) => Offset(x * s, y * s);
+    final house = Path()
+      ..moveTo(p(40, 18).dx, p(40, 18).dy)
+      ..lineTo(p(60, 36).dx, p(60, 36).dy)
+      ..lineTo(p(55, 36).dx, p(55, 36).dy)
+      ..lineTo(p(55, 58).dx, p(55, 58).dy)
+      ..lineTo(p(46, 58).dx, p(46, 58).dy)
+      ..lineTo(p(46, 46).dx, p(46, 46).dy)
+      ..lineTo(p(34, 46).dx, p(34, 46).dy)
+      ..lineTo(p(34, 58).dx, p(34, 58).dy)
+      ..lineTo(p(25, 58).dx, p(25, 58).dy)
+      ..lineTo(p(25, 36).dx, p(25, 36).dy)
+      ..lineTo(p(20, 36).dx, p(20, 36).dy)
       ..close();
-    canvas.drawPath(body, _fill);
-    final earPaint = Paint()..color = _colors.first;
-    canvas.drawOval(Rect.fromCenter(center: const Offset(18, 16), width: 8, height: 14), earPaint);
-    canvas.drawOval(Rect.fromCenter(center: const Offset(30, 16), width: 8, height: 14), earPaint);
-    final eyePaint = Paint()..color = Colors.white;
-    canvas.drawCircle(const Offset(21, 26), 2, eyePaint);
-    canvas.drawCircle(const Offset(27, 26), 2, eyePaint);
-    final smile = Path()
-      ..moveTo(21, 31)
-      ..quadraticBezierTo(24, 34, 27, 31);
-    canvas.drawPath(
-      smile,
-      Paint()
-        ..color = Colors.white
-        ..strokeWidth = 1.5
-        ..style = PaintingStyle.stroke
-        ..strokeCap = StrokeCap.round,
+    canvas.drawPath(house, Paint()..color = Colors.white.withValues(alpha: 0.95));
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTWH(p(36, 47).dx, p(36, 47).dy, 8 * s, 11 * s),
+        Radius.circular(3 * s),
+      ),
+      Paint()..color = _gemSpecs[type]!.colors[1].withValues(alpha: 0.6),
     );
   }
 
-  // ── Sleep (moon + stars) ───────────────────────────────
+  // ── Sleep (moon + stars + zzz) ─────────────────────────
   void _paintSleep(Canvas canvas) {
-    _bg(canvas, const Color(0xFFF0F0FF));
-    final full = Path()..addOval(Rect.fromCenter(center: const Offset(24, 22), width: 20, height: 20));
-    final cut = Path()..addOval(Rect.fromCenter(center: const Offset(28, 19), width: 16, height: 16));
+    _bgGem(canvas);
+    final full = Path()..addOval(Rect.fromCenter(center: const Offset(23.4, 18.6), width: 21.6, height: 21.6));
+    final cut = Path()..addOval(Rect.fromCenter(center: const Offset(28.8, 15.6), width: 15.6, height: 15.6));
     final crescent = Path.combine(PathOperation.difference, full, cut);
-    canvas.drawPath(crescent, _fill);
-    _drawStar(canvas, const Offset(34, 14), 3, _colors.first);
-    _drawStar(canvas, const Offset(15, 32), 2.5, _colors.first);
+    canvas.drawPath(crescent, Paint()..color = Colors.white.withValues(alpha: 0.92));
+    canvas.drawCircle(const Offset(14.4, 15.6), 1.5, Paint()..color = Colors.white.withValues(alpha: 0.8));
+    canvas.drawCircle(const Offset(34.8, 31.2), 1.2, Paint()..color = Colors.white.withValues(alpha: 0.7));
+    canvas.drawCircle(const Offset(33.6, 18), 0.9, Paint()..color = Colors.white.withValues(alpha: 0.6));
+    final tp1 = TextPainter(
+      text: TextSpan(
+        text: 'z',
+        style: TextStyle(
+          fontFamily: 'Nunito',
+          fontSize: 9.6,
+          fontWeight: FontWeight.w900,
+          color: Colors.white.withValues(alpha: 0.85),
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout();
+    tp1.paint(canvas, const Offset(14.5, 29));
+    final tp2 = TextPainter(
+      text: TextSpan(
+        text: 'z',
+        style: TextStyle(
+          fontFamily: 'Nunito',
+          fontSize: 7.2,
+          fontWeight: FontWeight.w900,
+          color: Colors.white.withValues(alpha: 0.6),
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout();
+    tp2.paint(canvas, const Offset(19, 24));
   }
 
   // ── Bottle ──────────────────────────────────────────────
   void _paintBottle(Canvas canvas) {
-    _bg(canvas, const Color(0xFFFFF5F0));
-    final bottle = Path()
-      ..moveTo(18, 28)
-      ..cubicTo(16, 26, 16, 22, 18, 20)
-      ..lineTo(20, 18)
-      ..lineTo(20, 14)
-      ..lineTo(28, 14)
-      ..lineTo(28, 18)
-      ..lineTo(30, 20)
-      ..cubicTo(32, 22, 32, 26, 30, 28)
-      ..lineTo(30, 36)
-      ..cubicTo(30, 37, 29, 38, 28, 38)
-      ..lineTo(20, 38)
-      ..cubicTo(19, 38, 18, 37, 18, 36)
-      ..close();
-    canvas.drawPath(bottle, _fill);
+    _bgGem(canvas);
     canvas.drawRRect(
-      RRect.fromRectAndRadius(const Rect.fromLTWH(22, 10, 4, 6), const Radius.circular(2)),
-      Paint()..color = _colors.first,
+      RRect.fromRectAndRadius(const Rect.fromLTWH(19.8, 9.6, 8.4, 4.8), const Radius.circular(2.4)),
+      Paint()..color = Colors.white.withValues(alpha: 0.9),
     );
     canvas.drawRRect(
-      RRect.fromRectAndRadius(const Rect.fromLTWH(20, 26, 8, 10), const Radius.circular(4)),
-      Paint()..color = Colors.white.withValues(alpha: 0.4),
+      RRect.fromRectAndRadius(const Rect.fromLTWH(18, 13.2, 12, 21.6), const Radius.circular(6)),
+      Paint()..color = Colors.white.withValues(alpha: 0.9),
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(19.2, 22.8, 9.6, 9.6), const Radius.circular(3.6)),
+      Paint()..color = Colors.white.withValues(alpha: 0.55),
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(21, 7.2, 6, 3.6), const Radius.circular(1.8)),
+      Paint()..color = Colors.white.withValues(alpha: 0.75),
     );
   }
 
   // ── Diaper ──────────────────────────────────────────────
   void _paintDiaper(Canvas canvas) {
-    _bg(canvas, const Color(0xFFF0FFF8));
+    _bgGem(canvas);
     final diaper = Path()
-      ..moveTo(14, 22)
-      ..lineTo(34, 22)
-      ..cubicTo(36, 24, 36, 32, 34, 36)
-      ..lineTo(24, 36)
-      ..lineTo(14, 36)
-      ..cubicTo(12, 32, 12, 24, 14, 22)
+      ..moveTo(9.6, 16.8)
+      ..quadraticBezierTo(14.4, 14.4, 24, 20.4)
+      ..quadraticBezierTo(33.6, 14.4, 38.4, 16.8)
+      ..lineTo(36, 34.8)
+      ..quadraticBezierTo(30, 31.2, 24, 34.8)
+      ..quadraticBezierTo(18, 31.2, 12, 34.8)
       ..close();
-    canvas.drawPath(diaper, _fill);
-    final top = Path()
-      ..moveTo(18, 22)
-      ..cubicTo(18, 18, 22, 16, 24, 16)
-      ..cubicTo(26, 16, 30, 18, 30, 22);
-    canvas.drawPath(
-      top,
-      Paint()
-        ..color = Colors.white.withValues(alpha: 0.6)
-        ..strokeWidth = 3
-        ..style = PaintingStyle.stroke
-        ..strokeCap = StrokeCap.round,
+    canvas.drawPath(diaper, Paint()..color = Colors.white.withValues(alpha: 0.92));
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(7.8, 14.4, 6, 4.8), const Radius.circular(2.4)),
+      Paint()..color = Colors.white.withValues(alpha: 0.9),
     );
-    canvas.drawCircle(const Offset(16, 23), 3, Paint()..color = Colors.white.withValues(alpha: 0.7));
-    canvas.drawCircle(const Offset(32, 23), 3, Paint()..color = Colors.white.withValues(alpha: 0.7));
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(34.2, 14.4, 6, 4.8), const Radius.circular(2.4)),
+      Paint()..color = Colors.white.withValues(alpha: 0.9),
+    );
+    canvas.drawPath(
+      Path()
+        ..moveTo(18, 22.8)
+        ..quadraticBezierTo(24, 26.4, 30, 22.8),
+      Paint()
+        ..color = Colors.white.withValues(alpha: 0.5)
+        ..strokeWidth = 1.2
+        ..style = PaintingStyle.stroke,
+    );
   }
 
-  // ── Premium (star) ────────────────────────────────────
+  // ── Premium (crown + jewels) ───────────────────────────
   void _paintPremium(Canvas canvas) {
-    _bg(canvas, const Color(0xFFFFF8F0));
-    _drawFilledStar(canvas, const Offset(24, 24), 13, 5.5, _fill);
-    canvas.drawCircle(const Offset(24, 24), 3, Paint()..color = Colors.white.withValues(alpha: 0.4));
+    _bgGem(canvas);
+    final crown = Path()
+      ..moveTo(8.4, 31.2)
+      ..lineTo(8.4, 22.8)
+      ..lineTo(15.6, 28.8)
+      ..lineTo(24, 12)
+      ..lineTo(32.4, 28.8)
+      ..lineTo(39.6, 22.8)
+      ..lineTo(39.6, 31.2)
+      ..close();
+    canvas.drawPath(crown, Paint()..color = Colors.white.withValues(alpha: 0.92));
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(8.4, 31.2, 31.2, 6), const Radius.circular(3)),
+      Paint()..color = Colors.white.withValues(alpha: 0.9),
+    );
+    canvas.drawCircle(const Offset(24, 20.4), 3, Paint()..color = const Color(0xFFF472A0).withValues(alpha: 0.85));
+    canvas.drawCircle(const Offset(13.2, 27.6), 2.4, Paint()..color = const Color(0xFFC9A8F5).withValues(alpha: 0.85));
+    canvas.drawCircle(const Offset(34.8, 27.6), 2.4, Paint()..color = const Color(0xFF7DE8C8).withValues(alpha: 0.85));
   }
 
-  // ── Breastfeed / baby / happy (bunny + heart) ─────────
+  // ── baby / happy (bunny + heart) — kept distinct from the
+  // breastfeed gem illustration below.
   void _paintBreastfeed(Canvas canvas) {
     _bg(canvas, const Color(0xFFFFF0F6));
     canvas.drawCircle(const Offset(24, 22), 12, _fill);
@@ -506,6 +663,34 @@ class _MeBeIconPainter extends CustomPainter {
     canvas.drawCircle(const Offset(21, 22), 1.6, Paint()..color = Colors.white);
     canvas.drawCircle(const Offset(27, 22), 1.6, Paint()..color = Colors.white);
     _drawHeart(canvas, const Offset(24, 36), 6, _colors.last);
+  }
+
+  // ── Breastfeed (mom + baby silhouette + heart) ─────────
+  void _paintBreastfeedGem(Canvas canvas) {
+    _bgGem(canvas);
+    canvas.drawOval(
+      Rect.fromCenter(center: const Offset(20.4, 13.2), width: 9.6, height: 10.8),
+      Paint()..color = Colors.white.withValues(alpha: 0.92),
+    );
+    canvas.drawPath(
+      Path()
+        ..moveTo(12, 37.2)
+        ..quadraticBezierTo(12, 26.4, 20.4, 26.4)
+        ..quadraticBezierTo(28.8, 26.4, 30, 31.2)
+        ..lineTo(27.6, 37.2)
+        ..close(),
+      Paint()..color = Colors.white.withValues(alpha: 0.88),
+    );
+    canvas.drawCircle(const Offset(31.2, 25.2), 4.2, Paint()..color = Colors.white.withValues(alpha: 0.85));
+    canvas.drawPath(
+      Path()
+        ..moveTo(27, 28.8)
+        ..quadraticBezierTo(30, 33.6, 34.8, 31.2)
+        ..lineTo(33.6, 37.2)
+        ..lineTo(22.8, 37.2),
+      Paint()..color = Colors.white.withValues(alpha: 0.75),
+    );
+    _drawHeart(canvas, const Offset(22.8, 20.4), 5.5, const Color(0xFFFFB7CE).withValues(alpha: 0.85));
   }
 
   // ── Pump (droplet pair) ───────────────────────────────
@@ -521,35 +706,64 @@ class _MeBeIconPainter extends CustomPainter {
     }
   }
 
-  // ── Growth (bar chart trending up) ────────────────────
+  // ── Growth (bar chart + trend arrow) ───────────────────
   void _paintGrowth(Canvas canvas) {
-    _bg(canvas, const Color(0xFFF0FFF6));
+    _bgGem(canvas);
     final bars = [
-      (14.0, 30.0, 6.0, 8.0),
-      (22.0, 24.0, 6.0, 14.0),
-      (30.0, 16.0, 6.0, 22.0),
+      (9.6, 31.2, 6.0, 7.2, 0.5),
+      (18.0, 25.2, 6.0, 13.2, 0.7),
+      (26.4, 18.0, 6.0, 20.4, 0.85),
     ];
-    for (final (x, y, w, h) in bars) {
+    for (final (x, y, w, h, a) in bars) {
       canvas.drawRRect(
-        RRect.fromRectAndCorners(Rect.fromLTWH(x, y, w, h), topLeft: const Radius.circular(3), topRight: const Radius.circular(3)),
-        _fill,
+        RRect.fromRectAndCorners(
+          Rect.fromLTWH(x, y, w, h),
+          topLeft: const Radius.circular(1.8),
+          topRight: const Radius.circular(1.8),
+        ),
+        Paint()..color = Colors.white.withValues(alpha: a),
       );
     }
     final trend = Path()
-      ..moveTo(14, 26)
-      ..lineTo(22, 20)
-      ..lineTo(30, 12);
+      ..moveTo(10.8, 30)
+      ..quadraticBezierTo(18, 16.8, 33.6, 10.8);
     canvas.drawPath(
       trend,
       Paint()
         ..color = Colors.white
-        ..strokeWidth = 2
+        ..strokeWidth = 1.8
         ..style = PaintingStyle.stroke
         ..strokeCap = StrokeCap.round,
     );
+    final arrow = Path()
+      ..moveTo(28.8, 8.4)
+      ..lineTo(34.8, 10.8)
+      ..lineTo(31.2, 15.6);
+    canvas.drawPath(
+      arrow,
+      Paint()
+        ..color = Colors.white
+        ..strokeWidth = 1.8
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round
+        ..strokeJoin = StrokeJoin.round,
+    );
   }
 
-  // ── Journal / Memory (book) ────────────────────────────
+  // ── Memory (heart + star) ──────────────────────────────
+  void _paintMemory(Canvas canvas) {
+    _bgGem(canvas);
+    _drawHeart(canvas, const Offset(24, 27.6), 10, Colors.white.withValues(alpha: 0.92));
+    _drawFilledStar(
+      canvas,
+      const Offset(24, 25.8),
+      4.2,
+      1.8,
+      Paint()..color = _gemSpecs[type]!.colors[1].withValues(alpha: 0.7),
+    );
+  }
+
+  // ── Journal (book) ──────────────────────────────────────
   void _paintJournal(Canvas canvas) {
     _bg(canvas, const Color(0xFFF0FFF8));
     final cover = RRect.fromRectAndRadius(const Rect.fromLTWH(12, 12, 24, 26), const Radius.circular(4));
@@ -590,77 +804,174 @@ class _MeBeIconPainter extends CustomPainter {
 
   // ── Profile (person) ───────────────────────────────────
   void _paintProfile(Canvas canvas) {
-    _bg(canvas, const Color(0xFFF0F5FF));
-    canvas.drawCircle(const Offset(24, 18), 7, _fill);
-    final body = Path()
-      ..moveTo(12, 38)
-      ..cubicTo(12, 28, 36, 28, 36, 38)
-      ..close();
-    canvas.drawPath(body, _fill);
+    _bgGem(canvas);
+    canvas.drawCircle(const Offset(24, 18), 9.6, Paint()..color = Colors.white.withValues(alpha: 0.92));
+    canvas.drawCircle(const Offset(21, 16.8), 1.5, Paint()..color = const Color(0xFFF472A0).withValues(alpha: 0.7));
+    canvas.drawCircle(const Offset(27, 16.8), 1.5, Paint()..color = const Color(0xFFF472A0).withValues(alpha: 0.7));
+    canvas.drawPath(
+      Path()
+        ..moveTo(20.4, 21)
+        ..quadraticBezierTo(24, 24, 27.6, 21),
+      Paint()
+        ..color = const Color(0xFFF472A0).withValues(alpha: 0.7)
+        ..strokeWidth = 1.2
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round,
+    );
+    canvas.drawPath(
+      Path()
+        ..moveTo(9.6, 42)
+        ..quadraticBezierTo(9.6, 31.2, 24, 31.2)
+        ..quadraticBezierTo(38.4, 31.2, 38.4, 42),
+      Paint()..color = Colors.white.withValues(alpha: 0.88),
+    );
+    canvas.drawPath(
+      Path()
+        ..moveTo(19.2, 9.6)
+        ..quadraticBezierTo(21.6, 12, 24, 9.6)
+        ..quadraticBezierTo(26.4, 12, 28.8, 9.6)
+        ..quadraticBezierTo(26.4, 14.4, 24, 12)
+        ..quadraticBezierTo(21.6, 14.4, 19.2, 9.6)
+        ..close(),
+      Paint()..color = const Color(0xFFFFB7CE).withValues(alpha: 0.85),
+    );
   }
 
-  // ── Calendar ────────────────────────────────────────────
+  // ── Calendar (with marked day) ─────────────────────────
   void _paintCalendar(Canvas canvas) {
-    _bg(canvas, const Color(0xFFF0F5FF));
-    final base = RRect.fromRectAndRadius(const Rect.fromLTWH(10, 12, 28, 24), const Radius.circular(5));
-    canvas.drawRRect(base, _fill);
-    canvas.drawRect(const Rect.fromLTWH(10, 12, 28, 6), Paint()..color = Colors.white.withValues(alpha: 0.35));
-    canvas.drawCircle(const Offset(24, 26), 3, Paint()..color = Colors.white);
-  }
-
-  // ── AI Chat (bunny + speech bubble) ────────────────────
-  void _paintAiChat(Canvas canvas) {
-    _bg(canvas, const Color(0xFFFFF3EC));
-    final bubble = RRect.fromRectAndRadius(const Rect.fromLTWH(11, 13, 26, 18), const Radius.circular(9));
-    canvas.drawRRect(bubble, _fill);
-    final tail = Path()
-      ..moveTo(18, 31)
-      ..lineTo(15, 37)
-      ..lineTo(23, 31)
-      ..close();
-    canvas.drawPath(tail, _fill);
-    for (final dx in [-5.0, 0.0, 5.0]) {
-      canvas.drawCircle(Offset(24 + dx, 22), 1.8, Paint()..color = Colors.white);
-    }
-  }
-
-  // ── Photo (camera) ─────────────────────────────────────
-  void _paintPhoto(Canvas canvas) {
-    _bg(canvas, const Color(0xFFF0F5FF));
-    final body = RRect.fromRectAndRadius(const Rect.fromLTWH(10, 16, 28, 20), const Radius.circular(6));
-    canvas.drawRRect(body, _fill);
+    _bgGem(canvas);
     canvas.drawRRect(
-      RRect.fromRectAndRadius(const Rect.fromLTWH(18, 11, 12, 6), const Radius.circular(3)),
-      Paint()..color = _colors.first,
+      RRect.fromRectAndRadius(const Rect.fromLTWH(8.4, 14.4, 31.2, 27.6), const Radius.circular(4.8)),
+      Paint()..color = Colors.white.withValues(alpha: 0.92),
     );
-    canvas.drawCircle(const Offset(24, 26), 6, Paint()..color = Colors.white.withValues(alpha: 0.8));
-    canvas.drawCircle(const Offset(24, 26), 6, Paint()
-      ..color = _colors.last
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(8.4, 14.4, 31.2, 9.6), const Radius.circular(4.8)),
+      Paint()..color = const Color(0xFFC9A8F5).withValues(alpha: 0.55),
+    );
+    canvas.drawRect(
+      const Rect.fromLTWH(8.4, 19.2, 31.2, 4.8),
+      Paint()..color = const Color(0xFFC9A8F5).withValues(alpha: 0.55),
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(15.6, 9.6, 3, 8.4), const Radius.circular(1.5)),
+      Paint()..color = Colors.white.withValues(alpha: 0.85),
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(29.4, 9.6, 3, 8.4), const Radius.circular(1.5)),
+      Paint()..color = Colors.white.withValues(alpha: 0.85),
+    );
+    for (final dx in [15.6, 21.6, 27.6, 33.6]) {
+      canvas.drawCircle(Offset(dx, 31.2), 1.8, Paint()..color = const Color(0xFFC9A8F5).withValues(alpha: 0.7));
+    }
+    for (final dx in [15.6, 21.6]) {
+      canvas.drawCircle(Offset(dx, 37.2), 1.8, Paint()..color = const Color(0xFFC9A8F5).withValues(alpha: 0.5));
+    }
+    canvas.drawCircle(const Offset(27.6, 37.2), 3, Paint()..color = const Color(0xFFF472A0).withValues(alpha: 0.85));
   }
 
-  // ── Timer (clock) ──────────────────────────────────────
+  // ── AI Chat (speech bubble + dots + sparkle) ───────────
+  void _paintAiChat(Canvas canvas) {
+    _bgGem(canvas);
+    final bubble = Path()
+      ..moveTo(8.4, 12)
+      ..quadraticBezierTo(8.4, 8.4, 12, 8.4)
+      ..lineTo(36, 8.4)
+      ..quadraticBezierTo(39.6, 8.4, 39.6, 12)
+      ..lineTo(39.6, 27.6)
+      ..quadraticBezierTo(39.6, 31.2, 36, 31.2)
+      ..lineTo(26.4, 31.2)
+      ..lineTo(21.6, 37.2)
+      ..lineTo(19.2, 31.2)
+      ..lineTo(12, 31.2)
+      ..quadraticBezierTo(8.4, 31.2, 8.4, 27.6)
+      ..close();
+    canvas.drawPath(bubble, Paint()..color = Colors.white.withValues(alpha: 0.92));
+    canvas.drawCircle(const Offset(16.8, 19.8), 2.4, Paint()..color = const Color(0xFFF472A0).withValues(alpha: 0.8));
+    canvas.drawCircle(const Offset(24, 19.8), 2.4, Paint()..color = const Color(0xFFC9A8F5).withValues(alpha: 0.8));
+    canvas.drawCircle(const Offset(31.2, 19.8), 2.4, Paint()..color = const Color(0xFF7DE8C8).withValues(alpha: 0.8));
+    _drawStar(canvas, const Offset(32.4, 10.2), 2.4, Colors.white.withValues(alpha: 0.8));
+  }
+
+  // ── Photo / gallery (stacked frames + heart) ───────────
+  void _paintPhoto(Canvas canvas) {
+    _bgGem(canvas);
+    canvas.save();
+    canvas.translate(25.2, 27);
+    canvas.rotate(-8 * math.pi / 180);
+    canvas.translate(-25.2, -27);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(14.4, 18, 21.6, 18), const Radius.circular(3)),
+      Paint()..color = Colors.white.withValues(alpha: 0.5),
+    );
+    canvas.restore();
+    canvas.save();
+    canvas.translate(22.8, 25.8);
+    canvas.rotate(-3 * math.pi / 180);
+    canvas.translate(-22.8, -25.8);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(12, 16.8, 21.6, 18), const Radius.circular(3)),
+      Paint()..color = Colors.white.withValues(alpha: 0.7),
+    );
+    canvas.restore();
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(10.8, 15.6, 21.6, 18), const Radius.circular(3)),
+      Paint()..color = Colors.white.withValues(alpha: 0.92),
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(13.2, 18, 16.8, 10.8), const Radius.circular(1.8)),
+      Paint()..color = const Color(0xFFFFD6E4).withValues(alpha: 0.6),
+    );
+    canvas.drawCircle(const Offset(16.8, 21.6), 2.4, Paint()..color = const Color(0xFFFFB997).withValues(alpha: 0.8));
+    canvas.drawPath(
+      Path()
+        ..moveTo(13.2, 28.8)
+        ..lineTo(18, 22.8)
+        ..lineTo(21.6, 26.4)
+        ..lineTo(25.2, 21.6)
+        ..lineTo(30, 28.8)
+        ..close(),
+      Paint()..color = const Color(0xFFC9A8F5).withValues(alpha: 0.6),
+    );
+    _drawHeart(canvas, const Offset(24, 15.6), 5, Colors.white.withValues(alpha: 0.9));
+  }
+
+  // ── Timer (clock face) ─────────────────────────────────
   void _paintTimer(Canvas canvas) {
-    _bg(canvas, const Color(0xFFFFF8F0));
-    canvas.drawCircle(const Offset(24, 25), 13, _fill);
-    canvas.drawLine(
-      const Offset(24, 25),
-      const Offset(24, 17),
+    _bgGem(canvas);
+    canvas.drawCircle(const Offset(24, 26.4), 13.2, Paint()..color = Colors.white.withValues(alpha: 0.9));
+    canvas.drawCircle(
+      const Offset(24, 26.4),
+      10.2,
       Paint()
-        ..color = Colors.white
-        ..strokeWidth = 2
+        ..color = const Color(0xFF7DE8C8).withValues(alpha: 0.4)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 0.9,
+    );
+    canvas.drawLine(
+      const Offset(24, 26.4),
+      const Offset(24, 18),
+      Paint()
+        ..color = const Color(0xFF28A0B0)
+        ..strokeWidth = 1.8
         ..strokeCap = StrokeCap.round,
     );
     canvas.drawLine(
-      const Offset(24, 25),
-      const Offset(29, 27),
+      const Offset(24, 26.4),
+      const Offset(31.2, 30),
       Paint()
-        ..color = Colors.white
-        ..strokeWidth = 2
+        ..color = const Color(0xFF7DE8C8)
+        ..strokeWidth = 1.5
         ..strokeCap = StrokeCap.round,
     );
-    canvas.drawRect(const Rect.fromLTWH(21, 9, 6, 3), Paint()..color = _colors.first);
+    canvas.drawCircle(const Offset(24, 26.4), 1.5, Paint()..color = const Color(0xFF28A0B0));
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(21.6, 10.8, 4.8, 3.6), const Radius.circular(1.8)),
+      Paint()..color = Colors.white.withValues(alpha: 0.9),
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(19.2, 13.2, 9.6, 2.4), const Radius.circular(1.2)),
+      Paint()..color = Colors.white.withValues(alpha: 0.7),
+    );
   }
 
   // ── Wonder weeks (wave + star) ─────────────────────────
@@ -849,24 +1160,31 @@ class _MeBeIconPainter extends CustomPainter {
 
   // ── Solid food (bowl + spoon) ──────────────────────────
   void _paintSolidFood(Canvas canvas) {
-    _bg(canvas, const Color(0xFFFFF8F0));
+    _bgGem(canvas);
     final bowl = Path()
-      ..moveTo(9, 22)
-      ..lineTo(39, 22)
-      ..cubicTo(39, 32, 33, 37, 24, 37)
-      ..cubicTo(15, 37, 9, 32, 9, 22)
+      ..moveTo(10.8, 27.6)
+      ..quadraticBezierTo(10.8, 37.2, 24, 37.2)
+      ..quadraticBezierTo(37.2, 37.2, 37.2, 27.6)
       ..close();
-    canvas.drawPath(bowl, _fill);
-    canvas.drawOval(const Rect.fromLTWH(9, 19, 30, 6), Paint()..color = _colors.first);
-    canvas.drawCircle(const Offset(34, 12), 4.5, Paint()..color = _colors.last);
-    canvas.drawLine(
-      const Offset(31.5, 15.5),
-      const Offset(25, 28),
-      Paint()
-        ..color = _colors.last
-        ..strokeWidth = 2.5
-        ..strokeCap = StrokeCap.round,
+    canvas.drawPath(bowl, Paint()..color = Colors.white.withValues(alpha: 0.92));
+    canvas.drawOval(
+      Rect.fromCenter(center: const Offset(24, 27.6), width: 26.4, height: 7.2),
+      Paint()..color = Colors.white.withValues(alpha: 0.8),
     );
+    canvas.drawOval(
+      Rect.fromCenter(center: const Offset(24, 27.6), width: 16.8, height: 4.8),
+      Paint()..color = const Color(0xFFFFB997).withValues(alpha: 0.55),
+    );
+    canvas.drawOval(
+      Rect.fromCenter(center: const Offset(32.4, 14.4), width: 7.2, height: 9.6),
+      Paint()..color = Colors.white.withValues(alpha: 0.9),
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(31.5, 18.6, 1.8, 13.2), const Radius.circular(0.9)),
+      Paint()..color = Colors.white.withValues(alpha: 0.85),
+    );
+    canvas.drawCircle(const Offset(16.8, 19.2), 1.8, Paint()..color = Colors.white.withValues(alpha: 0.7));
+    canvas.drawCircle(const Offset(14.4, 14.4), 1.2, Paint()..color = Colors.white.withValues(alpha: 0.5));
   }
 
   // ── Scan milk (camera + scan lines) ────────────────────
@@ -987,19 +1305,48 @@ class _MeBeIconPainter extends CustomPainter {
     );
   }
 
-  // ── Vaccine (syringe) ────────────────────────────────────
+  // ── Vaccine (syringe + shield check) ───────────────────
   void _paintVaccine(Canvas canvas) {
-    _bg(canvas, const Color(0xFFF0F5FF));
+    _bgGem(canvas);
     canvas.save();
-    canvas.translate(24, 24);
+    canvas.translate(26.4, 24.6);
     canvas.rotate(-math.pi / 4);
-    canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(-4, -14, 8, 18), const Radius.circular(2)), _fill);
-    canvas.drawRect(const Rect.fromLTWH(-4, -18, 8, 5), Paint()..color = _colors.first);
-    canvas.drawLine(const Offset(0, 4), const Offset(0, 13), Paint()..color = _colors.last..strokeWidth = 2.4..strokeCap = StrokeCap.round);
-    for (final dy in [-9.0, -4.5, 0.0]) {
-      canvas.drawLine(Offset(-4, dy), Offset(4, dy), Paint()..color = Colors.white.withValues(alpha: 0.6)..strokeWidth = 1.2);
-    }
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(-9.6, -3, 19.2, 6), const Radius.circular(3)),
+      Paint()..color = Colors.white.withValues(alpha: 0.92),
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(-16.2, -1.8, 3.6, 8.4), const Radius.circular(1.8)),
+      Paint()..color = Colors.white.withValues(alpha: 0.7),
+    );
     canvas.restore();
+    canvas.drawLine(
+      const Offset(33, 15.6),
+      const Offset(39, 9.6),
+      Paint()
+        ..color = Colors.white.withValues(alpha: 0.85)
+        ..strokeWidth = 2.1
+        ..strokeCap = StrokeCap.round,
+    );
+    final shield = Path()
+      ..moveTo(10.8, 31.2)
+      ..quadraticBezierTo(10.8, 38.4, 16.8, 40.8)
+      ..quadraticBezierTo(22.8, 38.4, 22.8, 31.2)
+      ..lineTo(16.8, 28.8)
+      ..close();
+    canvas.drawPath(shield, Paint()..color = Colors.white.withValues(alpha: 0.8));
+    canvas.drawPath(
+      Path()
+        ..moveTo(13.2, 36)
+        ..lineTo(16.2, 39)
+        ..lineTo(20.4, 33.6),
+      Paint()
+        ..color = _gemSpecs[type]!.colors[1].withValues(alpha: 0.9)
+        ..strokeWidth = 1.5
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round
+        ..strokeJoin = StrokeJoin.round,
+    );
   }
 
   // ── Teeth ──────────────────────────────────────────────
@@ -1032,57 +1379,88 @@ class _MeBeIconPainter extends CustomPainter {
     _drawHeart(canvas, const Offset(24, 27), 4.5, Colors.white.withValues(alpha: 0.85));
   }
 
-  // ── Letter (envelope) ──────────────────────────────────
+  // ── Letter (envelope + wax seal + clock) ───────────────
   void _paintLetter(Canvas canvas) {
-    _bg(canvas, const Color(0xFFF3F0FF));
-    final body = RRect.fromRectAndRadius(const Rect.fromLTWH(9, 14, 30, 21), const Radius.circular(4));
-    canvas.drawRRect(body, _fill);
-    final flap = Path()
-      ..moveTo(9, 16)
-      ..lineTo(24, 28)
-      ..lineTo(39, 16);
+    _bgGem(canvas);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(7.2, 15.6, 33.6, 22.8), const Radius.circular(3.6)),
+      Paint()..color = Colors.white.withValues(alpha: 0.92),
+    );
     canvas.drawPath(
-      flap,
+      Path()
+        ..moveTo(7.2, 15.6)
+        ..lineTo(24, 27.6)
+        ..lineTo(40.8, 15.6),
       Paint()
-        ..color = Colors.white.withValues(alpha: 0.7)
-        ..strokeWidth = 2
-        ..style = PaintingStyle.stroke
-        ..strokeCap = StrokeCap.round
-        ..strokeJoin = StrokeJoin.round,
+        ..color = const Color(0xFFC9A8F5).withValues(alpha: 0.7)
+        ..strokeWidth = 1.5
+        ..style = PaintingStyle.stroke,
+    );
+    canvas.drawCircle(const Offset(24, 31.2), 6, Paint()..color = const Color(0xFFF472A0).withValues(alpha: 0.85));
+    _drawHeart(canvas, const Offset(24, 31.2), 3, Colors.white.withValues(alpha: 0.9));
+    canvas.drawCircle(const Offset(34.8, 13.2), 5.4, Paint()..color = const Color(0xFFC9A8F5).withValues(alpha: 0.85));
+    canvas.drawLine(
+      const Offset(34.2, 13.8),
+      const Offset(34.2, 10.8),
+      Paint()
+        ..color = Colors.white
+        ..strokeWidth = 1.2
+        ..strokeCap = StrokeCap.round,
+    );
+    canvas.drawLine(
+      const Offset(34.2, 13.8),
+      const Offset(37.2, 15.6),
+      Paint()
+        ..color = Colors.white
+        ..strokeWidth = 0.9
+        ..strokeCap = StrokeCap.round,
     );
   }
 
-  // ── Voice journal (microphone) ─────────────────────────
+  // ── Voice journal (microphone + sound waves) ───────────
   void _paintVoiceJournal(Canvas canvas) {
-    _bg(canvas, const Color(0xFFF3F0FF));
-    canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(19, 9, 10, 18), const Radius.circular(5)), _fill);
-    canvas.drawArc(
-      const Rect.fromLTWH(13, 18, 22, 18),
-      0,
-      math.pi,
-      false,
+    _bgGem(canvas);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(19.2, 8.4, 9.6, 16.8), const Radius.circular(4.8)),
+      Paint()..color = Colors.white.withValues(alpha: 0.92),
+    );
+    for (final y in [13.2, 16.2, 19.2]) {
+      canvas.drawLine(
+        Offset(20.4, y),
+        Offset(27.6, y),
+        Paint()
+          ..color = const Color(0xFF7DE8C8).withValues(alpha: 0.6)
+          ..strokeWidth = 0.9,
+      );
+    }
+    canvas.drawPath(
+      Path()
+        ..moveTo(13.2, 24)
+        ..quadraticBezierTo(13.2, 34.8, 24, 34.8)
+        ..quadraticBezierTo(34.8, 34.8, 34.8, 24),
       Paint()
-        ..color = _colors.last
+        ..color = Colors.white.withValues(alpha: 0.88)
         ..strokeWidth = 2.4
         ..style = PaintingStyle.stroke
         ..strokeCap = StrokeCap.round,
     );
-    canvas.drawLine(
-      const Offset(24, 32),
-      const Offset(24, 38),
-      Paint()
-        ..color = _colors.last
-        ..strokeWidth = 2.4
-        ..strokeCap = StrokeCap.round,
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(22.2, 33.6, 3.6, 7.2), const Radius.circular(1.8)),
+      Paint()..color = Colors.white.withValues(alpha: 0.88),
     );
-    canvas.drawLine(
-      const Offset(18, 38),
-      const Offset(30, 38),
-      Paint()
-        ..color = _colors.last
-        ..strokeWidth = 2.4
-        ..strokeCap = StrokeCap.round,
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(16.8, 39.6, 14.4, 3), const Radius.circular(1.5)),
+      Paint()..color = Colors.white.withValues(alpha: 0.8),
     );
+    final wavePaint = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 1.5
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+    canvas.drawPath(Path()..moveTo(8.4, 21.6)..quadraticBezierTo(9.6, 24, 8.4, 26.4), wavePaint..color = Colors.white.withValues(alpha: 0.65));
+    canvas.drawPath(Path()..moveTo(6, 19.2)..quadraticBezierTo(7.8, 24, 6, 28.8), wavePaint..color = Colors.white.withValues(alpha: 0.45));
+    canvas.drawPath(Path()..moveTo(39.6, 21.6)..quadraticBezierTo(38.4, 24, 39.6, 26.4), wavePaint..color = Colors.white.withValues(alpha: 0.65));
+    canvas.drawPath(Path()..moveTo(42, 19.2)..quadraticBezierTo(40.2, 24, 42, 28.8), wavePaint..color = Colors.white.withValues(alpha: 0.45));
   }
 
   // ── Soundscape (music notes) ───────────────────────────
@@ -1219,21 +1597,31 @@ class _MeBeIconPainter extends CustomPainter {
 
   // ── Community (people) ─────────────────────────────────
   void _paintCommunity(Canvas canvas) {
-    _bg(canvas, const Color(0xFFF0F5FF));
-    for (final (cx, r) in [(15.0, 6.0), (33.0, 6.0)]) {
-      canvas.drawCircle(Offset(cx, 18), r * 0.6, Paint()..color = _colors.first);
-      final body = Path()
-        ..moveTo(cx - r, 36)
-        ..cubicTo(cx - r, 28, cx + r, 28, cx + r, 36)
-        ..close();
-      canvas.drawPath(body, Paint()..color = _colors.first);
-    }
-    canvas.drawCircle(const Offset(24, 20), 7.5, _fill);
-    final body = Path()
-      ..moveTo(14, 39)
-      ..cubicTo(14, 29, 34, 29, 34, 39)
-      ..close();
-    canvas.drawPath(body, _fill);
+    _bgGem(canvas);
+    canvas.drawCircle(const Offset(24, 18), 5.4, Paint()..color = Colors.white.withValues(alpha: 0.92));
+    canvas.drawPath(
+      Path()
+        ..moveTo(14.4, 34.8)
+        ..quadraticBezierTo(14.4, 26.4, 24, 26.4)
+        ..quadraticBezierTo(33.6, 26.4, 33.6, 34.8),
+      Paint()..color = Colors.white.withValues(alpha: 0.92),
+    );
+    canvas.drawCircle(const Offset(13.2, 20.4), 4.2, Paint()..color = Colors.white.withValues(alpha: 0.75));
+    canvas.drawPath(
+      Path()
+        ..moveTo(6, 34.8)
+        ..quadraticBezierTo(6, 27.6, 13.2, 27.6)
+        ..quadraticBezierTo(19.2, 27.6, 19.2, 32.4),
+      Paint()..color = Colors.white.withValues(alpha: 0.7),
+    );
+    canvas.drawCircle(const Offset(34.8, 20.4), 4.2, Paint()..color = Colors.white.withValues(alpha: 0.75));
+    canvas.drawPath(
+      Path()
+        ..moveTo(42, 34.8)
+        ..quadraticBezierTo(42, 27.6, 34.8, 27.6)
+        ..quadraticBezierTo(28.8, 27.6, 28.8, 32.4),
+      Paint()..color = Colors.white.withValues(alpha: 0.7),
+    );
   }
 
   // ── Wonder weeks stormy (cloud + bolt) ─────────────────
