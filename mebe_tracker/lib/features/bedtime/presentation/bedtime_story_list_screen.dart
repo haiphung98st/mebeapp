@@ -237,13 +237,13 @@ class _BedtimeStoryListScreenState
                           horizontal: AppSpacing.lg),
                       children: [
                         // Đề xuất hôm nay
-                        _SectionHeader(title: '⭐  Đề xuất hôm nay'),
+                        const _SectionHeader(title: '⭐  Đề xuất hôm nay'),
                         const SizedBox(height: AppSpacing.sm),
                         _FeaturedGrid(
                             stories: featured, favIds: favIds, ref: ref),
                         const SizedBox(height: AppSpacing.lg),
                         // Nghe nhiều nhất
-                        _SectionHeader(title: '❤️  Nghe nhiều nhất'),
+                        const _SectionHeader(title: '❤️  Nghe nhiều nhất'),
                         const SizedBox(height: AppSpacing.sm),
                         ...ranked.asMap().entries.map((e) =>
                             _RankedTile(
@@ -449,7 +449,7 @@ class _RankedTile extends StatelessWidget {
             child: Container(
               width: 36,
               height: 36,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.nightDeep,
                 shape: BoxShape.circle,
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
@@ -102,7 +103,7 @@ class BedtimeHomeScreen extends ConsumerWidget {
                     if (baby?.avatarUrl != null)
                       CircleAvatar(
                         radius: 18,
-                        backgroundImage: NetworkImage(baby!.avatarUrl!),
+                        backgroundImage: CachedNetworkImageProvider(baby!.avatarUrl!),
                       )
                     else
                       CircleAvatar(
@@ -214,10 +215,10 @@ class _HeroCard extends StatelessWidget {
                 height: 100,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     colors: [
-                      const Color(0xFFF9E9A0),
-                      const Color(0xFFF0C83C),
+                      Color(0xFFF9E9A0),
+                      Color(0xFFF0C83C),
                     ],
                   ),
                   boxShadow: [
@@ -592,7 +593,7 @@ class _LullabyPreviewRow extends StatelessWidget {
                 Container(
                   width: 36,
                   height: 36,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppColors.lilac,
                     shape: BoxShape.circle,
                   ),

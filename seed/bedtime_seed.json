@@ -1,148 +1,579 @@
 {
-  "categories": [
-    {
-      "id": "nature",
-      "name": "Thiên nhiên",
-      "slug": "thien-nhien",
-      "iconKey": "nature",
-      "sortOrder": 1,
-      "isActive": true
-    },
-    {
-      "id": "animals",
-      "name": "Động vật",
-      "slug": "dong-vat",
-      "iconKey": "animals",
-      "sortOrder": 2,
-      "isActive": true
-    },
-    {
-      "id": "fairy_tales",
-      "name": "Cổ tích",
-      "slug": "co-tich",
-      "iconKey": "fairy_tales",
-      "sortOrder": 3,
-      "isActive": true
-    },
-    {
-      "id": "lullaby",
-      "name": "Ru ngủ",
-      "slug": "ru-ngu",
-      "iconKey": "lullaby",
-      "sortOrder": 4,
-      "isActive": true
-    },
-    {
-      "id": "adventures",
-      "name": "Phiêu lưu",
-      "slug": "phieu-luu",
-      "iconKey": "adventures",
-      "sortOrder": 5,
-      "isActive": true
-    }
-  ],
-  "stories": [
-    {
-      "id": "story_little_bunny",
-      "title": "Chú thỏ nhỏ và ánh trăng",
-      "slug": "chu-tho-nho-va-anh-trang",
-      "summary": "Chú thỏ nhỏ không ngủ được vì ánh trăng quá sáng. Cùng xem thỏ làm gì để tìm giấc ngủ ngoan nhé.",
-      "categoryId": "animals",
-      "ageGroups": ["0_12m", "1_3y"],
-      "tags": ["thỏ", "trăng", "ngủ"],
-      "coverPath": null,
-      "durationSec": 180,
-      "paragraphCount": 5,
-      "isPremium": false,
-      "status": "published",
-      "version": 1,
-      "voiceId": null,
-      "ttsProvider": null,
-      "charCount": 420,
-      "sortOrder": 1,
-      "publishedAt": "2024-01-01T00:00:00Z",
-      "createdAt": "2024-01-01T00:00:00Z",
-      "updatedAt": "2024-01-01T00:00:00Z",
-      "updatedBy": null,
-      "content": {
-        "paragraphs": [
-          { "index": 0, "text": "Đêm nay, ánh trăng tròn chiếu sáng cả khu rừng nhỏ." },
-          { "index": 1, "text": "Chú thỏ con nằm trong ổ nhưng mắt cứ mở to, không chịu nhắm lại." },
-          { "index": 2, "text": "Mẹ thỏ đến bên, nhẹ nhàng hát một bài ru quen thuộc." },
-          { "index": 3, "text": "Tiếng hát của mẹ như dòng suối mát, chảy vào giấc mơ êm đềm." },
-          { "index": 4, "text": "Và chú thỏ con chìm vào giấc ngủ sâu, nụ cười nhỏ trên môi." }
-        ],
-        "fullAudioPath": null
-      }
-    },
-    {
-      "id": "story_cloud_friends",
-      "title": "Những đám mây bạn bè",
-      "slug": "nhung-dam-may-ban-be",
-      "summary": "Trên bầu trời cao, những đám mây kết bạn với nhau và cùng nhau tạo ra những hình thù thú vị.",
-      "categoryId": "nature",
-      "ageGroups": ["1_3y", "3_6y"],
-      "tags": ["mây", "bầu trời", "bạn bè"],
-      "coverPath": null,
-      "durationSec": 240,
-      "paragraphCount": 6,
-      "isPremium": false,
-      "status": "published",
-      "version": 1,
-      "voiceId": null,
-      "ttsProvider": null,
-      "charCount": 560,
-      "sortOrder": 2,
-      "publishedAt": "2024-01-02T00:00:00Z",
-      "createdAt": "2024-01-02T00:00:00Z",
-      "updatedAt": "2024-01-02T00:00:00Z",
-      "updatedBy": null,
-      "content": {
-        "paragraphs": [
-          { "index": 0, "text": "Trên bầu trời xanh thẳm, có những đám mây trắng bồng bềnh." },
-          { "index": 1, "text": "Đám mây Bông gặp đám mây Xốp và cùng nhau chơi trò biến hình." },
-          { "index": 2, "text": "Bông biến thành con voi, Xốp biến thành con thuyền." },
-          { "index": 3, "text": "Gió nhẹ thổi qua, hai bạn mây cười khúc khích với nhau." },
-          { "index": 4, "text": "Khi hoàng hôn xuống, các đám mây nhuộm màu hồng rực rỡ." },
-          { "index": 5, "text": "Và tất cả chìm vào giấc ngủ, chờ một ngày mới tươi sáng hơn." }
-        ],
-        "fullAudioPath": null
-      }
-    },
-    {
-      "id": "story_star_lullaby",
-      "title": "Bài ca của những ngôi sao",
-      "slug": "bai-ca-cua-nhung-ngoi-sao",
-      "summary": "Mỗi đêm, những ngôi sao nhỏ hát ru cho các bé ngủ ngoan. Hãy lắng nghe bài ca kỳ diệu ấy.",
-      "categoryId": "lullaby",
-      "ageGroups": ["0_12m", "1_3y", "pregnancy"],
-      "tags": ["sao", "ru ngủ", "đêm"],
-      "coverPath": null,
-      "durationSec": 300,
-      "paragraphCount": 7,
-      "isPremium": true,
-      "status": "published",
-      "version": 1,
-      "voiceId": null,
-      "ttsProvider": null,
-      "charCount": 680,
-      "sortOrder": 3,
-      "publishedAt": "2024-01-03T00:00:00Z",
-      "createdAt": "2024-01-03T00:00:00Z",
-      "updatedAt": "2024-01-03T00:00:00Z",
-      "updatedBy": null,
-      "content": {
-        "paragraphs": [
-          { "index": 0, "text": "Khi màn đêm buông xuống, những ngôi sao nhỏ bắt đầu thức dậy." },
-          { "index": 1, "text": "Sao Bắc cất giọng trước, nhẹ nhàng và trong trẻo." },
-          { "index": 2, "text": "Sao Hôm tiếp nối, thêm vào những nốt nhạc dịu dàng." },
-          { "index": 3, "text": "Cả bầu trời như một dàn đồng ca khổng lồ, hát ru cho trái đất." },
-          { "index": 4, "text": "Những chú bé nghe tiếng hát, mắt từ từ khép lại." },
-          { "index": 5, "text": "Giấc mơ đẹp ùa về, đầy màu sắc và tiếng cười." },
-          { "index": 6, "text": "Đêm nay và mọi đêm, những ngôi sao vẫn hát, bảo vệ giấc ngủ của bé." }
-        ],
-        "fullAudioPath": null
-      }
-    }
-  ]
+    "categories": [
+        {
+            "id": "nature",
+            "name": "Thiên nhiên",
+            "slug": "thien-nhien",
+            "iconKey": "nature",
+            "sortOrder": 1,
+            "isActive": true
+        },
+        {
+            "id": "animals",
+            "name": "Động vật",
+            "slug": "dong-vat",
+            "iconKey": "animals",
+            "sortOrder": 2,
+            "isActive": true
+        },
+        {
+            "id": "fairy_tales",
+            "name": "Cổ tích",
+            "slug": "co-tich",
+            "iconKey": "fairy_tales",
+            "sortOrder": 3,
+            "isActive": true
+        },
+        {
+            "id": "lullaby",
+            "name": "Ru ngủ",
+            "slug": "ru-ngu",
+            "iconKey": "lullaby",
+            "sortOrder": 4,
+            "isActive": true
+        },
+        {
+            "id": "adventures",
+            "name": "Phiêu lưu",
+            "slug": "phieu-luu",
+            "iconKey": "adventures",
+            "sortOrder": 5,
+            "isActive": true
+        }
+    ],
+    "stories": [
+        {
+            "id": "story_little_bunny",
+            "title": "Chú thỏ nhỏ và ánh trăng",
+            "slug": "chu-tho-nho-va-anh-trang",
+            "summary": "Chú thỏ nhỏ không ngủ được vì ánh trăng quá sáng. Cùng xem thỏ làm gì để tìm giấc ngủ ngoan nhé.",
+            "categoryId": "animals",
+            "ageGroups": [
+                "0_12m",
+                "1_3y"
+            ],
+            "tags": [
+                "thỏ",
+                "trăng",
+                "ngủ"
+            ],
+            "coverPath": null,
+            "durationSec": 180,
+            "paragraphCount": 5,
+            "isPremium": false,
+            "status": "published",
+            "version": 1,
+            "voiceId": null,
+            "ttsProvider": null,
+            "charCount": 420,
+            "sortOrder": 1,
+            "publishedAt": "2024-01-01T00:00:00Z",
+            "createdAt": "2024-01-01T00:00:00Z",
+            "updatedAt": "2024-01-01T00:00:00Z",
+            "updatedBy": null,
+            "content": {
+                "paragraphs": [
+                    {
+                        "index": 0,
+                        "text": "Đêm nay, ánh trăng tròn chiếu sáng cả khu rừng nhỏ."
+                    },
+                    {
+                        "index": 1,
+                        "text": "Chú thỏ con nằm trong ổ nhưng mắt cứ mở to, không chịu nhắm lại."
+                    },
+                    {
+                        "index": 2,
+                        "text": "Mẹ thỏ đến bên, nhẹ nhàng hát một bài ru quen thuộc."
+                    },
+                    {
+                        "index": 3,
+                        "text": "Tiếng hát của mẹ như dòng suối mát, chảy vào giấc mơ êm đềm."
+                    },
+                    {
+                        "index": 4,
+                        "text": "Và chú thỏ con chìm vào giấc ngủ sâu, nụ cười nhỏ trên môi."
+                    }
+                ],
+                "fullAudioPath": null
+            }
+        },
+        {
+            "id": "story_cloud_friends",
+            "title": "Những đám mây bạn bè",
+            "slug": "nhung-dam-may-ban-be",
+            "summary": "Trên bầu trời cao, những đám mây kết bạn với nhau và cùng nhau tạo ra những hình thù thú vị.",
+            "categoryId": "nature",
+            "ageGroups": [
+                "1_3y",
+                "3_6y"
+            ],
+            "tags": [
+                "mây",
+                "bầu trời",
+                "bạn bè"
+            ],
+            "coverPath": null,
+            "durationSec": 240,
+            "paragraphCount": 6,
+            "isPremium": false,
+            "status": "published",
+            "version": 1,
+            "voiceId": null,
+            "ttsProvider": null,
+            "charCount": 560,
+            "sortOrder": 2,
+            "publishedAt": "2024-01-02T00:00:00Z",
+            "createdAt": "2024-01-02T00:00:00Z",
+            "updatedAt": "2024-01-02T00:00:00Z",
+            "updatedBy": null,
+            "content": {
+                "paragraphs": [
+                    {
+                        "index": 0,
+                        "text": "Trên bầu trời xanh thẳm, có những đám mây trắng bồng bềnh."
+                    },
+                    {
+                        "index": 1,
+                        "text": "Đám mây Bông gặp đám mây Xốp và cùng nhau chơi trò biến hình."
+                    },
+                    {
+                        "index": 2,
+                        "text": "Bông biến thành con voi, Xốp biến thành con thuyền."
+                    },
+                    {
+                        "index": 3,
+                        "text": "Gió nhẹ thổi qua, hai bạn mây cười khúc khích với nhau."
+                    },
+                    {
+                        "index": 4,
+                        "text": "Khi hoàng hôn xuống, các đám mây nhuộm màu hồng rực rỡ."
+                    },
+                    {
+                        "index": 5,
+                        "text": "Và tất cả chìm vào giấc ngủ, chờ một ngày mới tươi sáng hơn."
+                    }
+                ],
+                "fullAudioPath": null
+            }
+        },
+        {
+            "id": "story_star_lullaby",
+            "title": "Bài ca của những ngôi sao",
+            "slug": "bai-ca-cua-nhung-ngoi-sao",
+            "summary": "Mỗi đêm, những ngôi sao nhỏ hát ru cho các bé ngủ ngoan. Hãy lắng nghe bài ca kỳ diệu ấy.",
+            "categoryId": "lullaby",
+            "ageGroups": [
+                "0_12m",
+                "1_3y",
+                "pregnancy"
+            ],
+            "tags": [
+                "sao",
+                "ru ngủ",
+                "đêm"
+            ],
+            "coverPath": null,
+            "durationSec": 300,
+            "paragraphCount": 7,
+            "isPremium": true,
+            "status": "published",
+            "version": 1,
+            "voiceId": null,
+            "ttsProvider": null,
+            "charCount": 680,
+            "sortOrder": 3,
+            "publishedAt": "2024-01-03T00:00:00Z",
+            "createdAt": "2024-01-03T00:00:00Z",
+            "updatedAt": "2024-01-03T00:00:00Z",
+            "updatedBy": null,
+            "content": {
+                "paragraphs": [
+                    {
+                        "index": 0,
+                        "text": "Khi màn đêm buông xuống, những ngôi sao nhỏ bắt đầu thức dậy."
+                    },
+                    {
+                        "index": 1,
+                        "text": "Sao Bắc cất giọng trước, nhẹ nhàng và trong trẻo."
+                    },
+                    {
+                        "index": 2,
+                        "text": "Sao Hôm tiếp nối, thêm vào những nốt nhạc dịu dàng."
+                    },
+                    {
+                        "index": 3,
+                        "text": "Cả bầu trời như một dàn đồng ca khổng lồ, hát ru cho trái đất."
+                    },
+                    {
+                        "index": 4,
+                        "text": "Những chú bé nghe tiếng hát, mắt từ từ khép lại."
+                    },
+                    {
+                        "index": 5,
+                        "text": "Giấc mơ đẹp ùa về, đầy màu sắc và tiếng cười."
+                    },
+                    {
+                        "index": 6,
+                        "text": "Đêm nay và mọi đêm, những ngôi sao vẫn hát, bảo vệ giấc ngủ của bé."
+                    }
+                ],
+                "fullAudioPath": null
+            }
+        },
+        {
+            "id": "story_moon_lantern",
+            "title": "Cây đèn của ông Trăng",
+            "slug": "cay-den-cua-ong-trang",
+            "summary": "Một chú đom đóm nhỏ bị lạc đường về nhà. Ông Trăng đã làm gì để soi đường cho chú tìm về tổ ấm?",
+            "categoryId": "fairy_tales",
+            "ageGroups": [
+                "1_3y",
+                "3_6y"
+            ],
+            "tags": [
+                "ông trăng",
+                "đom đóm",
+                "cổ tích"
+            ],
+            "coverPath": null,
+            "durationSec": 214,
+            "paragraphCount": 6,
+            "isPremium": false,
+            "status": "published",
+            "version": 1,
+            "voiceId": null,
+            "ttsProvider": null,
+            "charCount": 500,
+            "sortOrder": 4,
+            "publishedAt": "2024-02-01T00:00:00Z",
+            "createdAt": "2024-02-01T00:00:00Z",
+            "updatedAt": "2024-02-01T00:00:00Z",
+            "updatedBy": null,
+            "content": {
+                "paragraphs": [
+                    {
+                        "index": 0,
+                        "text": "Ngày xưa, có một chú đom đóm nhỏ bay mãi trong rừng mà không tìm được đường về."
+                    },
+                    {
+                        "index": 1,
+                        "text": "Trời tối dần, chú đom đóm run rẩy đậu lên một cành lá, bụng đèn của chú cũng mờ đi vì mệt."
+                    },
+                    {
+                        "index": 2,
+                        "text": "Ông Trăng nhìn thấy, bèn treo cây đèn sáng của mình lên cao nhất ngọn cây."
+                    },
+                    {
+                        "index": 3,
+                        "text": "Ánh sáng dịu dàng của ông Trăng rọi xuống, chỉ cho chú đom đóm con đường nhỏ về tổ."
+                    },
+                    {
+                        "index": 4,
+                        "text": "Chú đom đóm cảm ơn ông Trăng, rồi nhẹ nhàng chui vào chiếc lá ấm nơi mẹ đang chờ."
+                    },
+                    {
+                        "index": 5,
+                        "text": "Từ đêm đó, ông Trăng luôn treo đèn thật cao, để không bé nào phải lạc đường về giấc ngủ."
+                    }
+                ],
+                "fullAudioPath": null
+            }
+        },
+        {
+            "id": "story_tiny_mermaid_pearl",
+            "title": "Nàng tiên cá tí hon và viên ngọc ngủ",
+            "slug": "nang-tien-ca-ti-hon-va-vien-ngoc-ngu",
+            "summary": "Nàng tiên cá tí hon tìm thấy một viên ngọc lấp lánh dưới đáy biển. Viên ngọc ấy có điều gì kỳ diệu?",
+            "categoryId": "fairy_tales",
+            "ageGroups": [
+                "1_3y",
+                "3_6y"
+            ],
+            "tags": [
+                "tiên cá",
+                "biển",
+                "cổ tích"
+            ],
+            "coverPath": null,
+            "durationSec": 221,
+            "paragraphCount": 6,
+            "isPremium": true,
+            "status": "published",
+            "version": 1,
+            "voiceId": null,
+            "ttsProvider": null,
+            "charCount": 515,
+            "sortOrder": 5,
+            "publishedAt": "2024-02-02T00:00:00Z",
+            "createdAt": "2024-02-02T00:00:00Z",
+            "updatedAt": "2024-02-02T00:00:00Z",
+            "updatedBy": null,
+            "content": {
+                "paragraphs": [
+                    {
+                        "index": 0,
+                        "text": "Dưới đáy biển xanh thẳm, có một nàng tiên cá tí hon tên là Lam, nhỏ hơn cả một chiếc vỏ sò."
+                    },
+                    {
+                        "index": 1,
+                        "text": "Một ngày, Lam tìm thấy viên ngọc trắng sáng lấp lánh nằm giữa đám rong biển."
+                    },
+                    {
+                        "index": 2,
+                        "text": "Khi Lam chạm vào viên ngọc, cả vùng biển quanh đó dịu lại, những đợt sóng cũng thì thầm nhẹ hơn."
+                    },
+                    {
+                        "index": 3,
+                        "text": "Lam mang viên ngọc đến từng rạn san hô, nơi những chú cá nhỏ đang khó ngủ vì sóng ồn."
+                    },
+                    {
+                        "index": 4,
+                        "text": "Viên ngọc tỏa ra ánh sáng êm như ánh trăng, ru các chú cá vào giấc mơ yên bình."
+                    },
+                    {
+                        "index": 5,
+                        "text": "Và Lam cũng ôm viên ngọc vào lòng, chìm vào giấc ngủ ngọt ngào giữa lòng đại dương."
+                    }
+                ],
+                "fullAudioPath": null
+            }
+        },
+        {
+            "id": "story_dreamland_train",
+            "title": "Chuyến tàu đến xứ sở giấc mơ",
+            "slug": "chuyen-tau-den-xu-so-giac-mo",
+            "summary": "Một chuyến tàu đặc biệt chỉ chạy vào ban đêm, đưa các bé đến xứ sở toàn những giấc mơ đẹp.",
+            "categoryId": "adventures",
+            "ageGroups": [
+                "1_3y",
+                "3_6y"
+            ],
+            "tags": [
+                "tàu hỏa",
+                "giấc mơ",
+                "phiêu lưu"
+            ],
+            "coverPath": null,
+            "durationSec": 199,
+            "paragraphCount": 6,
+            "isPremium": false,
+            "status": "published",
+            "version": 1,
+            "voiceId": null,
+            "ttsProvider": null,
+            "charCount": 465,
+            "sortOrder": 6,
+            "publishedAt": "2024-02-03T00:00:00Z",
+            "createdAt": "2024-02-03T00:00:00Z",
+            "updatedAt": "2024-02-03T00:00:00Z",
+            "updatedBy": null,
+            "content": {
+                "paragraphs": [
+                    {
+                        "index": 0,
+                        "text": "Khi kim đồng hồ chỉ đúng chín giờ tối, một chuyến tàu nhỏ xịch đến đón các bé đang buồn ngủ."
+                    },
+                    {
+                        "index": 1,
+                        "text": "Tàu chạy êm êm qua cánh đồng sao, nơi từng vì sao nhỏ vẫy tay chào."
+                    },
+                    {
+                        "index": 2,
+                        "text": "Qua một khu rừng thông, tàu dừng lại đón thêm vài chú thỏ cũng đang ngáp ngắn ngáp dài."
+                    },
+                    {
+                        "index": 3,
+                        "text": "Cứ thế, tàu đi qua ngọn núi mây, qua dòng sông lấp lánh ánh bạc."
+                    },
+                    {
+                        "index": 4,
+                        "text": "Cuối cùng, tàu đến xứ sở giấc mơ, nơi có những đám mây êm như gối bông."
+                    },
+                    {
+                        "index": 5,
+                        "text": "Các bé bước xuống tàu, nằm lên đám mây êm ái, và chìm vào một giấc mơ thật đẹp."
+                    }
+                ],
+                "fullAudioPath": null
+            }
+        },
+        {
+            "id": "story_leaf_boat_river",
+            "title": "Chiếc thuyền lá và dòng sông trăng",
+            "slug": "chiec-thuyen-la-va-dong-song-trang",
+            "summary": "Một chiếc thuyền làm từ lá sen nhỏ xuôi theo dòng sông được ánh trăng dát bạc, mang theo một hạt giống đi tìm nơi ngủ.",
+            "categoryId": "adventures",
+            "ageGroups": [
+                "0_12m",
+                "1_3y"
+            ],
+            "tags": [
+                "thuyền lá",
+                "dòng sông",
+                "ánh trăng"
+            ],
+            "coverPath": null,
+            "durationSec": 200,
+            "paragraphCount": 6,
+            "isPremium": false,
+            "status": "published",
+            "version": 1,
+            "voiceId": null,
+            "ttsProvider": null,
+            "charCount": 467,
+            "sortOrder": 7,
+            "publishedAt": "2024-02-04T00:00:00Z",
+            "createdAt": "2024-02-04T00:00:00Z",
+            "updatedAt": "2024-02-04T00:00:00Z",
+            "updatedBy": null,
+            "content": {
+                "paragraphs": [
+                    {
+                        "index": 0,
+                        "text": "Trên một chiếc lá sen nhỏ, có một hạt giống bé xíu đang tìm một nơi để ngủ qua đêm."
+                    },
+                    {
+                        "index": 1,
+                        "text": "Chiếc lá sen trôi êm đềm theo dòng sông được ánh trăng rải bạc lên mặt nước."
+                    },
+                    {
+                        "index": 2,
+                        "text": "Đi qua khúc sông có đàn đom đóm bay lượn, hạt giống khe khẽ vẫy chào."
+                    },
+                    {
+                        "index": 3,
+                        "text": "Dòng sông chảy chậm dần, chậm dần, như đang hát một bài ru nho nhỏ."
+                    },
+                    {
+                        "index": 4,
+                        "text": "Chiếc lá sen dừng lại bên một bờ cát mềm, nơi có ánh trăng chiếu sáng dịu dàng nhất."
+                    },
+                    {
+                        "index": 5,
+                        "text": "Hạt giống nhắm mắt lại, ngủ một giấc thật sâu, mơ về ngày mai sẽ nảy mầm thành hoa."
+                    }
+                ],
+                "fullAudioPath": null
+            }
+        },
+        {
+            "id": "story_bear_cub_blanket",
+            "title": "Chú gấu con tìm chiếc chăn ấm",
+            "slug": "chu-gau-con-tim-chiec-chan-am",
+            "summary": "Gấu con làm rơi chiếc chăn yêu thích trên đường về hang. Các bạn trong rừng đã giúp gấu con như thế nào?",
+            "categoryId": "animals",
+            "ageGroups": [
+                "0_12m",
+                "1_3y"
+            ],
+            "tags": [
+                "gấu con",
+                "rừng",
+                "bạn bè"
+            ],
+            "coverPath": null,
+            "durationSec": 206,
+            "paragraphCount": 6,
+            "isPremium": false,
+            "status": "published",
+            "version": 1,
+            "voiceId": null,
+            "ttsProvider": null,
+            "charCount": 480,
+            "sortOrder": 8,
+            "publishedAt": "2024-02-05T00:00:00Z",
+            "createdAt": "2024-02-05T00:00:00Z",
+            "updatedAt": "2024-02-05T00:00:00Z",
+            "updatedBy": null,
+            "content": {
+                "paragraphs": [
+                    {
+                        "index": 0,
+                        "text": "Gấu con tung tăng chạy về hang sau một ngày dài chơi đùa trong rừng."
+                    },
+                    {
+                        "index": 1,
+                        "text": "Nhưng khi đến cửa hang, gấu con chợt nhận ra chiếc chăn bông yêu thích của mình đã rơi mất đâu rồi."
+                    },
+                    {
+                        "index": 2,
+                        "text": "Sóc nhỏ nghe thấy, liền chạy đi tìm cùng gấu con, lục tung từng đám lá khô."
+                    },
+                    {
+                        "index": 3,
+                        "text": "Nhím con cũng góp sức, nhẹ nhàng dò tìm dưới những gốc cây mà không làm đau ai."
+                    },
+                    {
+                        "index": 4,
+                        "text": "Cuối cùng, các bạn tìm thấy chiếc chăn mắc trên một bụi cây nhỏ gần suối."
+                    },
+                    {
+                        "index": 5,
+                        "text": "Gấu con ôm chặt chiếc chăn ấm, cảm ơn các bạn, rồi cuộn mình ngủ ngon trong hang."
+                    }
+                ],
+                "fullAudioPath": null
+            }
+        },
+        {
+            "id": "story_last_raindrop",
+            "title": "Giọt mưa cuối cùng",
+            "slug": "giot-mua-cuoi-cung",
+            "summary": "Sau cơn mưa, một giọt nước nhỏ còn đọng lại trên cánh hoa. Giọt mưa ấy đã ngủ một giấc như thế nào?",
+            "categoryId": "nature",
+            "ageGroups": [
+                "0_12m",
+                "1_3y",
+                "pregnancy"
+            ],
+            "tags": [
+                "mưa",
+                "hoa",
+                "thiên nhiên"
+            ],
+            "coverPath": null,
+            "durationSec": 195,
+            "paragraphCount": 6,
+            "isPremium": false,
+            "status": "published",
+            "version": 1,
+            "voiceId": null,
+            "ttsProvider": null,
+            "charCount": 455,
+            "sortOrder": 9,
+            "publishedAt": "2024-02-06T00:00:00Z",
+            "createdAt": "2024-02-06T00:00:00Z",
+            "updatedAt": "2024-02-06T00:00:00Z",
+            "updatedBy": null,
+            "content": {
+                "paragraphs": [
+                    {
+                        "index": 0,
+                        "text": "Sau một cơn mưa rào, bầu trời dần quang đãng và những đám mây bay đi hết."
+                    },
+                    {
+                        "index": 1,
+                        "text": "Chỉ còn một giọt mưa nhỏ nán lại, đọng tròn trên cánh hoa hồng mềm mại."
+                    },
+                    {
+                        "index": 2,
+                        "text": "Giọt mưa lấp lánh dưới ánh hoàng hôn, như một viên pha lê nhỏ xíu."
+                    },
+                    {
+                        "index": 3,
+                        "text": "Cánh hoa nhẹ nhàng khép lại, ôm giọt mưa vào trong như một chiếc nôi êm ái."
+                    },
+                    {
+                        "index": 4,
+                        "text": "Gió thổi qua rất nhẹ, khiến cả cánh hoa và giọt mưa cùng đung đưa khe khẽ."
+                    },
+                    {
+                        "index": 5,
+                        "text": "Và giọt mưa cuối cùng ấy chìm vào giấc ngủ ngọt ngào, trong vòng tay dịu dàng của cánh hoa."
+                    }
+                ],
+                "fullAudioPath": null
+            }
+        }
+    ]
 }

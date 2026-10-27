@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:just_audio_background/just_audio_background.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../data/bedtime_audio_controller.dart';
 
 class BedtimeLullabyScreen extends StatefulWidget {
   const BedtimeLullabyScreen({super.key});
@@ -15,64 +14,44 @@ class BedtimeLullabyScreen extends StatefulWidget {
 }
 
 class _BedtimeLullabyScreenState extends State<BedtimeLullabyScreen> {
-  String? _playingTitle;
-  final _players = <String, AudioPlayer>{};
+  String? get _playingTitle => BedtimeAudioController.instance.playingTitle.value;
+  String? get _loadingTitle => BedtimeAudioController.instance.loadingTitle.value;
+
+  @override
+  void initState() {
+    super.initState();
+    BedtimeAudioController.instance.playingTitle.addListener(_onAudioStateChanged);
+    BedtimeAudioController.instance.loadingTitle.addListener(_onAudioStateChanged);
+  }
 
   @override
   void dispose() {
-    for (final p in _players.values) {
-      p.dispose();
-    }
+    BedtimeAudioController.instance.playingTitle.removeListener(_onAudioStateChanged);
+    BedtimeAudioController.instance.loadingTitle.removeListener(_onAudioStateChanged);
     super.dispose();
   }
 
+  void _onAudioStateChanged() {
+    if (mounted) setState(() {});
+  }
+
   Future<void> _togglePlay(_Lullaby lullaby) async {
-    // Stop whatever is currently playing — only one lullaby at a time.
-    if (_playingTitle != null && _playingTitle != lullaby.title) {
-      await _players[_playingTitle]?.stop();
-    }
-
-    if (_playingTitle == lullaby.title) {
-      await _players[lullaby.title]?.stop();
-      if (mounted) setState(() => _playingTitle = null);
-      return;
-    }
-
     if (lullaby.audioUrl.isEmpty) {
-      if (mounted) {
-        setState(() => _playingTitle = null);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Chưa có file nhạc cho "${lullaby.title}"')),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Chưa có file nhạc cho "${lullaby.title}"')),
+      );
       return;
     }
 
     try {
-      final player = _players[lullaby.title] ??= AudioPlayer();
-      await player.setAudioSource(
-        AudioSource.uri(
-          Uri.parse(lullaby.audioUrl),
-          tag: MediaItem(
-            id: lullaby.title,
-            album: 'MeBé — Nhạc ru',
-            title: lullaby.title,
-          ),
-        ),
+      await BedtimeAudioController.instance.toggle(
+        title: lullaby.title,
+        audioUrl: lullaby.audioUrl,
+        album: 'MeBé — Nhạc ru',
+        loop: false,
       );
-      await player.play();
-      if (!mounted) return;
-      setState(() => _playingTitle = lullaby.title);
-      player.playerStateStream.listen((state) {
-        if (state.processingState == ProcessingState.completed) {
-          if (mounted && _playingTitle == lullaby.title) {
-            setState(() => _playingTitle = null);
-          }
-        }
-      });
     } catch (e) {
       if (mounted) {
-        setState(() => _playingTitle = null);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Không thể phát nhạc: $e')),
         );
@@ -183,6 +162,7 @@ class _BedtimeLullabyScreenState extends State<BedtimeLullabyScreen> {
                   .map((l) => _LullabyTile(
                         lullaby: l,
                         isPlaying: _playingTitle == l.title,
+                        isLoading: _loadingTitle == l.title,
                         onTap: () => _togglePlay(l),
                       ))
                   .toList(),
@@ -205,6 +185,7 @@ class _BedtimeLullabyScreenState extends State<BedtimeLullabyScreen> {
                   .map((l) => _LullabyTile(
                         lullaby: l,
                         isPlaying: _playingTitle == l.title,
+                        isLoading: _loadingTitle == l.title,
                         onTap: () => _togglePlay(l),
                       ))
                   .toList(),
@@ -243,6 +224,12 @@ const _instrumentals = [
       audioUrl: '${_storageBase}gio_dua_mo.mp3?alt=media'),
   _Lullaby('Chốn Mộng Mơ', '02:12', false,
       audioUrl: '${_storageBase}chon_mong_mo.mp3?alt=media'),
+  _Lullaby('Hộp Nhạc Nhỏ', '00:40', false,
+      audioUrl: '${_storageBase}hop_nhac_nho.mp3?alt=media'),
+  _Lullaby('Ngủ Ngon Con Nhé', '00:36', false,
+      audioUrl: '${_storageBase}ngu_ngon_con_nhe.mp3?alt=media'),
+  _Lullaby('Phím Đàn Yên Bình', '02:45', false,
+      audioUrl: '${_storageBase}phim_dan_yen_binh.mp3?alt=media'),
 ];
 
 // TODO(audio-content): no free-licensed Vietnamese vocal lullaby recordings
@@ -261,10 +248,12 @@ class _LullabyTile extends StatelessWidget {
   const _LullabyTile({
     required this.lullaby,
     required this.isPlaying,
+    required this.isLoading,
     required this.onTap,
   });
   final _Lullaby lullaby;
   final bool isPlaying;
+  final bool isLoading;
   final VoidCallback onTap;
 
   @override
@@ -326,15 +315,23 @@ class _LullabyTile extends StatelessWidget {
           Container(
             width: 40,
             height: 40,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.lilac,
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              isPlaying ? Icons.pause : Icons.play_arrow,
-              color: AppColors.nightDeep,
-              size: 22,
-            ),
+            child: isLoading
+                ? const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      valueColor: AlwaysStoppedAnimation(AppColors.nightDeep),
+                    ),
+                  )
+                : Icon(
+                    isPlaying ? Icons.pause : Icons.play_arrow,
+                    color: AppColors.nightDeep,
+                    size: 22,
+                  ),
           ),
         ],
       ),

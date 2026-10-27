@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:just_audio_background/just_audio_background.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../data/bedtime_audio_controller.dart';
 
 class BedtimeSoundsScreen extends StatefulWidget {
   const BedtimeSoundsScreen({super.key});
@@ -16,62 +15,49 @@ class BedtimeSoundsScreen extends StatefulWidget {
 
 class _BedtimeSoundsScreenState extends State<BedtimeSoundsScreen> {
   String _selectedCategory = '';
-  String? _playingTitle;
-  final _players = <String, AudioPlayer>{};
+
+  String? get _playingTitle => BedtimeAudioController.instance.playingTitle.value;
+  String? get _loadingTitle => BedtimeAudioController.instance.loadingTitle.value;
 
   List<_Sound> get _filtered => _selectedCategory.isEmpty
       ? _sounds
       : _sounds.where((s) => s.category == _selectedCategory).toList();
 
   @override
+  void initState() {
+    super.initState();
+    BedtimeAudioController.instance.playingTitle.addListener(_onAudioStateChanged);
+    BedtimeAudioController.instance.loadingTitle.addListener(_onAudioStateChanged);
+  }
+
+  @override
   void dispose() {
-    for (final p in _players.values) {
-      p.dispose();
-    }
+    BedtimeAudioController.instance.playingTitle.removeListener(_onAudioStateChanged);
+    BedtimeAudioController.instance.loadingTitle.removeListener(_onAudioStateChanged);
     super.dispose();
   }
 
+  void _onAudioStateChanged() {
+    if (mounted) setState(() {});
+  }
+
   Future<void> _togglePlay(_Sound sound) async {
-    // Stop whatever is currently playing — only one sound at a time.
-    if (_playingTitle != null && _playingTitle != sound.title) {
-      await _players[_playingTitle]?.stop();
-    }
-
-    if (_playingTitle == sound.title) {
-      await _players[sound.title]?.stop();
-      if (mounted) setState(() => _playingTitle = null);
-      return;
-    }
-
     if (sound.audioUrl.isEmpty) {
-      if (mounted) {
-        setState(() => _playingTitle = null);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Chưa có file âm thanh cho "${sound.title}"')),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Chưa có file âm thanh cho "${sound.title}"')),
+      );
       return;
     }
 
     try {
-      final player = _players[sound.title] ??= AudioPlayer();
-      await player.setAudioSource(
-        AudioSource.uri(
-          Uri.parse(sound.audioUrl),
-          tag: MediaItem(
-            id: sound.title,
-            album: 'MeBé — Âm thanh thư giãn',
-            title: sound.title,
-          ),
-        ),
+      await BedtimeAudioController.instance.toggle(
+        title: sound.title,
+        audioUrl: sound.audioUrl,
+        album: 'MeBé — Âm thanh thư giãn',
+        loop: true,
       );
-      await player.setLoopMode(LoopMode.one);
-      await player.play();
-      if (!mounted) return;
-      setState(() => _playingTitle = sound.title);
     } catch (e) {
       if (mounted) {
-        setState(() => _playingTitle = null);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Không thể phát âm thanh: $e')),
         );
@@ -248,6 +234,7 @@ class _BedtimeSoundsScreenState extends State<BedtimeSoundsScreen> {
                   return _SoundCard(
                     sound: sound,
                     isPlaying: _playingTitle == sound.title,
+                    isLoading: _loadingTitle == sound.title,
                     onTap: () => _togglePlay(sound),
                   );
                 },
@@ -279,6 +266,9 @@ const _categories = [
   _CategoryItem('wind', 'Gió', '🌬️'),
   _CategoryItem('fire', 'Lửa', '🔥'),
   _CategoryItem('white', 'White noise', '📺'),
+  _CategoryItem('nature', 'Thiên nhiên', '🌲'),
+  _CategoryItem('water', 'Nước chảy', '💧'),
+  _CategoryItem('heartbeat', 'Nhịp tim', '💓'),
 ];
 
 class _Sound {
@@ -313,6 +303,14 @@ const _sounds = [
       audioUrl: '${_storageBase}vacuum.mp3?alt=media'),
   _Sound('Máy sấy tóc', '💨', [Color(0xFFFFD3B6), Color(0xFFFF9A3C)], 'wind',
       audioUrl: '${_storageBase}hairdryer.mp3?alt=media'),
+  _Sound('Mưa giông', '⛈️', [Color(0xFF5C6BC0), Color(0xFF283593)], 'rain',
+      audioUrl: '${_storageBase}thunderstorm.mp3?alt=media'),
+  _Sound('Côn trùng đêm', '🦗', [Color(0xFF81C784), Color(0xFF2E7D32)], 'nature',
+      audioUrl: '${_storageBase}crickets.mp3?alt=media'),
+  _Sound('Suối chảy', '💧', [Color(0xFF80DEEA), Color(0xFF00838F)], 'water',
+      audioUrl: '${_storageBase}river.mp3?alt=media'),
+  _Sound('Nhịp tim', '💓', [Color(0xFFFFAB91), Color(0xFFD84315)], 'heartbeat',
+      audioUrl: '${_storageBase}heartbeat.mp3?alt=media'),
 ];
 
 // ── Sound Card ────────────────────────────────────────────────────────────────
@@ -321,10 +319,12 @@ class _SoundCard extends StatefulWidget {
   const _SoundCard({
     required this.sound,
     required this.isPlaying,
+    required this.isLoading,
     required this.onTap,
   });
   final _Sound sound;
   final bool isPlaying;
+  final bool isLoading;
   final VoidCallback onTap;
 
   @override
@@ -388,11 +388,19 @@ class _SoundCardState extends State<_SoundCard> {
                   color: AppColors.white.withValues(alpha: 0.25),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  widget.isPlaying ? Icons.pause : Icons.play_arrow,
-                  color: AppColors.white,
-                  size: 28,
-                ),
+                child: widget.isLoading
+                    ? const Padding(
+                        padding: EdgeInsets.all(14),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                          valueColor: AlwaysStoppedAnimation(AppColors.white),
+                        ),
+                      )
+                    : Icon(
+                        widget.isPlaying ? Icons.pause : Icons.play_arrow,
+                        color: AppColors.white,
+                        size: 28,
+                      ),
               ),
             ),
             // Title at bottom
