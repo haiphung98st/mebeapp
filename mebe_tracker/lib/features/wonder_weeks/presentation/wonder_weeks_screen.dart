@@ -116,7 +116,7 @@ class _WonderWeeksHeader extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Tuần ${currentWeek} từ dự sinh',
+                      'Tuần $currentWeek từ dự sinh',
                       style: AppTextStyles.bodyMd.copyWith(
                         color: AppColors.lilac,
                       ),
@@ -184,7 +184,7 @@ class _StormBanner extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white12,
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-        border: Border.all(color: AppColors.lilac.withOpacity(0.4)),
+        border: Border.all(color: AppColors.lilac.withValues(alpha: 0.4)),
       ),
       child: Row(
         children: [
@@ -273,7 +273,7 @@ class _LeapCard extends StatelessWidget {
           padding: const EdgeInsets.all(AppSpacing.lg),
           decoration: BoxDecoration(
             color: isActive
-                ? const Color(0xFF5B3A8A).withOpacity(0.08)
+                ? const Color(0xFF5B3A8A).withValues(alpha: 0.08)
                 : AppColors.white,
             borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
             border: Border.all(
@@ -311,8 +311,8 @@ class _LeapCard extends StatelessWidget {
                             ),
                             decoration: BoxDecoration(
                               color: state.status == LeapStatus.stormy
-                                  ? AppColors.warning.withOpacity(0.15)
-                                  : AppColors.mint.withOpacity(0.15),
+                                  ? AppColors.warning.withValues(alpha: 0.15)
+                                  : AppColors.mint.withValues(alpha: 0.15),
                               borderRadius:
                                   BorderRadius.circular(AppSpacing.radiusFull),
                             ),
@@ -372,12 +372,12 @@ class _LeapBadge extends StatelessWidget {
     MeBeIconType? statusIcon;
     switch (status) {
       case LeapStatus.stormy:
-        bg = AppColors.warning.withOpacity(0.15);
+        bg = AppColors.warning.withValues(alpha: 0.15);
         fg = AppColors.warning;
         statusIcon = MeBeIconType.wonderWeeksStormy;
         break;
       case LeapStatus.sunny:
-        bg = AppColors.mint.withOpacity(0.15);
+        bg = AppColors.mint.withValues(alpha: 0.15);
         fg = AppColors.success;
         statusIcon = MeBeIconType.wonderWeeksCalm;
         break;

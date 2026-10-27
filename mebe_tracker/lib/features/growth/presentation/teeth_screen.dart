@@ -62,7 +62,7 @@ class TeethScreen extends ConsumerWidget {
                     onToothTap: (def) => _showToothSheet(context, ref, def, eruptions),
                   ),
                   const SizedBox(height: AppSpacing.lg),
-                  _ToothLegend(),
+                  const _ToothLegend(),
                   const SizedBox(height: AppSpacing.lg),
                   _EruptionTimeline(eruptions: eruptions),
                 ],
@@ -182,7 +182,7 @@ class _TeethDiagram extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
         boxShadow: [
           BoxShadow(
-            color: AppColors.mint.withOpacity(0.12),
+            color: AppColors.mint.withValues(alpha: 0.12),
             blurRadius: 12,
             offset: const Offset(0, 3),
           ),
@@ -213,7 +213,7 @@ class _TeethDiagram extends StatelessWidget {
             onTap: onToothTap,
           ),
           const SizedBox(height: AppSpacing.sm),
-          Divider(color: AppColors.divider, thickness: 1.5),
+          const Divider(color: AppColors.divider, thickness: 1.5),
           const SizedBox(height: AppSpacing.sm),
           _JawRow(
             teeth: _lowerRowOrder(),
@@ -322,17 +322,17 @@ class _ToothCell extends StatelessWidget {
 }
 
 class _ToothLegend extends StatelessWidget {
-  _ToothLegend();
+  const _ToothLegend();
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _LegendDot(color: AppColors.success, label: 'Đã mọc'),
-        const SizedBox(width: AppSpacing.lg),
+        SizedBox(width: AppSpacing.lg),
         _LegendDot(color: AppColors.warning, label: 'Sắp mọc'),
-        const SizedBox(width: AppSpacing.lg),
+        SizedBox(width: AppSpacing.lg),
         _LegendDot(color: AppColors.muted, label: 'Chưa mọc'),
       ],
     );

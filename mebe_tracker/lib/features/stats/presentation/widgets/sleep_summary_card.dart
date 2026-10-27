@@ -32,7 +32,7 @@ class SleepSummaryCard extends ConsumerWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-        boxShadow: [BoxShadow(color: AppColors.divider, blurRadius: 8, offset: const Offset(0, 2))],
+        boxShadow: const [BoxShadow(color: AppColors.divider, blurRadius: 8, offset: Offset(0, 2))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,10 +97,10 @@ class SleepSummaryCard extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),
-              Row(
+              const Row(
                 children: [
                   _LegendDot(color: AppColors.mint, label: 'Ngủ ngày'),
-                  const SizedBox(width: AppSpacing.md),
+                  SizedBox(width: AppSpacing.md),
                   _LegendDot(color: AppColors.lavender, label: 'Ngủ đêm'),
                 ],
               ),

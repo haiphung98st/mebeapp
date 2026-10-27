@@ -225,7 +225,7 @@ class _ColorSection extends StatelessWidget {
           spacing: AppSpacing.sm,
           runSpacing: AppSpacing.sm,
           children: colors.map((c) {
-            final isSelected = c.value == selected.value;
+            final isSelected = c.toARGB32() == selected.toARGB32();
             return GestureDetector(
               onTap: () => onSelect(c),
               child: AnimatedContainer(
@@ -242,7 +242,7 @@ class _ColorSection extends StatelessWidget {
                   boxShadow: isSelected
                       ? [
                           BoxShadow(
-                            color: AppColors.blossom.withOpacity(0.3),
+                            color: AppColors.blossom.withValues(alpha: 0.3),
                             blurRadius: 8,
                           )
                         ]

@@ -85,7 +85,7 @@ class _TimeOfDayListTileState extends State<TimeOfDayListTile>
               value: widget.config.enabled,
               onChanged: (v) =>
                   widget.onChanged(widget.config.copyWith(enabled: v)),
-              activeColor: AppColors.blossom,
+              activeThumbColor: AppColors.blossom,
             ),
             const SizedBox(width: AppSpacing.sm),
             Expanded(

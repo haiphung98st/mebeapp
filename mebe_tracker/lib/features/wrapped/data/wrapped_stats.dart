@@ -70,9 +70,15 @@ class WrappedStats {
 
     // Busy hour from all events
     final hourCounts = List<int>.filled(24, 0);
-    for (final e in yFeedings) hourCounts[e.startTime.hour]++;
-    for (final e in ySleeps) hourCounts[e.startTime.hour]++;
-    for (final e in yDiapers) hourCounts[e.time.hour]++;
+    for (final e in yFeedings) {
+      hourCounts[e.startTime.hour]++;
+    }
+    for (final e in ySleeps) {
+      hourCounts[e.startTime.hour]++;
+    }
+    for (final e in yDiapers) {
+      hourCounts[e.time.hour]++;
+    }
     int busiestHour = 0;
     for (var i = 1; i < 24; i++) {
       if (hourCounts[i] > hourCounts[busiestHour]) busiestHour = i;
@@ -80,9 +86,15 @@ class WrappedStats {
 
     // Busiest day of week
     final dayCounts = List<int>.filled(7, 0);
-    for (final e in yFeedings) dayCounts[e.startTime.weekday % 7]++;
-    for (final e in ySleeps) dayCounts[e.startTime.weekday % 7]++;
-    for (final e in yDiapers) dayCounts[e.time.weekday % 7]++;
+    for (final e in yFeedings) {
+      dayCounts[e.startTime.weekday % 7]++;
+    }
+    for (final e in ySleeps) {
+      dayCounts[e.startTime.weekday % 7]++;
+    }
+    for (final e in yDiapers) {
+      dayCounts[e.time.weekday % 7]++;
+    }
     int busiestDayIdx = 0;
     for (var i = 1; i < 7; i++) {
       if (dayCounts[i] > dayCounts[busiestDayIdx]) busiestDayIdx = i;
@@ -92,9 +104,15 @@ class WrappedStats {
 
     // Unique days with at least one log
     final uniqueDays = <String>{};
-    for (final e in yFeedings) uniqueDays.add(_dayKey(e.startTime));
-    for (final e in ySleeps) uniqueDays.add(_dayKey(e.startTime));
-    for (final e in yDiapers) uniqueDays.add(_dayKey(e.time));
+    for (final e in yFeedings) {
+      uniqueDays.add(_dayKey(e.startTime));
+    }
+    for (final e in ySleeps) {
+      uniqueDays.add(_dayKey(e.startTime));
+    }
+    for (final e in yDiapers) {
+      uniqueDays.add(_dayKey(e.time));
+    }
 
     return WrappedStats(
       year: year,
@@ -132,7 +150,7 @@ class WrappedStats {
   String get longestSleepStr {
     final h = longestSleepMinutes ~/ 60;
     final m = longestSleepMinutes % 60;
-    if (h == 0) return '${m} phút';
+    if (h == 0) return '$m phút';
     return m == 0 ? '$h tiếng' : '$h tiếng $m phút';
   }
 

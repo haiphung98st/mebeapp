@@ -3,7 +3,6 @@ import 'package:uuid/uuid.dart';
 
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
-import '../../../shared/services/firestore_service.dart';
 import 'mood_entry.dart';
 
 final allMoodsProvider = StreamProvider<List<MoodEntry>>((ref) {

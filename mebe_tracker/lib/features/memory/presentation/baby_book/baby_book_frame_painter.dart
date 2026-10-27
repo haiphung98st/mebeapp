@@ -41,13 +41,13 @@ class BabyBookPagePainter extends CustomPainter {
   void _paintMonthlyAlbum(Canvas canvas) {
     canvas.drawRect(const Rect.fromLTWH(0, 0, width, height), Paint()..color = const Color(0xFFFFF6FA));
 
-    final mainRect = const Rect.fromLTWH(100, 100, 1280, 1660);
+    const mainRect = Rect.fromLTWH(100, 100, 1280, 1660);
     _drawPhoto(canvas, mainRect, mainPhoto, radius: 32, borderColor: Colors.white, borderWidth: 14);
 
-    final textX = 1480.0;
-    _drawText(canvas, data.title, Offset(textX, 160), fontSize: 34, fontWeight: FontWeight.w700, color: const Color(0xFFF472A0), align: TextAlign.left);
-    _drawText(canvas, data.babyName, Offset(textX, 220), fontSize: 76, fontWeight: FontWeight.w900, color: const Color(0xFF8B2252), align: TextAlign.left);
-    _drawText(canvas, data.dateRange, Offset(textX, 320), fontSize: 32, color: const Color(0xFFB86A8C), align: TextAlign.left);
+    const textX = 1480.0;
+    _drawText(canvas, data.title, const Offset(textX, 160), fontSize: 34, fontWeight: FontWeight.w700, color: const Color(0xFFF472A0), align: TextAlign.left);
+    _drawText(canvas, data.babyName, const Offset(textX, 220), fontSize: 76, fontWeight: FontWeight.w900, color: const Color(0xFF8B2252), align: TextAlign.left);
+    _drawText(canvas, data.dateRange, const Offset(textX, 320), fontSize: 32, color: const Color(0xFFB86A8C), align: TextAlign.left);
 
     var statsY = 420.0;
     for (final stat in [
@@ -64,7 +64,7 @@ class BabyBookPagePainter extends CustomPainter {
     }
 
     if (data.tagline != null) {
-      _drawText(canvas, '"${data.tagline}"', Offset(textX, height - 260), fontSize: 34, fontWeight: FontWeight.w700, color: const Color(0xFFF472A0), align: TextAlign.left);
+      _drawText(canvas, '"${data.tagline}"', const Offset(textX, height - 260), fontSize: 34, fontWeight: FontWeight.w700, color: const Color(0xFFF472A0), align: TextAlign.left);
     }
 
     // Mini photos row
@@ -74,7 +74,7 @@ class BabyBookPagePainter extends CustomPainter {
       miniX += 270;
     }
 
-    _drawText(canvas, 'MeBé Tracker', Offset(textX, height - 60), fontSize: 22, color: const Color(0xFFF472A0).withValues(alpha: 0.5), align: TextAlign.left);
+    _drawText(canvas, 'MeBé Tracker', const Offset(textX, height - 60), fontSize: 22, color: const Color(0xFFF472A0).withValues(alpha: 0.5), align: TextAlign.left);
   }
 
   void _paintMoonlightDark(Canvas canvas) {
@@ -86,10 +86,10 @@ class BabyBookPagePainter extends CustomPainter {
     const cx = 640.0, cy = 900.0, r = 620.0;
     _drawCirclePhoto(canvas, const Offset(cx, cy), r, mainPhoto, borderColor: const Color(0xFFC9A8F5), borderWidth: 18);
 
-    final textX = 1400.0;
-    _drawText(canvas, data.title, Offset(textX, 300), fontSize: 32, color: const Color(0xFFC9A8F5), align: TextAlign.left);
-    _drawText(canvas, data.babyName, Offset(textX, 360), fontSize: 84, fontWeight: FontWeight.w900, color: Colors.white, align: TextAlign.left);
-    _drawText(canvas, data.dateRange, Offset(textX, 470), fontSize: 32, color: const Color(0xFFC9A8F5), align: TextAlign.left);
+    const textX = 1400.0;
+    _drawText(canvas, data.title, const Offset(textX, 300), fontSize: 32, color: const Color(0xFFC9A8F5), align: TextAlign.left);
+    _drawText(canvas, data.babyName, const Offset(textX, 360), fontSize: 84, fontWeight: FontWeight.w900, color: Colors.white, align: TextAlign.left);
+    _drawText(canvas, data.dateRange, const Offset(textX, 470), fontSize: 32, color: const Color(0xFFC9A8F5), align: TextAlign.left);
 
     var statsY = 580.0;
     for (final stat in [
@@ -105,10 +105,10 @@ class BabyBookPagePainter extends CustomPainter {
     }
 
     if (data.tagline != null) {
-      _drawText(canvas, '"${data.tagline}"', Offset(textX, height - 260), fontSize: 34, fontWeight: FontWeight.w700, color: const Color(0xFFFDE68A), align: TextAlign.left);
+      _drawText(canvas, '"${data.tagline}"', const Offset(textX, height - 260), fontSize: 34, fontWeight: FontWeight.w700, color: const Color(0xFFFDE68A), align: TextAlign.left);
     }
 
-    _drawText(canvas, 'MeBé Tracker', Offset(textX, height - 70), fontSize: 22, color: const Color(0xFFC9A8F5).withValues(alpha: 0.6), align: TextAlign.left);
+    _drawText(canvas, 'MeBé Tracker', const Offset(textX, height - 70), fontSize: 22, color: const Color(0xFFC9A8F5).withValues(alpha: 0.6), align: TextAlign.left);
   }
 
   // ── Helpers ────────────────────────────────────────────────
@@ -190,7 +190,7 @@ class GrowthPosterPainter extends CustomPainter {
       const Rect.fromLTWH(0, 0, width, height),
       Paint()..shader = ui.Gradient.linear(Offset.zero, const Offset(0, height), [const Color(0xFFFFF0F8), const Color(0xFFFFE0EF)]),
     );
-    final photoRect = const Rect.fromLTWH(240, 240, 2000, 2000);
+    const photoRect = Rect.fromLTWH(240, 240, 2000, 2000);
     _drawPhoto(canvas, photoRect, borderColor: Colors.white, borderWidth: 24, radius: 60);
     _drawCenteredText(canvas, data.babyName, 2420, fontSize: 130, fontWeight: FontWeight.w900, color: const Color(0xFFC9184A));
     _drawCenteredText(canvas, '${data.ageText} · ${data.dateText}', 2560, fontSize: 62, color: const Color(0xFFF472A0));
@@ -218,7 +218,7 @@ class GrowthPosterPainter extends CustomPainter {
       const Rect.fromLTWH(0, 0, width, height),
       Paint()..shader = ui.Gradient.linear(Offset.zero, const Offset(0, height), [const Color(0xFF2D1B69), const Color(0xFF140C33)]),
     );
-    final photoRect = const Rect.fromLTWH(240, 240, 2000, 2000);
+    const photoRect = Rect.fromLTWH(240, 240, 2000, 2000);
     _drawPhoto(canvas, photoRect, borderColor: const Color(0xFFC9A8F5), borderWidth: 24, radius: 60, isCircleFallback: true);
     _drawCenteredText(canvas, data.babyName, 2420, fontSize: 130, fontWeight: FontWeight.w900, color: Colors.white);
     _drawCenteredText(canvas, '${data.ageText} · ${data.dateText}', 2560, fontSize: 62, color: const Color(0xFFC9A8F5));

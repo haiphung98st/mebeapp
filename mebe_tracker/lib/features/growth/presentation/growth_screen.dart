@@ -52,7 +52,7 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
       for (final item in next) {
         if (item.isCompleted) continue;
         final baseId = 4000 + (item.def.key.hashCode.abs() % 1000) * 2;
-        final title = '💉 Bé sắp đến lịch tiêm!';
+        const title = '💉 Bé sắp đến lịch tiêm!';
         final body = '${item.def.nameVi} · Ngày ${_formatDmy(item.scheduledDate)}';
         NotificationService.instance.scheduleNotification(
           baseId,
@@ -316,7 +316,7 @@ class _WwMiniCard extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: isActive
-                ? const Color(0xFF5B3A8A).withOpacity(0.08)
+                ? const Color(0xFF5B3A8A).withValues(alpha: 0.08)
                 : AppColors.white,
             borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
             border: Border.all(
@@ -353,7 +353,7 @@ class _WwMiniCard extends StatelessWidget {
                     vertical: 2,
                   ),
                   decoration: BoxDecoration(
-                    color: statusColor.withOpacity(0.15),
+                    color: statusColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
                   ),
                   child: MeBeIcon(
@@ -390,7 +390,7 @@ class _TeethQuickCard extends ConsumerWidget {
           borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
           boxShadow: [
             BoxShadow(
-              color: AppColors.mint.withOpacity(0.12),
+              color: AppColors.mint.withValues(alpha: 0.12),
               blurRadius: 12,
               offset: const Offset(0, 3),
             ),
@@ -445,7 +445,7 @@ class _MotorQuickCard extends ConsumerWidget {
           borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
           boxShadow: [
             BoxShadow(
-              color: AppColors.mint.withOpacity(0.12),
+              color: AppColors.mint.withValues(alpha: 0.12),
               blurRadius: 12,
               offset: const Offset(0, 3),
             ),
@@ -496,7 +496,7 @@ class _PrenatalQuickCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
           boxShadow: [
             BoxShadow(
-              color: AppColors.petal.withOpacity(0.2),
+              color: AppColors.petal.withValues(alpha: 0.2),
               blurRadius: 12,
               offset: const Offset(0, 3),
             ),

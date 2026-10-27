@@ -33,11 +33,11 @@ class AvatarConfig {
   }
 
   Map<String, dynamic> toJson() => {
-    'headColor': headColor.value,
-    'earColor': earColor.value,
-    'eyeColor': eyeColor.value,
-    'noseColor': noseColor.value,
-    'cheekColor': cheekColor.value,
+    'headColor': headColor.toARGB32(),
+    'earColor': earColor.toARGB32(),
+    'eyeColor': eyeColor.toARGB32(),
+    'noseColor': noseColor.toARGB32(),
+    'cheekColor': cheekColor.toARGB32(),
   };
 
   factory AvatarConfig.fromJson(Map<String, dynamic> json) => AvatarConfig(

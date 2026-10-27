@@ -12,25 +12,25 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.light,
-        home: Scaffold(
+        home: const Scaffold(
           body: Column(
             children: [
-              const BunnyAvatar(size: 60),
-              const BunnyAvatar(size: 60, isAsleep: true, primaryColor: AppColors.cream),
+              BunnyAvatar(size: 60),
+              BunnyAvatar(size: 60, isAsleep: true, primaryColor: AppColors.cream),
               BunnyHeader(
                 gradient: AppColors.gradientHome,
                 title: 'Chào buổi sáng',
                 subtitle: 'Chị Lan ơi!',
-                child: const SizedBox(height: 40),
+                child: SizedBox(height: 40),
               ),
-              const RingChart(
+              RingChart(
                 value: 7,
                 maxValue: 10,
                 color: AppColors.blossom,
                 trackColor: AppColors.blush,
                 label: 'Cữ bú',
               ),
-              const StatCard(
+              StatCard(
                 icon: '⚖️',
                 value: '6.8',
                 title: 'kg',

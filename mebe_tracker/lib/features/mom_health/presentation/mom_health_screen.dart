@@ -495,22 +495,22 @@ class _EpdsResult extends StatelessWidget {
     final String advice;
     if (score <= 9) {
       color = AppColors.mint;
-      label = 'Bình thường (${score}/30)';
+      label = 'Bình thường ($score/30)';
       advice = 'Tuyệt vời! Tâm lý của bạn đang ổn định. Hãy tiếp tục chăm sóc bản thân nhé.';
     } else if (score <= 12) {
       color = AppColors.warning;
-      label = 'Cần chú ý (${score}/30)';
+      label = 'Cần chú ý ($score/30)';
       advice = 'Bạn có một số dấu hiệu căng thẳng. Hãy chia sẻ với người thân hoặc bác sĩ.';
     } else {
       color = AppColors.error;
-      label = 'Nên gặp chuyên gia (${score}/30)';
+      label = 'Nên gặp chuyên gia ($score/30)';
       advice = 'Điểm số cho thấy bạn có thể đang trải qua trầm cảm sau sinh. Hãy liên hệ bác sĩ càng sớm càng tốt.';
     }
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
         border: Border.all(color: color),
       ),

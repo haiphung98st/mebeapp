@@ -128,7 +128,9 @@ class MonthlyDigestGenerator {
     final highlights = <String>[];
     if (feedingCount > 200) highlights.add('Tháng bú chăm chỉ — $feedingCount cữ!');
     if (avgSleepH >= 14) highlights.add('Giấc ngủ tốt — TB ${avgSleepH.toStringAsFixed(1)}h/ngày');
-    for (final a in achNames) highlights.add('Đạt huy chương: $a');
+    for (final a in achNames) {
+      highlights.add('Đạt huy chương: $a');
+    }
 
     final ageMonths = baby.dateOfBirth.year == year && baby.dateOfBirth.month == month
         ? 0

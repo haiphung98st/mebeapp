@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
@@ -132,8 +133,8 @@ class _EditBabyScreenState extends ConsumerState<EditBabyScreen> {
                           )
                         else if (widget.baby.avatarUrl != null)
                           ClipOval(
-                            child: Image.network(
-                              widget.baby.avatarUrl!,
+                            child: CachedNetworkImage(
+                              imageUrl: widget.baby.avatarUrl!,
                               width: 120,
                               height: 120,
                               fit: BoxFit.cover,

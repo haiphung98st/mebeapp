@@ -122,7 +122,7 @@ class _GrantBottomSheetState extends ConsumerState<_GrantBottomSheet> {
                   Text('Lý do', style: theme.textTheme.bodySmall),
                   const SizedBox(height: 8),
                   DropdownButtonFormField<String>(
-                    value: _selectedReason,
+                    initialValue: _selectedReason,
                     dropdownColor: theme.colorScheme.surface,
                     items: kGrantReasons
                         .map((r) => DropdownMenuItem(value: r, child: Text(r)))

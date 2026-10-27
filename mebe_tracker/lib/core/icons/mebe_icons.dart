@@ -515,7 +515,7 @@ class _MeBeIconPainter extends CustomPainter {
   // ── Home (house) ────────────────────────────────────────
   void _paintHome(Canvas canvas) {
     _bgGem(canvas);
-    final s = 0.6; // 80->48 viewBox scale
+    const s = 0.6; // 80->48 viewBox scale
     Offset p(double x, double y) => Offset(x * s, y * s);
     final house = Path()
       ..moveTo(p(40, 18).dx, p(40, 18).dy)
@@ -534,7 +534,7 @@ class _MeBeIconPainter extends CustomPainter {
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(p(36, 47).dx, p(36, 47).dy, 8 * s, 11 * s),
-        Radius.circular(3 * s),
+        const Radius.circular(3 * s),
       ),
       Paint()..color = _gemSpecs[type]!.colors[1].withValues(alpha: 0.6),
     );

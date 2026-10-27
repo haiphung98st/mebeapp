@@ -27,6 +27,28 @@ class FirestoreService {
 
   String newId() => _uuid.v4();
 
+  /// Merges Firestore's per-change deltas into a by-id cache instead of
+  /// re-decoding every document on every snapshot. Without this, a baby
+  /// with years of history pays a full re-parse of the entire collection
+  /// on every single new log entry, edit, or delete anywhere in it.
+  Stream<List<T>> _watchIncremental<T>(
+    Query<Map<String, dynamic>> query,
+    T Function(DocumentSnapshot<Map<String, dynamic>>) fromDoc,
+    int Function(T a, T b) compare,
+  ) {
+    final cache = <String, T>{};
+    return query.snapshots().map((snapshot) {
+      for (final change in snapshot.docChanges) {
+        if (change.type == DocumentChangeType.removed) {
+          cache.remove(change.doc.id);
+        } else {
+          cache[change.doc.id] = fromDoc(change.doc);
+        }
+      }
+      return cache.values.toList()..sort(compare);
+    });
+  }
+
   CollectionReference<Map<String, dynamic>> _babies(String userId) => _firestore
       .collection('users')
       .doc(userId)
@@ -102,10 +124,11 @@ class FirestoreService {
       _feedings(userId, babyId).doc(entryId).delete();
 
   Stream<List<FeedingEntry>> watchFeedings(String userId, String babyId) =>
-      _feedings(userId, babyId)
-          .orderBy('startTime', descending: true)
-          .snapshots()
-          .map((s) => s.docs.map(FeedingEntry.fromFirestore).toList());
+      _watchIncremental(
+        _feedings(userId, babyId).orderBy('startTime', descending: true),
+        FeedingEntry.fromFirestore,
+        (a, b) => b.startTime.compareTo(a.startTime),
+      );
 
   // ---- Pumps ----
 
@@ -118,10 +141,11 @@ class FirestoreService {
   Future<void> deletePump(String userId, String babyId, String entryId) =>
       _pumps(userId, babyId).doc(entryId).delete();
 
-  Stream<List<PumpEntry>> watchPumps(String userId, String babyId) => _pumps(userId, babyId)
-      .orderBy('startTime', descending: true)
-      .snapshots()
-      .map((s) => s.docs.map(PumpEntry.fromFirestore).toList());
+  Stream<List<PumpEntry>> watchPumps(String userId, String babyId) => _watchIncremental(
+        _pumps(userId, babyId).orderBy('startTime', descending: true),
+        PumpEntry.fromFirestore,
+        (a, b) => b.startTime.compareTo(a.startTime),
+      );
 
   // ---- Sleeps ----
 
@@ -134,10 +158,11 @@ class FirestoreService {
   Future<void> deleteSleep(String userId, String babyId, String entryId) =>
       _sleeps(userId, babyId).doc(entryId).delete();
 
-  Stream<List<SleepEntry>> watchSleeps(String userId, String babyId) => _sleeps(userId, babyId)
-      .orderBy('startTime', descending: true)
-      .snapshots()
-      .map((s) => s.docs.map(SleepEntry.fromFirestore).toList());
+  Stream<List<SleepEntry>> watchSleeps(String userId, String babyId) => _watchIncremental(
+        _sleeps(userId, babyId).orderBy('startTime', descending: true),
+        SleepEntry.fromFirestore,
+        (a, b) => b.startTime.compareTo(a.startTime),
+      );
 
   // ---- Diapers ----
 
@@ -150,10 +175,11 @@ class FirestoreService {
   Future<void> deleteDiaper(String userId, String babyId, String entryId) =>
       _diapers(userId, babyId).doc(entryId).delete();
 
-  Stream<List<DiaperEntry>> watchDiapers(String userId, String babyId) => _diapers(userId, babyId)
-      .orderBy('time', descending: true)
-      .snapshots()
-      .map((s) => s.docs.map(DiaperEntry.fromFirestore).toList());
+  Stream<List<DiaperEntry>> watchDiapers(String userId, String babyId) => _watchIncremental(
+        _diapers(userId, babyId).orderBy('time', descending: true),
+        DiaperEntry.fromFirestore,
+        (a, b) => b.time.compareTo(a.time),
+      );
 
   // ---- Growths ----
 

@@ -224,7 +224,7 @@ class _AdminGrantScreenState extends ConsumerState<AdminGrantScreen>
           ),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
-            value: _selectedReason,
+            initialValue: _selectedReason,
             dropdownColor: theme.colorScheme.surface,
             items: kGrantReasons.map((r) => DropdownMenuItem(value: r, child: Text(r))).toList(),
             onChanged: (v) => setState(() => _selectedReason = v!),

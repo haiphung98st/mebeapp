@@ -127,10 +127,10 @@ class AdminShell extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: AdminColors.background,
         appBar: AppBar(
-          title: Row(
+          title: const Row(
             children: [
-              const Text('MeBé', style: TextStyle(color: AdminColors.primary, fontWeight: FontWeight.bold)),
-              const Text(' Admin', style: TextStyle(color: AdminColors.textPrimary)),
+              Text('MeBé', style: TextStyle(color: AdminColors.primary, fontWeight: FontWeight.bold)),
+              Text(' Admin', style: TextStyle(color: AdminColors.textPrimary)),
             ],
           ),
           actions: [

@@ -68,10 +68,10 @@ class PrenatalScreen extends ConsumerWidget {
                     _BabyWeekCard(info: currentInfo),
                     const SizedBox(height: AppSpacing.lg),
                   ] else if (baby?.edd == null) ...[
-                    _NoEddBanner(),
+                    const _NoEddBanner(),
                     const SizedBox(height: AppSpacing.lg),
                   ],
-                  _WeekTimeline(),
+                  const _WeekTimeline(),
                   const SizedBox(height: AppSpacing.lg),
                   if (entries.isEmpty)
                     Center(
@@ -219,7 +219,7 @@ class _Stat extends StatelessWidget {
 }
 
 class _NoEddBanner extends StatelessWidget {
-  _NoEddBanner();
+  const _NoEddBanner();
 
   @override
   Widget build(BuildContext context) {
@@ -228,7 +228,7 @@ class _NoEddBanner extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.peachLight,
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-        border: Border.all(color: AppColors.warning.withOpacity(0.3)),
+        border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
@@ -258,7 +258,7 @@ class _WeekTimeline extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
         boxShadow: [
           BoxShadow(
-            color: AppColors.petal.withOpacity(0.2),
+            color: AppColors.petal.withValues(alpha: 0.2),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -275,11 +275,11 @@ class _WeekTimeline extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           Row(
             children: [
-              _TrimCard('Tam cá nguyệt 1', 'Tuần 1–12', AppColors.error.withOpacity(0.7)),
+              _TrimCard('Tam cá nguyệt 1', 'Tuần 1–12', AppColors.error.withValues(alpha: 0.7)),
               const SizedBox(width: 4),
-              _TrimCard('Tam cá nguyệt 2', 'Tuần 13–27', AppColors.warning.withOpacity(0.7)),
+              _TrimCard('Tam cá nguyệt 2', 'Tuần 13–27', AppColors.warning.withValues(alpha: 0.7)),
               const SizedBox(width: 4),
-              _TrimCard('Tam cá nguyệt 3', 'Tuần 28–40', AppColors.success.withOpacity(0.7)),
+              _TrimCard('Tam cá nguyệt 3', 'Tuần 28–40', AppColors.success.withValues(alpha: 0.7)),
             ],
           ),
         ],
@@ -300,9 +300,9 @@ class _TrimCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm, horizontal: 6),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.12),
+          color: color.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: color.withOpacity(0.3)),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
         child: Column(
           children: [
@@ -388,7 +388,7 @@ class _EntryCard extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                MeBeGlyph(MeBeGlyphType.scaleWeight,
+                const MeBeGlyph(MeBeGlyphType.scaleWeight,
                     color: AppColors.body, size: 14),
                 const SizedBox(width: 4),
                 Text(
@@ -607,9 +607,13 @@ class _AddEntrySheetState extends State<_AddEntrySheet> {
                   label: Text(s, style: const TextStyle(fontSize: 11)),
                   selected: selected,
                   onSelected: (v) => setState(() {
-                    if (v) _selectedSymptoms.add(s); else _selectedSymptoms.remove(s);
+                    if (v) {
+                      _selectedSymptoms.add(s);
+                    } else {
+                      _selectedSymptoms.remove(s);
+                    }
                   }),
-                  selectedColor: AppColors.petal.withOpacity(0.4),
+                  selectedColor: AppColors.petal.withValues(alpha: 0.4),
                 );
               }).toList(),
             ),

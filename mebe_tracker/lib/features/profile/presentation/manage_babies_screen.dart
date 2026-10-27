@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
@@ -92,7 +93,7 @@ class ManageBabiesScreen extends ConsumerWidget {
               child: Row(
                 children: [
                   if (baby.avatarUrl != null)
-                    CircleAvatar(radius: 26, backgroundImage: NetworkImage(baby.avatarUrl!))
+                    CircleAvatar(radius: 26, backgroundImage: CachedNetworkImageProvider(baby.avatarUrl!))
                   else
                     const BunnyAvatar(size: 52),
                   const SizedBox(width: AppSpacing.md),

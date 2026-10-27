@@ -136,15 +136,15 @@ class _ArcPainter extends CustomPainter {
     }
 
     // Draw zones: P0–3 red, P3–15 orange, P15–85 green, P85–97 orange, P97–100 red
-    drawArc(0.00, 0.03, AppColors.error.withOpacity(0.3));
-    drawArc(0.03, 0.15, AppColors.warning.withOpacity(0.3));
-    drawArc(0.15, 0.85, AppColors.success.withOpacity(0.25));
-    drawArc(0.85, 0.97, AppColors.warning.withOpacity(0.3));
-    drawArc(0.97, 1.00, AppColors.error.withOpacity(0.3));
+    drawArc(0.00, 0.03, AppColors.error.withValues(alpha: 0.3));
+    drawArc(0.03, 0.15, AppColors.warning.withValues(alpha: 0.3));
+    drawArc(0.15, 0.85, AppColors.success.withValues(alpha: 0.25));
+    drawArc(0.85, 0.97, AppColors.warning.withValues(alpha: 0.3));
+    drawArc(0.97, 1.00, AppColors.error.withValues(alpha: 0.3));
 
     // Draw zone outlines as ticks at P3/P15/P50/P85/P97
     final tickPaint = Paint()
-      ..color = AppColors.muted.withOpacity(0.4)
+      ..color = AppColors.muted.withValues(alpha: 0.4)
       ..strokeWidth = 1.5
       ..style = PaintingStyle.stroke;
 
@@ -245,7 +245,7 @@ class WhoArcChartCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.mint.withOpacity(0.12),
+            color: AppColors.mint.withValues(alpha: 0.12),
             blurRadius: 12,
             offset: const Offset(0, 3),
           ),

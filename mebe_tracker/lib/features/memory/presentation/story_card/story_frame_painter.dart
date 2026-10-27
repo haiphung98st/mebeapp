@@ -51,7 +51,7 @@ class StoryFramePainter extends CustomPainter {
 
   // ── Blossom Garden (free) ────────────────────────────────
   void _paintBlossomGarden(Canvas canvas) {
-    final bg = Rect.fromLTWH(0, 0, width, height);
+    const bg = Rect.fromLTWH(0, 0, width, height);
     canvas.drawRRect(
       RRect.fromRectAndRadius(bg, const Radius.circular(60)),
       Paint()
@@ -64,14 +64,14 @@ class StoryFramePainter extends CustomPainter {
     _drawFloralCorner(canvas, const Offset(130, 90), const Color(0xFFF472A0), flipX: false, flipY: false);
     _drawFloralCorner(canvas, const Offset(950, 90), const Color(0xFFF472A0), flipX: true, flipY: false);
 
-    final photoRect = const Rect.fromLTWH(80, 220, 920, 920);
+    const photoRect = Rect.fromLTWH(80, 220, 920, 920);
     _drawPhotoOrPlaceholder(canvas, photoRect, borderRadius: 50, borderColor: Colors.white, borderWidth: 16);
 
     _drawText(canvas, babyName, const Offset(540, 1220), fontSize: 80, fontWeight: FontWeight.w900, color: const Color(0xFFC9184A));
     _drawText(canvas, dateText, const Offset(540, 1320), fontSize: 48, color: const Color(0xFFF472A0));
 
     if (tagline != null && tagline!.isNotEmpty) {
-      final tagRect = const Rect.fromLTWH(80, 1380, 920, 100);
+      const tagRect = Rect.fromLTWH(80, 1380, 920, 100);
       canvas.drawRRect(
         RRect.fromRectAndRadius(tagRect, const Radius.circular(50)),
         Paint()..color = const Color(0xFFF472A0).withValues(alpha: 0.12),
@@ -93,7 +93,7 @@ class StoryFramePainter extends CustomPainter {
     final rng = math.Random(7);
     for (var i = 0; i < 90; i++) {
       final t = i / 90;
-      final perim = 2 * (width - 80) + 2 * (height - 80);
+      const perim = 2 * (width - 80) + 2 * (height - 80);
       final d = t * perim;
       Offset pt;
       if (d < width - 80) {
@@ -121,7 +121,7 @@ class StoryFramePainter extends CustomPainter {
     canvas.drawOval(Rect.fromCenter(center: Offset.zero, width: 90, height: 180), earPaint);
     canvas.restore();
 
-    final photoRect = const Rect.fromLTWH(90, 240, 900, 900);
+    const photoRect = Rect.fromLTWH(90, 240, 900, 900);
     _drawPhotoOrPlaceholder(canvas, photoRect, borderRadius: 450, borderColor: const Color(0xFFF9A8CB), borderWidth: 18, isCircle: true);
 
     _drawText(canvas, babyName, const Offset(540, 1260), fontSize: 80, fontWeight: FontWeight.w900, color: const Color(0xFF8B5CF6));
@@ -189,7 +189,7 @@ class StoryFramePainter extends CustomPainter {
     );
     _drawTape(canvas, const Offset(340, 40), const Color(0xFFFFD580), 400, 60);
 
-    final photoRect = const Rect.fromLTWH(80, 100, 920, 920);
+    const photoRect = Rect.fromLTWH(80, 100, 920, 920);
     _drawPhotoOrPlaceholder(canvas, photoRect, borderRadius: 24, borderColor: const Color(0xFFF0EAD8), borderWidth: 20);
 
     _drawText(canvas, babyName, const Offset(540, 1120), fontSize: 100, fontWeight: FontWeight.w900, color: const Color(0xFF5A4230));
@@ -279,7 +279,7 @@ class StoryFramePainter extends CustomPainter {
   }
 
   void _drawDashedBorder(Canvas canvas, Color color) {
-    final rect = const Rect.fromLTWH(20, 20, width - 40, height - 40);
+    const rect = Rect.fromLTWH(20, 20, width - 40, height - 40);
     final rrect = RRect.fromRectAndRadius(rect, const Radius.circular(24));
     final path = Path()..addRRect(rrect);
     final dashPaint = Paint()

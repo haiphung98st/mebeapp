@@ -122,9 +122,9 @@ class AiChatPaywall extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.xl),
-          _PreviewChatList(),
+          const _PreviewChatList(),
           const SizedBox(height: AppSpacing.xl),
-          _FeatureList(),
+          const _FeatureList(),
           const SizedBox(height: AppSpacing.xl),
           SizedBox(
             width: double.infinity,
@@ -425,7 +425,7 @@ class _AiBubble extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          ClipOval(child: MeBeIcon(type: MeBeIconType.mascotBunny, size: 28)),
+          const ClipOval(child: MeBeIcon(type: MeBeIconType.mascotBunny, size: 28)),
           const SizedBox(width: AppSpacing.xs),
           Flexible(
             child: Container(
@@ -532,7 +532,7 @@ class _TypingIndicator extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
       child: Row(
         children: [
-          ClipOval(child: MeBeIcon(type: MeBeIconType.mascotBunny, size: 28)),
+          const ClipOval(child: MeBeIcon(type: MeBeIconType.mascotBunny, size: 28)),
           const SizedBox(width: AppSpacing.xs),
           Container(
             padding: const EdgeInsets.all(AppSpacing.md),

@@ -1,10 +1,8 @@
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/providers/baby_provider.dart';
@@ -28,7 +26,9 @@ final wrappedStatsProvider = Provider<WrappedStats?>((ref) {
       feedings == null ||
       sleeps == null ||
       diapers == null ||
-      pumps == null) return null;
+      pumps == null) {
+    return null;
+  }
 
   return WrappedStats.compute(
     year: year,
@@ -118,7 +118,7 @@ class _WrappedScreenState extends ConsumerState<WrappedScreen> {
                       decoration: BoxDecoration(
                         color: i <= _page
                             ? Colors.white
-                            : Colors.white.withOpacity(0.3),
+                            : Colors.white.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -159,8 +159,7 @@ class _StoryPage extends StatelessWidget {
   const _StoryPage({
     required this.gradient,
     required this.child,
-    this.emoji = '',
-  });
+  }) : emoji = '';
 
   final LinearGradient gradient;
   final Widget child;
@@ -188,7 +187,7 @@ class _StoryPage extends StatelessWidget {
 // ── Shared number widget ──────────────────────────────────────────────────────
 
 class _BigNumber extends StatelessWidget {
-  const _BigNumber(this.value, {this.color = Colors.white});
+  const _BigNumber(this.value) : color = Colors.white;
   final String value;
   final Color color;
 
@@ -307,7 +306,7 @@ class _CoverPage extends StatelessWidget {
                   'Nhấn để xem hành trình\ncủa bạn trong một năm qua',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withValues(alpha: 0.8),
                     height: 1.5,
                   ),
                 ),
@@ -323,7 +322,7 @@ class _CoverPage extends StatelessWidget {
               Text(
                 'Chạm để tiếp tục →',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.6),
+                  color: Colors.white.withValues(alpha: 0.6),
                   fontSize: 12,
                 ),
               ),
@@ -376,7 +375,7 @@ class _FeedingPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
+              color: Colors.white.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
             ),
             child: Column(
@@ -437,7 +436,7 @@ class _SleepPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
+              color: Colors.white.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
             ),
             child: _StatRow(
@@ -512,7 +511,7 @@ class _DiaperPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
+              color: Colors.white.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
             ),
             child: Column(
@@ -553,7 +552,7 @@ class _DiaperBar extends StatelessWidget {
         Text(
           'Tỷ lệ',
           style: TextStyle(
-            color: Colors.white.withOpacity(0.7),
+            color: Colors.white.withValues(alpha: 0.7),
             fontSize: 12,
             fontWeight: FontWeight.w600,
           ),
@@ -634,7 +633,7 @@ class _PumpPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
+              color: Colors.white.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
             ),
             child: _StatRow(
@@ -729,7 +728,7 @@ Cảm ơn vì đã không ngủ đủ giấc để yêu thương bé 💕
           Container(
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.1),
+              color: Colors.white.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
               border: Border.all(color: Colors.white24),
             ),

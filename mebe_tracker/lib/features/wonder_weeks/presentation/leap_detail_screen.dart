@@ -237,9 +237,9 @@ class _SkillsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: const Color(0xFF7B5AAA).withOpacity(0.06),
+        color: const Color(0xFF7B5AAA).withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-        border: Border.all(color: const Color(0xFF7B5AAA).withOpacity(0.2)),
+        border: Border.all(color: const Color(0xFF7B5AAA).withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -298,7 +298,7 @@ class _TipsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.blush,
         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-        border: Border.all(color: AppColors.petal.withOpacity(0.5)),
+        border: Border.all(color: AppColors.petal.withValues(alpha: 0.5)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -326,7 +326,7 @@ class _TipsCard extends StatelessWidget {
                         width: 22,
                         height: 22,
                         margin: const EdgeInsets.only(right: AppSpacing.sm),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: AppColors.blossom,
                           shape: BoxShape.circle,
                         ),

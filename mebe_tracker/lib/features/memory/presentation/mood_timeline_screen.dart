@@ -298,14 +298,14 @@ class _Row extends StatelessWidget {
 class _Legend extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _LegendItem(color: const Color(0xFF68D391), label: 'Tốt'),
-        _LegendItem(color: const Color(0xFFF6E05E), label: 'Bình thường'),
-        _LegendItem(color: const Color(0xFFFBD38D), label: 'Mệt'),
-        _LegendItem(color: const Color(0xFFFC8181), label: 'Leap storm'),
-        _LegendItem(color: const Color(0xFFE2E8F0), label: 'Không có'),
+        _LegendItem(color: Color(0xFF68D391), label: 'Tốt'),
+        _LegendItem(color: Color(0xFFF6E05E), label: 'Bình thường'),
+        _LegendItem(color: Color(0xFFFBD38D), label: 'Mệt'),
+        _LegendItem(color: Color(0xFFFC8181), label: 'Leap storm'),
+        _LegendItem(color: Color(0xFFE2E8F0), label: 'Không có'),
       ],
     );
   }

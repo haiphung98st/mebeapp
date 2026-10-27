@@ -593,13 +593,13 @@ class _WonderWeeksBanner extends StatelessWidget {
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
           color: isStormy
-              ? AppColors.warning.withOpacity(0.08)
-              : const Color(0xFF7B5AAA).withOpacity(0.07),
+              ? AppColors.warning.withValues(alpha: 0.08)
+              : const Color(0xFF7B5AAA).withValues(alpha: 0.07),
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
           border: Border.all(
             color: isStormy
-                ? AppColors.warning.withOpacity(0.3)
-                : const Color(0xFF7B5AAA).withOpacity(0.25),
+                ? AppColors.warning.withValues(alpha: 0.3)
+                : const Color(0xFF7B5AAA).withValues(alpha: 0.25),
           ),
         ),
         child: Row(
@@ -627,7 +627,7 @@ class _WonderWeeksBanner extends StatelessWidget {
                     isStormy
                         ? 'Bé đang trong giai đoạn phát triển nhảy vọt'
                         : nextLeap!.name,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 11,
                       color: AppColors.body,
                     ),

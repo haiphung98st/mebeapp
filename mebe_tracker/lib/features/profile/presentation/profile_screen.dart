@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -417,7 +418,7 @@ class _ProfileGradientHeaderState extends ConsumerState<_ProfileGradientHeader> 
                   alignment: Alignment.bottomRight,
                   children: [
                     if (user?.photoURL != null)
-                      CircleAvatar(radius: 32, backgroundImage: NetworkImage(user!.photoURL!))
+                      CircleAvatar(radius: 32, backgroundImage: CachedNetworkImageProvider(user!.photoURL!))
                     else
                       const BunnyAvatar(size: 64, earColor: AppColors.white),
                     Container(

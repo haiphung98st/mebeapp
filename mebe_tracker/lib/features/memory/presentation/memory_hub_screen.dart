@@ -84,7 +84,7 @@ class MemoryHubScreen extends ConsumerWidget {
 
                 // Notification card for upcoming milestone
                 if (notifTitle != null) ...[
-                  _NotifCard(title: notifTitle!, subtitle: notifSub!),
+                  _NotifCard(title: notifTitle, subtitle: notifSub!),
                   const SizedBox(height: AppSpacing.md),
                 ],
 

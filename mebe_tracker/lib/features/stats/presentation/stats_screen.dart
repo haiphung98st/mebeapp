@@ -52,16 +52,16 @@ class _WrappedBanner extends StatelessWidget {
                       fontSize: 15,
                     ),
                   ),
-                  Row(
+                  const Row(
                     children: [
-                      const Text(
+                      Text(
                         'Xem lại hành trình cả năm ',
                         style: TextStyle(
                           color: Colors.white70,
                           fontSize: 12,
                         ),
                       ),
-                      const MeBeIcon(type: MeBeIconType.premium, size: 14),
+                      MeBeIcon(type: MeBeIconType.premium, size: 14),
                     ],
                   ),
                 ],

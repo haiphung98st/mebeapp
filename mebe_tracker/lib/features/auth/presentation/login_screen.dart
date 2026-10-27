@@ -138,8 +138,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     prefixIcon: MeBeGlyph(MeBeGlyphType.emailOutlined),
                   ),
                   validator: (value) {
-                    if (value == null || value.trim().isEmpty)
+                    if (value == null || value.trim().isEmpty) {
                       return 'Vui lòng nhập email';
+                    }
                     if (!value.contains('@')) return 'Email không hợp lệ';
                     return null;
                   },
@@ -163,8 +164,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                   validator: (value) {
-                    if (value == null || value.length < 6)
+                    if (value == null || value.length < 6) {
                       return 'Mật khẩu tối thiểu 6 ký tự';
+                    }
                     return null;
                   },
                 ),
@@ -193,7 +195,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             _credentialsLoaded = false;
                           });
                         },
-                        child: Text(
+                        child: const Text(
                           'Xoá đã lưu',
                           style: TextStyle(
                               color: AppColors.muted, fontSize: 12),

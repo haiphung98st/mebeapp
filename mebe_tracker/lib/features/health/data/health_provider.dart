@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
-import '../../../shared/services/firestore_service.dart';
 import 'health_models.dart';
 
 final temperaturesProvider = StreamProvider<List<TemperatureReading>>((ref) {

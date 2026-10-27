@@ -74,7 +74,7 @@ class _AdminConfigScreenState extends ConsumerState<AdminConfigScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _SectionHeader('Bảo trì hệ thống'),
+          const _SectionHeader('Bảo trì hệ thống'),
           _ConfigCard(children: [
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
@@ -97,7 +97,7 @@ class _AdminConfigScreenState extends ConsumerState<AdminConfigScreen> {
             ],
           ]),
           const SizedBox(height: 16),
-          _SectionHeader('Cập nhật bắt buộc'),
+          const _SectionHeader('Cập nhật bắt buộc'),
           _ConfigCard(children: [
             TextField(
               controller: _forceUpdateController,
@@ -108,7 +108,7 @@ class _AdminConfigScreenState extends ConsumerState<AdminConfigScreen> {
             ),
           ]),
           const SizedBox(height: 16),
-          _SectionHeader('Thông báo ứng dụng'),
+          const _SectionHeader('Thông báo ứng dụng'),
           _ConfigCard(children: [
             TextField(
               controller: _bannerController,
@@ -120,7 +120,7 @@ class _AdminConfigScreenState extends ConsumerState<AdminConfigScreen> {
             ),
           ]),
           const SizedBox(height: 16),
-          _SectionHeader('AI & Chi phí'),
+          const _SectionHeader('AI & Chi phí'),
           _ConfigCard(children: [
             SwitchListTile(
               contentPadding: EdgeInsets.zero,

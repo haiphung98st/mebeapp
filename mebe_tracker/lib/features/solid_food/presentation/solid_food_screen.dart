@@ -8,7 +8,6 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
-import '../../../shared/services/firestore_service.dart';
 import '../data/baby_food_database.dart';
 import '../data/solid_food_entry.dart';
 import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
@@ -185,7 +184,7 @@ class _AddFoodEntryState extends ConsumerState<_AddFoodEntry> {
             if (_expanded) ...[
               const SizedBox(height: AppSpacing.md),
               DropdownButtonFormField<BabyFood>(
-                value: _selected,
+                initialValue: _selected,
                 decoration: const InputDecoration(
                   labelText: 'Chọn thức ăn',
                   prefixIcon: Icon(Icons.restaurant_menu),
@@ -215,7 +214,7 @@ class _AddFoodEntryState extends ConsumerState<_AddFoodEntry> {
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: DropdownButtonFormField<FoodReaction>(
-                      value: _reaction,
+                      initialValue: _reaction,
                       isDense: true,
                       decoration: const InputDecoration(
                           labelText: 'Phản ứng'),
@@ -304,7 +303,7 @@ class _JournalTile extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.sm, vertical: 2),
           decoration: BoxDecoration(
-            color: reactionColor.withOpacity(0.1),
+            color: reactionColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
             border: Border.all(color: reactionColor),
           ),
@@ -465,7 +464,7 @@ class _MenuTab extends ConsumerWidget {
                       .copyWith(color: AppColors.white)),
               Text('Bé ${ageWeeks ~/ 4} tháng ${ageWeeks % 4} tuần',
                   style: AppTextStyles.bodySm
-                      .copyWith(color: AppColors.white.withOpacity(0.8))),
+                      .copyWith(color: AppColors.white.withValues(alpha: 0.8))),
             ],
           ),
         ),

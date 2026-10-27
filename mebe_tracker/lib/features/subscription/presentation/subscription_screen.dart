@@ -145,7 +145,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
             const SizedBox(height: AppSpacing.md),
             Text('MeBé Premium 🎀', style: AppTextStyles.displaySm),
             const SizedBox(height: AppSpacing.xl),
-            _FeatureComparisonList(),
+            const _FeatureComparisonList(),
             const SizedBox(height: AppSpacing.xl),
             _PricingToggle(
               isYearly: _isYearly,

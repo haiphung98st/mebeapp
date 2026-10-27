@@ -146,13 +146,13 @@ class _AchievementToastState extends State<_AchievementToast>
                   borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.blossom.withOpacity(0.25),
+                      color: AppColors.blossom.withValues(alpha: 0.25),
                       blurRadius: 20,
                       offset: const Offset(0, 4),
                     ),
                   ],
                   border: Border.all(
-                    color: AppColors.blossom.withOpacity(0.3),
+                    color: AppColors.blossom.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Row(
@@ -160,7 +160,7 @@ class _AchievementToastState extends State<_AchievementToast>
                     Container(
                       width: 48,
                       height: 48,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: AppColors.blush,
                         shape: BoxShape.circle,
                       ),

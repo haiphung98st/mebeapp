@@ -21,7 +21,7 @@ class MoodSection extends ConsumerWidget {
         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
         boxShadow: [
           BoxShadow(
-            color: AppColors.mint.withOpacity(0.1),
+            color: AppColors.mint.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 3),
           ),
@@ -107,7 +107,7 @@ class _MoodTimeline extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Divider(color: AppColors.divider),
+        const Divider(color: AppColors.divider),
         const SizedBox(height: AppSpacing.xs),
         Text(
           'Ghi nhận hôm nay',

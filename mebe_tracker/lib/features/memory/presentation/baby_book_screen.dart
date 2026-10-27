@@ -8,7 +8,6 @@ import 'package:printing/printing.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../shared/providers/baby_provider.dart';
-import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/growth_provider.dart';
 import '../../../shared/providers/subscription_provider.dart';
 import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
@@ -46,12 +45,12 @@ class _BabyBookScreenState extends ConsumerState<BabyBookScreen> {
           children: [
             pw.Text(
               '🐰',
-              style: pw.TextStyle(fontSize: 72),
+              style: const pw.TextStyle(fontSize: 72),
             ),
             pw.SizedBox(height: 24),
             pw.Text(
               'Baby Book',
-              style: pw.TextStyle(
+              style: const pw.TextStyle(
                 fontSize: 36,
                 fontWeight: pw.FontWeight.bold,
               ),
@@ -59,7 +58,7 @@ class _BabyBookScreenState extends ConsumerState<BabyBookScreen> {
             pw.SizedBox(height: 8),
             pw.Text(
               baby?.name ?? 'Bé yêu',
-              style: pw.TextStyle(
+              style: const pw.TextStyle(
                 fontSize: 24,
                 fontWeight: pw.FontWeight.bold,
               ),
@@ -68,13 +67,13 @@ class _BabyBookScreenState extends ConsumerState<BabyBookScreen> {
               pw.SizedBox(height: 8),
               pw.Text(
                 'Sinh ngày ${baby.dateOfBirth.day}/${baby.dateOfBirth.month}/${baby.dateOfBirth.year}',
-                style: pw.TextStyle(fontSize: 14),
+                style: const pw.TextStyle(fontSize: 14),
               ),
             ],
             pw.SizedBox(height: 48),
             pw.Text(
               'Tạo bởi MeBé ✨',
-              style: pw.TextStyle(fontSize: 12),
+              style: const pw.TextStyle(fontSize: 12),
             ),
           ],
         ),
@@ -91,7 +90,7 @@ class _BabyBookScreenState extends ConsumerState<BabyBookScreen> {
           children: [
             pw.Text(
               'Bảng tăng trưởng 📏',
-              style: pw.TextStyle(
+              style: const pw.TextStyle(
                 fontSize: 20,
                 fontWeight: pw.FontWeight.bold,
               ),
@@ -136,7 +135,7 @@ class _BabyBookScreenState extends ConsumerState<BabyBookScreen> {
             children: [
               pw.Text(
                 card.titleVi,
-                style: pw.TextStyle(
+                style: const pw.TextStyle(
                   fontSize: 22,
                   fontWeight: pw.FontWeight.bold,
                 ),
@@ -144,13 +143,13 @@ class _BabyBookScreenState extends ConsumerState<BabyBookScreen> {
               pw.SizedBox(height: 8),
               pw.Text(
                 '${card.cardDate.day}/${card.cardDate.month}/${card.cardDate.year}',
-                style: pw.TextStyle(fontSize: 12),
+                style: const pw.TextStyle(fontSize: 12),
               ),
               pw.Divider(),
               pw.SizedBox(height: 8),
               pw.Text(
                 card.contentVi,
-                style: pw.TextStyle(fontSize: 14, lineSpacing: 4),
+                style: const pw.TextStyle(fontSize: 14, lineSpacing: 4),
               ),
             ],
           ),
@@ -296,8 +295,8 @@ class _BabyBookScreenState extends ConsumerState<BabyBookScreen> {
                           ),
                         ),
                         const SizedBox(height: AppSpacing.md),
-                        _ContentRow(
-                          icon: const MeBeIcon(type: MeBeIconType.journal, size: 16),
+                        const _ContentRow(
+                          icon: MeBeIcon(type: MeBeIconType.journal, size: 16),
                           label: 'Trang bìa',
                           count: '1 trang',
                         ),

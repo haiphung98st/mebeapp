@@ -32,10 +32,10 @@ class ContextualChatButton extends ConsumerWidget {
           label: const Text('Hỏi AI'),
         ),
         if (!isPremium)
-          Positioned(
+          const Positioned(
             top: -4,
             right: -4,
-            child: const ClipOval(child: MeBeIcon(type: MeBeIconType.premium, size: 18)),
+            child: ClipOval(child: MeBeIcon(type: MeBeIconType.premium, size: 18)),
           ),
       ],
     );

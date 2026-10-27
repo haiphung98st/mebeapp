@@ -228,7 +228,7 @@ class _NotificationSettingsScreenState
           subtitle != null ? Text(subtitle, style: AppTextStyles.bodySm) : null,
       value: value,
       onChanged: onChanged,
-      activeColor: AppColors.blossom,
+      activeThumbColor: AppColors.blossom,
     );
   }
 
@@ -823,7 +823,7 @@ class _NotificationSettingsScreenState
                         onPressed: _reset,
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.muted,
-                          side: BorderSide(color: AppColors.muted),
+                          side: const BorderSide(color: AppColors.muted),
                           minimumSize:
                               const Size(double.infinity, 48),
                         ),

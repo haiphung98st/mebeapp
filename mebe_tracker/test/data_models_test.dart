@@ -78,7 +78,7 @@ void main() {
       'freezer',
     );
     expect(
-      MilestoneEntry(
+      const MilestoneEntry(
         id: 'ms1', babyId: 'b1', milestoneKey: 'rollover', titleVi: 'Lật người',
         expectedWeekMin: 12, expectedWeekMax: 20, isAchieved: false,
       ).toJson()['milestoneKey'],

@@ -649,7 +649,7 @@ class _PhotoSection extends StatelessWidget {
                           width: 1.5,
                         ),
                       ),
-                      child: Column(
+                      child: const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
@@ -657,7 +657,7 @@ class _PhotoSection extends StatelessWidget {
                             color: AppColors.blossom,
                             size: 28,
                           ),
-                          const SizedBox(height: 3),
+                          SizedBox(height: 3),
                           Text(
                             'Thêm ảnh',
                             style: TextStyle(

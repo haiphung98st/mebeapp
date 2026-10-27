@@ -17,7 +17,7 @@ class AchievementsScreen extends ConsumerWidget {
     final achievementState = ref.watch(achievementNotifierProvider);
     final unlocked = achievementState.unlocked;
 
-    final categories = AchievementCategory.values;
+    const categories = AchievementCategory.values;
 
     return Scaffold(
       backgroundColor: AppColors.powder,
@@ -269,17 +269,17 @@ class _AchievementBadge extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.sm),
         decoration: BoxDecoration(
-          color: isUnlocked ? AppColors.white : AppColors.divider.withOpacity(0.5),
+          color: isUnlocked ? AppColors.white : AppColors.divider.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
           border: Border.all(
             color: isUnlocked
-                ? _tierColor(achievement.tier).withOpacity(0.4)
+                ? _tierColor(achievement.tier).withValues(alpha: 0.4)
                 : AppColors.divider,
           ),
           boxShadow: isUnlocked
               ? [
                   BoxShadow(
-                    color: _tierColor(achievement.tier).withOpacity(0.15),
+                    color: _tierColor(achievement.tier).withValues(alpha: 0.15),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   )
@@ -306,7 +306,7 @@ class _AchievementBadge extends StatelessWidget {
                         '🔒',
                         style: TextStyle(
                           fontSize: 28,
-                          color: Colors.grey.withOpacity(0.5),
+                          color: Colors.grey.withValues(alpha: 0.5),
                         ),
                       ),
                     ),
@@ -369,7 +369,7 @@ class _AchievementBadge extends StatelessWidget {
   void _showLocked(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('${achievement.description}'),
+        content: Text(achievement.description),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -446,9 +446,9 @@ class _TierBadge extends StatelessWidget {
         vertical: AppSpacing.sm,
       ),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
-        border: Border.all(color: color.withOpacity(0.4)),
+        border: Border.all(color: color.withValues(alpha: 0.4)),
       ),
       child: Text(
         'Huy hiệu $label',

@@ -50,23 +50,23 @@ class PdfExportService {
           children: [
             pw.Text(
               'Báo cáo tháng ${data.month.month}/${data.month.year} — ${data.babyName}',
-              style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
+              style: const pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
             ),
             pw.SizedBox(height: 16),
-            pw.Text('Bú/ăn', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+            pw.Text('Bú/ăn', style: const pw.TextStyle(fontWeight: pw.FontWeight.bold)),
             pw.Text('Số cữ: ${data.feedings.length} · Tổng lượng: ${totalFeedMl.toStringAsFixed(0)} ml'),
             pw.SizedBox(height: 12),
-            pw.Text('Giấc ngủ', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+            pw.Text('Giấc ngủ', style: const pw.TextStyle(fontWeight: pw.FontWeight.bold)),
             pw.Text('Số giấc: ${data.sleeps.length} · Tổng thời gian: ${(totalSleepMin / 60).toStringAsFixed(1)} giờ'),
             pw.SizedBox(height: 12),
-            pw.Text('Phát triển', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+            pw.Text('Phát triển', style: const pw.TextStyle(fontWeight: pw.FontWeight.bold)),
             pw.Text(
               data.latestGrowth == null
                   ? 'Chưa có dữ liệu đo'
                   : 'Cân nặng: ${data.latestGrowth!.weightKg ?? '-'} kg · Chiều cao: ${data.latestGrowth!.heightCm ?? '-'} cm',
             ),
             pw.SizedBox(height: 12),
-            pw.Text('Tiêm chủng', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+            pw.Text('Tiêm chủng', style: const pw.TextStyle(fontWeight: pw.FontWeight.bold)),
             pw.Text('Đã tiêm: $completedVaccines/${data.vaccineItems.length} mũi'),
           ],
         ),

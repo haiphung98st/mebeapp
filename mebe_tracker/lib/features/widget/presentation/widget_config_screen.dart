@@ -238,11 +238,11 @@ class _SmallPremium extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           if (data.isSleeping)
-            Row(
+            const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const MeBeIcon(type: MeBeIconType.sleep, size: 12),
-                const SizedBox(width: 2),
+                MeBeIcon(type: MeBeIconType.sleep, size: 12),
+                SizedBox(width: 2),
                 Text('Ngủ', style: TextStyle(fontSize: 11, color: _WidgetColors.accentBlue)),
               ],
             )
@@ -320,10 +320,10 @@ class _MediumPremium extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 if (data.isSleeping)
-                  Row(
+                  const Row(
                     children: [
-                      const MeBeIcon(type: MeBeIconType.sleep, size: 13),
-                      const SizedBox(width: 4),
+                      MeBeIcon(type: MeBeIconType.sleep, size: 13),
+                      SizedBox(width: 4),
                       Text('Đang ngủ', style: TextStyle(fontSize: 12, color: _WidgetColors.accentBlue)),
                     ],
                   )
@@ -419,10 +419,10 @@ class _LargePremium extends StatelessWidget {
           const Divider(height: 1),
           const SizedBox(height: 10),
           if (data.isSleeping)
-            Row(
+            const Row(
               children: [
-                const MeBeIcon(type: MeBeIconType.sleep, size: 14),
-                const SizedBox(width: 4),
+                MeBeIcon(type: MeBeIconType.sleep, size: 14),
+                SizedBox(width: 4),
                 Text('Đang ngủ', style: TextStyle(fontSize: 13, color: _WidgetColors.accentBlue)),
               ],
             )

@@ -109,10 +109,10 @@ class _GrowthChartCardState extends ConsumerState<GrowthChartCard> {
                   ),
           ),
           const SizedBox(height: AppSpacing.sm),
-          Row(
+          const Row(
             children: [
               _LegendDot(color: AppColors.blossom, label: 'Bé'),
-              const SizedBox(width: AppSpacing.md),
+              SizedBox(width: AppSpacing.md),
               _LegendDot(color: AppColors.mint, label: 'WHO P50'),
             ],
           ),

@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,7 +60,7 @@ class EasyScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _EasyLegend(),
+                  const _EasyLegend(),
                   const SizedBox(height: AppSpacing.lg),
                   Center(
                     child: _EasyCircleChart(blocks: blocks),
@@ -94,7 +93,7 @@ class EasyScreen extends ConsumerWidget {
 }
 
 class _EasyLegend extends StatelessWidget {
-  _EasyLegend();
+  const _EasyLegend();
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +164,7 @@ class _CircleChartPainter extends CustomPainter {
     canvas.drawCircle(
       Offset(cx, cy),
       outerR,
-      Paint()..color = AppColors.divider.withOpacity(0.4),
+      Paint()..color = AppColors.divider.withValues(alpha: 0.4),
     );
     canvas.drawCircle(
       Offset(cx, cy),
@@ -181,7 +180,7 @@ class _CircleChartPainter extends CustomPainter {
 
       final rect = Rect.fromCircle(center: Offset(cx, cy), radius: outerR);
       final paint = Paint()
-        ..color = Color(block.type.colorValue).withOpacity(0.85)
+        ..color = Color(block.type.colorValue).withValues(alpha: 0.85)
         ..style = PaintingStyle.stroke
         ..strokeWidth = outerR - innerR;
 
@@ -191,7 +190,7 @@ class _CircleChartPainter extends CustomPainter {
           Rect.fromCircle(center: Offset(cx, cy), radius: midR);
       canvas.drawArc(midRect, startAngle, sweepAngle, false,
           Paint()
-            ..color = Color(block.type.colorValue).withOpacity(0.85)
+            ..color = Color(block.type.colorValue).withValues(alpha: 0.85)
             ..style = PaintingStyle.stroke
             ..strokeWidth = outerR - innerR);
     }
@@ -286,10 +285,10 @@ class _BlockTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-        border: Border.all(color: Color(block.type.colorValue).withOpacity(0.3)),
+        border: Border.all(color: Color(block.type.colorValue).withValues(alpha: 0.3)),
         boxShadow: [
           BoxShadow(
-            color: Color(block.type.colorValue).withOpacity(0.08),
+            color: Color(block.type.colorValue).withValues(alpha: 0.08),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -403,7 +402,7 @@ class _AddBlockSheetState extends State<_AddBlockSheet> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 6),
                     decoration: BoxDecoration(
-                      color: isSelected ? Color(t.colorValue).withOpacity(0.2) : AppColors.powder,
+                      color: isSelected ? Color(t.colorValue).withValues(alpha: 0.2) : AppColors.powder,
                       borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
                       border: Border.all(
                         color: isSelected ? Color(t.colorValue) : AppColors.divider,

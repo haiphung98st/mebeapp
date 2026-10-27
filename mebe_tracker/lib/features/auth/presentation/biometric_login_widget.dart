@@ -89,18 +89,18 @@ class _BiometricButton extends ConsumerWidget {
 
         return Column(
           children: [
-            Row(
+            const Row(
               children: [
-                const Expanded(child: Divider()),
+                Expanded(child: Divider()),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                      EdgeInsets.symmetric(horizontal: AppSpacing.md),
                   child: Text(
                     'hoặc',
                     style: TextStyle(color: AppColors.muted, fontSize: 12),
                   ),
                 ),
-                const Expanded(child: Divider()),
+                Expanded(child: Divider()),
               ],
             ),
             const SizedBox(height: AppSpacing.lg),

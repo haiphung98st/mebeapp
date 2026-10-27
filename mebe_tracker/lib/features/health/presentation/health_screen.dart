@@ -7,7 +7,6 @@ import '../../../core/constants/app_spacing.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../shared/providers/auth_provider.dart';
 import '../../../shared/providers/baby_provider.dart';
-import '../../../shared/services/firestore_service.dart';
 import '../data/health_models.dart';
 import 'package:mebe_tracker/core/icons/mebe_glyphs.dart';
 import '../data/health_provider.dart';
@@ -186,8 +185,8 @@ class _TempMiniChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sorted = readings.reversed.toList();
-    final minTemp = 36.0;
-    final maxTemp = 40.0;
+    const minTemp = 36.0;
+    const maxTemp = 40.0;
 
     return Container(
       height: 72,
@@ -208,7 +207,7 @@ class _TempMiniChart extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      '${r.tempCelsius.toStringAsFixed(1)}',
+                      r.tempCelsius.toStringAsFixed(1),
                       style: TextStyle(
                         fontSize: 8,
                         color: r.isFever ? AppColors.error : AppColors.mint,
@@ -251,7 +250,7 @@ class _TempTile extends ConsumerWidget {
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd)),
       leading: CircleAvatar(
         backgroundColor:
-            reading.isFever ? AppColors.error.withOpacity(0.1) : AppColors.mintLight,
+            reading.isFever ? AppColors.error.withValues(alpha: 0.1) : AppColors.mintLight,
         child: Text(
           '${reading.tempCelsius}°',
           style: TextStyle(
@@ -601,7 +600,7 @@ class _IllnessTile extends ConsumerWidget {
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd)),
       leading: CircleAvatar(
         backgroundColor: episode.isActive
-            ? AppColors.error.withOpacity(0.1)
+            ? AppColors.error.withValues(alpha: 0.1)
             : AppColors.mintLight,
         child: Icon(
           episode.isActive ? Icons.sick : Icons.check_circle,

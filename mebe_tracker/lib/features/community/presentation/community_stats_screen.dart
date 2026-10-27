@@ -68,7 +68,7 @@ class _CommunityStatsScreenState extends ConsumerState<CommunityStatsScreen> {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(
                 horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
-            color: AppColors.lavender.withOpacity(0.12),
+            color: AppColors.lavender.withValues(alpha: 0.12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -192,7 +192,7 @@ class _ContributorBanner extends StatelessWidget {
           Container(
             width: 40,
             height: 40,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.lilac,
               shape: BoxShape.circle,
             ),
@@ -277,7 +277,7 @@ class _StatCard extends StatelessWidget {
         border: Border.all(color: AppColors.divider),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -359,8 +359,8 @@ class _PercentileBar extends StatelessWidget {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          color.withOpacity(0.15),
-                          color.withOpacity(0.4),
+                          color.withValues(alpha: 0.15),
+                          color.withValues(alpha: 0.4),
                           color,
                         ],
                       ),
@@ -382,7 +382,7 @@ class _PercentileBar extends StatelessWidget {
                         Border.all(color: AppColors.white, width: 2),
                     boxShadow: [
                       BoxShadow(
-                        color: color.withOpacity(0.4),
+                        color: color.withValues(alpha: 0.4),
                         blurRadius: 4,
                         offset: const Offset(0, 2),
                       ),
@@ -435,7 +435,7 @@ class _InfoNote extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.lilac.withOpacity(0.4),
+        color: AppColors.lilac.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
       ),
       child: Row(

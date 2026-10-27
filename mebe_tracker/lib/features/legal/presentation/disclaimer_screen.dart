@@ -47,23 +47,23 @@ class DisclaimerScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.xl),
-            _Point(
+            const _Point(
               text:
                   'Toàn bộ nội dung trong Ứng dụng — bao gồm thống kê, biểu đồ tăng trưởng, lịch tiêm chủng gợi ý và câu trả lời từ tính năng "Hỏi AI" — chỉ mang tính chất tham khảo, dựa trên dữ liệu do chính bạn nhập.',
             ),
-            _Point(
+            const _Point(
               text:
                   'Các gợi ý từ AI có thể chứa sai sót hoặc không phù hợp với tình trạng riêng của bé bạn. Đây không phải là chẩn đoán hay chỉ định y khoa.',
             ),
-            _Point(
+            const _Point(
               text:
                   'Luôn tham khảo ý kiến bác sĩ nhi khoa trước khi thay đổi chế độ ăn, giấc ngủ, hoặc bất kỳ quyết định nào liên quan đến sức khoẻ của bé.',
             ),
-            _Point(
+            const _Point(
               text:
                   'Trong tình huống khẩn cấp (sốt cao, khó thở, co giật...), hãy gọi cấp cứu hoặc đến cơ sở y tế gần nhất ngay lập tức — không chờ đợi hoặc dựa vào Ứng dụng.',
             ),
-            _Point(
+            const _Point(
               text:
                   'Biểu đồ tăng trưởng tham khảo chuẩn WHO nhưng cần bác sĩ đối chiếu với thể trạng cụ thể của bé để đánh giá chính xác.',
             ),
